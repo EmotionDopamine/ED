@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emotion&Dopamine Radio</title>
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/727/727245.png" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+    body { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at top left, #1a1a1a, #0a0a0a); color: white; text-align: center; overflow: hidden; position: relative; }
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+    h1 { font-size: 2.5rem; margin-bottom: 1rem; letter-spacing: 1px; background: linear-gradient(90deg, #ff0080, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: glow 3s ease-in-out infinite alternate; z-index: 2; }
+    @keyframes glow { from { text-shadow: 0 0 10px #ff0080; } to { text-shadow: 0 0 20px #ff8c00; } }
+    p { z-index: 2; margin-bottom: 2rem; }
+    button { background: linear-gradient(90deg, #ff0080, #ff8c00); border: none; padding: 1rem 2rem; border-radius: 50px; color: white; font-size: 1.1rem; cursor: pointer; z-index: 2; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255, 0, 128, 0.5); animation: pulse 2s infinite alternate; }
+    @keyframes pulse { from { transform: scale(1); box-shadow: 0 0 10px #ff0080; } to { transform: scale(1.05); box-shadow: 0 0 20px #ff8c00; } }
+    button:hover { transform: scale(1.1); box-shadow: 0 0 25px #ff8c00; }
+    audio { display: none; }
+    footer { position: absolute; bottom: 10px; font-size: 0.8rem; opacity: 0.7; z-index: 2; }
+    footer a { color: #ff8c00; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+  <h1>Emotion&Dopamine Radio</h1>
+  <p>Sintonize-se e sinta a vibe 🎧</p>
+  <button id="playBtn">🎵 Ouvir Agora</button>
+  <audio id="radio" src="https://stream.zeno.fm/r8s232x3xg0uv" type="audio/mpeg"></audio>
+  <footer><p>© 2025 Emotion&Dopamine Radio • Powered by Zeno Media</p></footer>
+  <script>
+    const canvas = document.getElementById('bg'); const ctx = canvas.getContext('2d'); let particlesArray = [];
+    const colors = ['#ff0080', '#ff8c00', '#ffffff']; function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    class Particle { constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 3 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.5; this.speedY = (Math.random() - 0.5) * 0.5; this.color = colors[Math.floor(Math.random() * colors.length)]; }
+      update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+      draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.globalAlpha = 0.6; ctx.fill(); } }
+    function init() { particlesArray = []; for (let i = 0; i < 80; i++) { particlesArray.push(new Particle()); } }
+    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+    init(); animate();
+    const playBtn = document.getElementById('playBtn'); const radio = document.getElementById('radio');
+    playBtn.addEventListener('click', () => { if (radio.paused) { radio.play(); playBtn.textContent = '🔊 Tocando Agora'; playBtn.style.background = 'linear-gradient(90deg, #00ff9f, #00bfff)'; playBtn.style.boxShadow = '0 0 25px #00ff9f';
+      } else { radio.pause(); playBtn.textContent = '🎵 Ouvir Agora'; playBtn.style.background = 'linear-gradient(90deg, #ff0080, #ff8c00)'; playBtn.style.boxShadow = '0 0 15px rgba(255, 0, 128, 0.5)'; } });
+    const titles = ['🔊 Emotion&Dopamine Radio - Ao Vivo','🎧 Emotion&Dopamine Radio','💫 Sinta a vibe • Emotion&Dopamine'];
+    let index = 0; setInterval(() => { document.title = titles[index]; index = (index + 1) % titles.length; }, 2000);
+  </script>
+</body>
+</html>
