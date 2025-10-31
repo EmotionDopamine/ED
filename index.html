@@ -14,6 +14,7 @@
       height: 100vh;
       overflow: hidden;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       background: radial-gradient(circle at top left, #0a0a0a, #1a0a1a);
@@ -68,7 +69,16 @@
       transition: transform .18s ease, box-shadow .18s ease;
     }
     #playButton:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(255,140,0,0.12); }
-    footer { margin-top: 18px; font-size: .85rem; color: #bbbec4; }
+    footer {
+      position: absolute;
+      bottom: 12px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.45);
+      z-index: 3;
+      letter-spacing: 0.4px;
+    }
     @media (max-width:480px) {
       .card { padding: 22px; }
       h1 { font-size: 1.6rem; }
@@ -83,8 +93,10 @@
     <p class="lead">Feel the vibe. Let the dopamine flow.</p>
     <button id="playButton">▶ Play Now</button>
     <audio id="radio" src="https://stream.zeno.fm/r8s232x3xg0uv" preload="none"></audio>
-    <footer>© 2025 Emotion &amp; Dopamine Radio</footer>
   </div>
+
+  <footer>2025 Emotion &amp; Dopamine</footer>
+
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
