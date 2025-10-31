@@ -1,187 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Emotion & Dopamine Radio</title>
-  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/727/727245.png" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727240.png" type="image/png">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html,body { height: 100%; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at center, #0d0d0d, #000);
+      color: #fff;
+      font-family: "Poppins", sans-serif;
       height: 100vh;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at top left, #0a0a0a, #1a0a1a);
-      color: white;
+      align-items: center;
       text-align: center;
-      position: relative;
-    }
-    canvas#bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .card {
-      position: relative;
-      z-index: 2;
-      width: 92%;
-      max-width: 720px;
-      padding: 36px 28px;
-      border-radius: 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-      backdrop-filter: blur(6px);
+      overflow: hidden;
     }
     h1 {
-      font-size: 2.6rem;
-      margin-bottom: 8px;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
       letter-spacing: 1px;
-      background: linear-gradient(90deg, #ff0080, #ff8c00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: glow 3s ease-in-out infinite alternate;
     }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #ff0080; }
-      to { text-shadow: 0 0 20px #ff8c00; }
+    p {
+      color: #ccc;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
     }
-    p.lead { color: #ddd; margin-bottom: 22px; font-size: 1.05rem; }
-    #playButton {
-      appearance: none;
+    button {
+      background: linear-gradient(90deg, #00bcd4, #3f51b5);
+      color: white;
       border: none;
+      border-radius: 30px;
+      padding: 15px 40px;
+      font-size: 1.1rem;
       cursor: pointer;
-      padding: 14px 34px;
-      border-radius: 999px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #fff;
-      background: linear-gradient(90deg,#ff0080,#ff8c00);
-      box-shadow: 0 8px 30px rgba(255,0,128,0.12);
-      transition: transform .18s ease, box-shadow .18s ease;
+      transition: 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
     }
-    #playButton:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(255,140,0,0.12); }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(63, 81, 181, 0.6);
+    }
     footer {
       position: absolute;
-      bottom: 12px;
-      width: 100%;
-      text-align: center;
+      bottom: 15px;
+      color: #777;
       font-size: 0.9rem;
-      color: rgba(255,255,255,0.45);
-      z-index: 3;
-      letter-spacing: 0.4px;
     }
-    @media (max-width:480px) {
-      .card { padding: 22px; }
-      h1 { font-size: 1.6rem; }
-      #playButton { padding: 12px 22px; font-size: .98rem; }
+
+    /* animated background gradient */
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body {
+      background: linear-gradient(-45deg, #0d0d0d, #111122, #0a0a2a, #001a33);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
     }
   </style>
 </head>
 <body>
-  <canvas id="bg"></canvas>
-  <div class="card" role="main">
-    <h1>Emotion &amp; Dopamine Radio</h1>
-    <p class="lead">Feel the vibe. Let the dopamine flow.</p>
-    <button id="playButton">▶ Play Now</button>
-    <audio id="radio" src="https://stream.zeno.fm/r8s232x3xg0uv" preload="none"></audio>
-  </div>
+  <h1>🎧 Emotion & Dopamine Radio</h1>
+  <p>Feel the vibe. Let the dopamine flow.</p>
+  <button id="playButton">▶ Play Now</button>
 
-  <footer>2025 Emotion &amp; Dopamine</footer>
-
-  <script>
-    const canvas = document.getElementById('bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    const colors = ['#ff0080','#ff8c00','#ffffff'];
-    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
-    class Particle {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.4;
-        this.vy = (Math.random() - 0.5) * 0.4;
-        this.r = Math.random() * 2.4 + 0.6;
-        this.color = colors[Math.floor(Math.random()*colors.length)];
-        this.alpha = 0.35 + Math.random()*0.6;
-      }
-      move() {
-        this.x += this.vx; this.y += this.vy;
-        if (this.x < -50) this.x = canvas.width + 50;
-        if (this.x > canvas.width + 50) this.x = -50;
-        if (this.y < -50) this.y = canvas.height + 50;
-        if (this.y > canvas.height + 50) this.y = -50;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.alpha;
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-        ctx.fill();
-      }
-    }
-    function initParticles(n=80) { particles = []; for (let i=0;i<n;i++) particles.push(new Particle()); }
-    initParticles();
-    function loop() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-      g.addColorStop(0,'rgba(255,0,128,0.02)');
-      g.addColorStop(1,'rgba(255,140,0,0.02)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-      for (let p of particles) { p.move(); p.draw(); }
-      requestAnimationFrame(loop);
-    }
-    loop();
-    const audio = document.getElementById('radio');
-    const btn = document.getElementById('playButton');
-    let playing = false;
-    async function startAudio() {
-      try {
-        await audio.play();
-        playing = true;
-        btn.textContent = '⏸ Pause';
-        btn.style.background = 'linear-gradient(90deg,#00ff9f,#00bfff)';
-        btn.style.boxShadow = '0 12px 40px rgba(0,255,159,0.12)';
-      } catch (e) { console.log('Autoplay blocked, waiting user interaction.'); }
-    }
-    function pauseAudio() {
-      audio.pause();
-      playing = false;
-      btn.textContent = '▶ Play Now';
-      btn.style.background = 'linear-gradient(90deg,#ff0080,#ff8c00)';
-      btn.style.boxShadow = '0 8px 30px rgba(255,0,128,0.12)';
-    }
-    btn.addEventListener('click', () => { if (!playing) startAudio(); else pauseAudio(); });
-    window.addEventListener('load', () => {
-      const p = audio.play();
-      if (p !== undefined) {
-        p.then(() => {
-          playing = true;
-          btn.textContent = '⏸ Pause';
-          btn.style.background = 'linear-gradient(90deg,#00ff9f,#00bfff)';
-          btn.style.boxShadow = '0 12px 40px rgba(0,255,159,0.12)';
-        }).catch(() => {});
-      }
-    });
-    const titles = [
-      '🎧 Emotion & Dopamine Radio',
-      '🎵 Feel the Vibe — Live',
-      '🔊 Emotion & Dopamine'
-    ];
-    let idx = 0;
-    setInterval(() => { document.title = titles[idx % titles.length]; idx++; }, 2500);
-  </script>
-</body>
-</html>
+  <audio id="radio" src="https://stream.zeno.fm/r8s232x3xg0uv" preload="n
