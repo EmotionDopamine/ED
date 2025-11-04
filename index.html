@@ -1,187 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Emotion & Dopamine Radio</title>
-  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/727/727245.png" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html,body { height: 100%; }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at top left, #0a0a0a, #1a0a1a);
-      color: white;
-      text-align: center;
-      position: relative;
-    }
-    canvas#bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .card {
-      position: relative;
-      z-index: 2;
-      width: 92%;
-      max-width: 720px;
-      padding: 36px 28px;
-      border-radius: 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-      backdrop-filter: blur(6px);
-    }
-    h1 {
-      font-size: 2.6rem;
-      margin-bottom: 8px;
-      letter-spacing: 1px;
-      background: linear-gradient(90deg, #ff0080, #ff8c00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: glow 3s ease-in-out infinite alternate;
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #ff0080; }
-      to { text-shadow: 0 0 20px #ff8c00; }
-    }
-    p.lead { color: #ddd; margin-bottom: 22px; font-size: 1.05rem; }
-    #playButton {
-      appearance: none;
-      border: none;
-      cursor: pointer;
-      padding: 14px 34px;
-      border-radius: 999px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #fff;
-      background: linear-gradient(90deg,#ff0080,#ff8c00);
-      box-shadow: 0 8px 30px rgba(255,0,128,0.12);
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    #playButton:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(255,140,0,0.12); }
-    footer {
-      position: absolute;
-      bottom: 12px;
-      width: 100%;
-      text-align: center;
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.45);
-      z-index: 3;
-      letter-spacing: 0.4px;
-    }
-    @media (max-width:480px) {
-      .card { padding: 22px; }
-      h1 { font-size: 1.6rem; }
-      #playButton { padding: 12px 22px; font-size: .98rem; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emotion & Dopamine Radio</title>
+<style>
+  /* === Animated Gradient Background === */
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(270deg, #3f0071, #00bcd4, #ff4081);
+    background-size: 600% 600%;
+    animation: gradient 15s ease infinite;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    text-align: center;
+  }
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-bottom: 2.5rem;
+  }
+
+  /* === Player Container Layout === */
+  .players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    width: 90%;
+    max-width: 1000px;
+  }
+
+  /* === Player Card === */
+  .player {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 25px;
+    padding: 25px;
+    width: 220px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+  .player:hover {
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .genre {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+
+  /* === Custom Audio Style === */
+  audio {
+    width: 100%;
+    height: 35px;
+    border-radius: 10px;
+    outline: none;
+  }
+
+  .lyrics {
+    font-size: 0.8rem;
+    opacity: 0.85;
+    margin-top: 12px;
+  }
+
+  footer {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+</style>
 </head>
 <body>
-  <canvas id="bg"></canvas>
-  <div class="card" role="main">
-    <h1>Emotion&amp;Dopamine Radio</h1>
-    <p class="lead">Feel the vibe. Let the dopamine flow.</p>
-    <button id="playButton">▶ Play Now</button>
-    <audio id="radio" src="https://stream.zeno.fm/r8s232x3xg0uv" preload="none"></audio>
+
+  <h1>Emotion & Dopamine</h1>
+  <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
+
+  <!-- === Player Section === -->
+  <div class="players">
+    <!-- Main player -->
+    <div class="player">
+      <div class="genre">Happy Hardcore</div>
+      <audio controls autoplay id="audio1">
+        <source src="https://stream.zeno.fm/r8s232x3xg0uv" type="audio/mpeg">
+      </audio>
+      <div class="lyrics">
+        ♪ Let your heart beat faster, feel the night ignite.<br>
+        Lose yourself in rhythm — dopamine in flight. ♪
+      </div>
+    </div>
+
+    <!-- Hands Up -->
+    <div class="player">
+      <div class="genre">Hands Up</div>
+      <audio controls id="audio2">
+        <source src="https://rautemusik.stream25.radiohost.de/club?ref=rm5beta" type="audio/mpeg">
+      </audio>
+    </div>
+
+    <!-- Rock -->
+    <div class="player">
+      <div class="genre">Rock</div>
+      <audio controls id="audio3">
+        <source src="https://rautemusik.stream37.radiohost.de/rock?ref=rm5beta" type="audio/mpeg">
+      </audio>
+    </div>
+
+    <!-- Metal -->
+    <div class="player">
+      <div class="genre">Metal</div>
+      <audio controls id="audio4">
+        <source src="https://rautemusik.stream43.radiohost.de/metal_mp3-192" type="audio/mpeg">
+      </audio>
+    </div>
   </div>
 
-  <footer>Copyright © 2025 Emotion&amp;Dopamine, All Rights Reserved</footer>
+  <footer>© 2025 Emotion & Dopamine</footer>
 
+  <!-- === JS to allow only one player at a time === -->
   <script>
-    const canvas = document.getElementById('bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    const colors = ['#ff0080','#ff8c00','#ffffff'];
-    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
-    class Particle {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.4;
-        this.vy = (Math.random() - 0.5) * 0.4;
-        this.r = Math.random() * 2.4 + 0.6;
-        this.color = colors[Math.floor(Math.random()*colors.length)];
-        this.alpha = 0.35 + Math.random()*0.6;
-      }
-      move() {
-        this.x += this.vx; this.y += this.vy;
-        if (this.x < -50) this.x = canvas.width + 50;
-        if (this.x > canvas.width + 50) this.x = -50;
-        if (this.y < -50) this.y = canvas.height + 50;
-        if (this.y > canvas.height + 50) this.y = -50;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.alpha;
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-        ctx.fill();
-      }
-    }
-    function initParticles(n=80) { particles = []; for (let i=0;i<n;i++) particles.push(new Particle()); }
-    initParticles();
-    function loop() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-      g.addColorStop(0,'rgba(255,0,128,0.02)');
-      g.addColorStop(1,'rgba(255,140,0,0.02)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-      for (let p of particles) { p.move(); p.draw(); }
-      requestAnimationFrame(loop);
-    }
-    loop();
-    const audio = document.getElementById('radio');
-    const btn = document.getElementById('playButton');
-    let playing = false;
-    async function startAudio() {
-      try {
-        await audio.play();
-        playing = true;
-        btn.textContent = '⏸ Pause';
-        btn.style.background = 'linear-gradient(90deg,#00ff9f,#00bfff)';
-        btn.style.boxShadow = '0 12px 40px rgba(0,255,159,0.12)';
-      } catch (e) { console.log('Autoplay blocked, waiting user interaction.'); }
-    }
-    function pauseAudio() {
-      audio.pause();
-      playing = false;
-      btn.textContent = '▶ Play Now';
-      btn.style.background = 'linear-gradient(90deg,#ff0080,#ff8c00)';
-      btn.style.boxShadow = '0 8px 30px rgba(255,0,128,0.12)';
-    }
-    btn.addEventListener('click', () => { if (!playing) startAudio(); else pauseAudio(); });
-    window.addEventListener('load', () => {
-      const p = audio.play();
-      if (p !== undefined) {
-        p.then(() => {
-          playing = true;
-          btn.textContent = '⏸ Pause';
-          btn.style.background = 'linear-gradient(90deg,#00ff9f,#00bfff)';
-          btn.style.boxShadow = '0 12px 40px rgba(0,255,159,0.12)';
-        }).catch(() => {});
-      }
+    const players = document.querySelectorAll('audio');
+    players.forEach(p => {
+      p.addEventListener('play', () => {
+        players.forEach(other => {
+          if (other !== p) other.pause();
+        });
+      });
     });
-    const titles = [
-      '🎧 Emotion & Dopamine Radio',
-      '🎵 Feel the Vibe — Live',
-      '🔊 Emotion & Dopamine'
-    ];
-    let idx = 0;
-    setInterval(() => { document.title = titles[idx % titles.length]; idx++; }, 2500);
   </script>
+
 </body>
 </html>
