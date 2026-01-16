@@ -143,27 +143,63 @@ analyser.fftSize=256;
 const data=new Uint8Array(analyser.frequencyBinCount);
 
 function draw(){
+  <script>
+let frame = 0;
+let lastEnergy = 0;
+
+function draw(){
   requestAnimationFrame(draw);
   analyser.getByteFrequencyData(data);
-  ctx.fillStyle="rgba(0,0,0,.15)";
+
+  ctx.fillStyle="rgba(0,0,0,.12)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  const cx=canvas.width/2, cy=canvas.height/2;
-  const speed = genreMode==="fast"?1.4:0.8;
+  const cx = canvas.width/2;
+  const cy = canvas.height/2;
+
+  let bass = 0;
+  let mid = 0;
+  let treble = 0;
 
   for(let i=0;i<data.length;i++){
-    const angle=i*0.15;
-    const radius=60+data[i]*speed;
-    ctx.beginPath();
-    ctx.arc(cx+Math.cos(angle)*radius,cy+Math.sin(angle)*radius,2.5,0,Math.PI*2);
-    ctx.fillStyle=`hsl(${i*4},100%,60%)`;
-    ctx.fill();
+    if(i < 20) bass += data[i];
+    else if(i < 80) mid += data[i];
+    else treble += data[i];
   }
+
+  bass /= 20;
+  mid /= 60;
+  treble /= (data.length - 80);
+
+  // Detect drop
+  const energy = bass + mid;
+  const drop = energy - lastEnergy > 40;
+  lastEnergy = energy;
+
+  const speed = genreMode === "fast" ? 1.6 : 1.0;
+  const baseRadius = 70 + bass * speed;
+
+  // Reactive circle (FIXED)
+  ctx.beginPath();
+  ctx.arc(cx, cy, baseRadius, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(0,255,255,${0.4 + bass/300})`;
+  ctx.lineWidth = 3 + bass/40;
+  ctx.stroke();
+
+  // Particles
+  for(let i=0;i<80;i++){
+    const angle = (i/80)*Math.PI*2 + frame*0.002;
+    const r = baseRadius + mid*0.8;
+    ctx.fillStyle = drop ? "#ff00ff" : "#00ffff";
+    ctx.fillRect(
+      cx + Math.cos(angle)*r,
+      cy + Math.sin(angle)*r,
+      2.5,
+      2.5
+    );
+  }
+
+  frame++;
 }
 draw();
-
-onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;}
 </script>
-
-</body>
-</html>
