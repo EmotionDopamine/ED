@@ -4,28 +4,67 @@
 <meta charset="UTF-8">
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 
 <style>
+/* ===== FUNDO PREMIUM ===== */
 body{
   margin:0;
-  background:#050508;
   color:#fff;
   font-family:Arial,Helvetica,sans-serif;
   overflow:hidden;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,0,255,.25), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(0,255,255,.25), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(120,0,255,.25), transparent 45%),
+    linear-gradient(180deg,#050508,#070712,#030305);
 }
-canvas{position:fixed;inset:0;z-index:0}
-header{text-align:center;padding-top:40px;z-index:2;position:relative}
+
+/* camada de glow suave */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(120deg,
+      rgba(255,0,255,.06),
+      rgba(0,255,255,.06),
+      rgba(255,0,255,.06)
+    );
+  animation:bgMove 18s linear infinite;
+  z-index:-1;
+}
+
+@keyframes bgMove{
+  0%{filter:hue-rotate(0deg)}
+  100%{filter:hue-rotate(360deg)}
+}
+
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
+
+/* ===== TOPO ===== */
+header{
+  text-align:center;
+  padding-top:40px;
+  z-index:2;
+  position:relative;
+}
 header h1{
   font-size:46px;
   letter-spacing:4px;
   animation:glow 3s infinite alternate;
 }
 header p{opacity:.7}
+
 @keyframes glow{
-  from{text-shadow:0 0 10px #ff00ff}
-  to{text-shadow:0 0 30px #00ffff}
+  from{text-shadow:0 0 12px #ff00ff}
+  to{text-shadow:0 0 32px #00ffff}
 }
+
+/* ===== PLAYERS ===== */
 .players{
   display:flex;
   justify-content:center;
@@ -35,15 +74,36 @@ header p{opacity:.7}
   position:relative;
   flex-wrap:wrap;
 }
+
 .player{text-align:center}
+
 .play-btn{
-  width:80px;height:80px;border-radius:50%;
-  border:none;font-size:30px;cursor:pointer;
+  width:80px;height:80px;
+  border-radius:50%;
+  border:none;
+  font-size:30px;
+  cursor:pointer;
   color:#fff;
   background:linear-gradient(135deg,#ff00ff,#00ffff);
-  box-shadow:0 0 18px rgba(255,0,255,.6);
+  box-shadow:
+    0 0 18px rgba(255,0,255,.6),
+    inset 0 0 12px rgba(255,255,255,.15);
+  transition:transform .2s, box-shadow .2s;
 }
-.genre{margin-top:8px;font-size:13px;opacity:.85}
+.play-btn:hover{
+  transform:scale(1.08);
+  box-shadow:
+    0 0 28px rgba(0,255,255,.9),
+    inset 0 0 14px rgba(255,255,255,.25);
+}
+
+.genre{
+  margin-top:8px;
+  font-size:13px;
+  opacity:.85;
+}
+
+/* ===== LETRAS ===== */
 #lyrics{
   text-align:center;
   margin-top:15px;
@@ -52,6 +112,8 @@ header p{opacity:.7}
   z-index:2;
   position:relative;
 }
+
+/* ===== FOOTER ===== */
 footer{
   position:fixed;
   bottom:10px;
@@ -62,7 +124,7 @@ footer{
   z-index:2;
 }
 
-/* CHAT */
+/* ===== CHAT ===== */
 #chatBtn{
   position:fixed;
   right:15px;
@@ -75,24 +137,29 @@ footer{
   cursor:pointer;
   z-index:5;
 }
+
 #chatBox{
   position:fixed;
   right:15px;
   bottom:80px;
   width:260px;
-  background:#111;
+  background:rgba(15,15,25,.95);
   border-radius:12px;
   padding:10px;
   display:none;
   z-index:5;
+  backdrop-filter:blur(8px);
 }
-#chatBox input,#chatBox textarea{
+
+#chatBox input,
+#chatBox textarea{
   width:100%;
   margin-bottom:6px;
   border:none;
   padding:6px;
   border-radius:6px;
 }
+
 #chatMessages{
   max-height:120px;
   overflow:auto;
@@ -111,11 +178,35 @@ footer{
 </header>
 
 <div class="players">
-  <div class="player"><button class="play-btn" data-genre="fast" data-name="Happy Hardcore" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button><div class="genre">Happy Hardcore</div></div>
-  <div class="player"><button class="play-btn" data-genre="fast" data-name="Hands Up" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button><div class="genre">Hands Up</div></div>
-  <div class="player"><button class="play-btn" data-genre="fast" data-name="Hands Up 2" data-src="https://listen.technobase.fm/tunein-mp3">▶</button><div class="genre">Hands Up 2</div></div>
-  <div class="player"><button class="play-btn" data-genre="heavy" data-name="Rock" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button><div class="genre">Rock</div></div>
-  <div class="player"><button class="play-btn" data-genre="heavy" data-name="Metal" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button><div class="genre">Metal</div></div>
+  <div class="player">
+    <button class="play-btn" data-genre="fast" data-name="Happy Hardcore"
+      data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button>
+    <div class="genre">Happy Hardcore</div>
+  </div>
+
+  <div class="player">
+    <button class="play-btn" data-genre="fast" data-name="Hands Up"
+      data-src="https://rautemusik.stream25.radiohost.de/club">▶</button>
+    <div class="genre">Hands Up</div>
+  </div>
+
+  <div class="player">
+    <button class="play-btn" data-genre="fast" data-name="Hands Up 2"
+      data-src="https://listen.technobase.fm/tunein-mp3">▶</button>
+    <div class="genre">Hands Up 2</div>
+  </div>
+
+  <div class="player">
+    <button class="play-btn" data-genre="heavy" data-name="Rock"
+      data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button>
+    <div class="genre">Rock</div>
+  </div>
+
+  <div class="player">
+    <button class="play-btn" data-genre="heavy" data-name="Metal"
+      data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button>
+    <div class="genre">Metal</div>
+  </div>
 </div>
 
 <div id="lyrics">♪ Live broadcast — lyrics unavailable ♪</div>
@@ -134,16 +225,15 @@ footer{
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* ===== CHAT ===== */
+/* CHAT */
 const chatBtn=document.getElementById("chatBtn");
 const chatBox=document.getElementById("chatBox");
 chatBtn.onclick=()=>chatBox.style.display=chatBox.style.display==="block"?"none":"block";
 
 function sendMsg(){
-  const n=name.value,c=city.value,m=msg.value;
-  if(!n||!m)return;
+  if(!name.value||!msg.value)return;
   const data=JSON.parse(localStorage.getItem("chat")||"[]");
-  data.push(`${n} (${c}): ${m}`);
+  data.push(`${name.value} (${city.value}): ${msg.value}`);
   localStorage.setItem("chat",JSON.stringify(data));
   renderChat();
   msg.value="";
@@ -154,7 +244,7 @@ function renderChat(){
 }
 renderChat();
 
-/* ===== AUDIO ===== */
+/* AUDIO */
 const audio=document.getElementById("audio");
 const buttons=document.querySelectorAll(".play-btn");
 let genreMode="fast";
@@ -170,13 +260,11 @@ buttons.forEach(btn=>{
       btn.innerText="❚❚";
       fadeIn();
       audioCtx.resume();
-      countPlay(btn.dataset.name);
     }else{
       audio.pause();audio.src="";
     }
   }
 });
-
 function fadeIn(){
   let v=0;
   const i=setInterval(()=>{
@@ -186,13 +274,7 @@ function fadeIn(){
   },40);
 }
 
-/* ===== STATS ===== */
-function countPlay(name){
-  let c=localStorage.getItem(name)||0;
-  localStorage.setItem(name,++c);
-}
-
-/* ===== VISUALIZER ===== */
+/* VISUALIZER */
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;canvas.height=innerHeight;
@@ -204,12 +286,10 @@ src.connect(analyser);analyser.connect(audioCtx.destination);
 analyser.fftSize=256;
 const data=new Uint8Array(analyser.frequencyBinCount);
 
-let lastEnergy=0;
-
 function draw(){
   requestAnimationFrame(draw);
   analyser.getByteFrequencyData(data);
-  ctx.fillStyle="rgba(0,0,0,.15)";
+  ctx.fillStyle="rgba(0,0,0,.12)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   let bass=0;
@@ -217,23 +297,13 @@ function draw(){
   bass/=30;
 
   const cx=canvas.width/2,cy=canvas.height/2;
-  const radius=70+bass*(genreMode==="fast"?1.6:1.1);
+  const r=70+bass*(genreMode==="fast"?1.6:1.1);
 
   ctx.beginPath();
-  ctx.arc(cx,cy,radius,0,Math.PI*2);
-  ctx.strokeStyle="rgba(0,255,255,.6)";
+  ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle="rgba(0,255,255,.65)";
   ctx.lineWidth=3+bass/40;
   ctx.stroke();
-
-  for(let i=0;i<60;i++){
-    const a=i*(Math.PI*2/60);
-    ctx.fillStyle="#ff00ff";
-    ctx.fillRect(
-      cx+Math.cos(a)*(radius+20),
-      cy+Math.sin(a)*(radius+20),
-      2,2
-    );
-  }
 }
 draw();
 
