@@ -14,17 +14,8 @@ body{
   font-family:Arial,Helvetica,sans-serif;
   overflow:hidden;
 }
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-}
-header{
-  position:relative;
-  z-index:2;
-  text-align:center;
-  padding-top:40px;
-}
+canvas{position:fixed;inset:0;z-index:0}
+header{text-align:center;padding-top:40px;z-index:2;position:relative}
 header h1{
   font-size:46px;
   letter-spacing:4px;
@@ -36,31 +27,30 @@ header p{opacity:.7}
   to{text-shadow:0 0 30px #00ffff}
 }
 .players{
-  position:relative;
-  z-index:2;
   display:flex;
   justify-content:center;
   gap:30px;
   margin-top:40px;
+  z-index:2;
+  position:relative;
   flex-wrap:wrap;
 }
 .player{text-align:center}
 .play-btn{
   width:80px;height:80px;border-radius:50%;
-  border:none;font-size:30px;
-  cursor:pointer;color:#fff;
+  border:none;font-size:30px;cursor:pointer;
+  color:#fff;
   background:linear-gradient(135deg,#ff00ff,#00ffff);
   box-shadow:0 0 18px rgba(255,0,255,.6);
 }
 .genre{margin-top:8px;font-size:13px;opacity:.85}
 #lyrics{
-  position:fixed;
-  bottom:40px;
-  width:100%;
   text-align:center;
+  margin-top:15px;
   font-size:12px;
   opacity:.6;
   z-index:2;
+  position:relative;
 }
 footer{
   position:fixed;
@@ -70,6 +60,43 @@ footer{
   font-size:12px;
   opacity:.6;
   z-index:2;
+}
+
+/* CHAT */
+#chatBtn{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  width:55px;height:55px;
+  border-radius:50%;
+  background:#00ffff;
+  color:#000;
+  border:none;
+  cursor:pointer;
+  z-index:5;
+}
+#chatBox{
+  position:fixed;
+  right:15px;
+  bottom:80px;
+  width:260px;
+  background:#111;
+  border-radius:12px;
+  padding:10px;
+  display:none;
+  z-index:5;
+}
+#chatBox input,#chatBox textarea{
+  width:100%;
+  margin-bottom:6px;
+  border:none;
+  padding:6px;
+  border-radius:6px;
+}
+#chatMessages{
+  max-height:120px;
+  overflow:auto;
+  font-size:12px;
 }
 </style>
 </head>
@@ -84,23 +111,52 @@ footer{
 </header>
 
 <div class="players">
-  <div class="player"><button class="play-btn" data-genre="fast" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button><div class="genre">Happy Hardcore</div></div>
-  <div class="player"><button class="play-btn" data-genre="fast" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button><div class="genre">Hands Up</div></div>
-  <div class="player"><button class="play-btn" data-genre="fast" data-src="https://listen.technobase.fm/tunein-mp3">▶</button><div class="genre">Hands Up 2</div></div>
-  <div class="player"><button class="play-btn" data-genre="heavy" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button><div class="genre">Rock</div></div>
-  <div class="player"><button class="play-btn" data-genre="heavy" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button><div class="genre">Metal</div></div>
+  <div class="player"><button class="play-btn" data-genre="fast" data-name="Happy Hardcore" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button><div class="genre">Happy Hardcore</div></div>
+  <div class="player"><button class="play-btn" data-genre="fast" data-name="Hands Up" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button><div class="genre">Hands Up</div></div>
+  <div class="player"><button class="play-btn" data-genre="fast" data-name="Hands Up 2" data-src="https://listen.technobase.fm/tunein-mp3">▶</button><div class="genre">Hands Up 2</div></div>
+  <div class="player"><button class="play-btn" data-genre="heavy" data-name="Rock" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button><div class="genre">Rock</div></div>
+  <div class="player"><button class="play-btn" data-genre="heavy" data-name="Metal" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button><div class="genre">Metal</div></div>
 </div>
 
-<div id="lyrics">♪ Lyrics will appear here ♪</div>
+<div id="lyrics">♪ Live broadcast — lyrics unavailable ♪</div>
 <footer>© 2026 Emotion & Dopamine</footer>
+
+<button id="chatBtn">💬</button>
+
+<div id="chatBox">
+  <input id="name" placeholder="Name">
+  <input id="city" placeholder="City / State">
+  <textarea id="msg" placeholder="Message"></textarea>
+  <button onclick="sendMsg()">Send</button>
+  <div id="chatMessages"></div>
+</div>
 
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
+/* ===== CHAT ===== */
+const chatBtn=document.getElementById("chatBtn");
+const chatBox=document.getElementById("chatBox");
+chatBtn.onclick=()=>chatBox.style.display=chatBox.style.display==="block"?"none":"block";
+
+function sendMsg(){
+  const n=name.value,c=city.value,m=msg.value;
+  if(!n||!m)return;
+  const data=JSON.parse(localStorage.getItem("chat")||"[]");
+  data.push(`${n} (${c}): ${m}`);
+  localStorage.setItem("chat",JSON.stringify(data));
+  renderChat();
+  msg.value="";
+}
+function renderChat(){
+  const data=JSON.parse(localStorage.getItem("chat")||"[]");
+  chatMessages.innerHTML=data.slice(-6).join("<br>");
+}
+renderChat();
+
+/* ===== AUDIO ===== */
 const audio=document.getElementById("audio");
 const buttons=document.querySelectorAll(".play-btn");
-const lyrics=document.getElementById("lyrics");
-
 let genreMode="fast";
 
 buttons.forEach(btn=>{
@@ -114,7 +170,7 @@ buttons.forEach(btn=>{
       btn.innerText="❚❚";
       fadeIn();
       audioCtx.resume();
-      lyrics.innerText="♪ Live broadcast — lyrics unavailable ♪";
+      countPlay(btn.dataset.name);
     }else{
       audio.pause();audio.src="";
     }
@@ -127,10 +183,16 @@ function fadeIn(){
     v+=0.05;
     audio.volume=Math.min(v,1);
     if(v>=1)clearInterval(i);
-  },50);
+  },40);
 }
 
-/* ===== VISUAL ENGINE ===== */
+/* ===== STATS ===== */
+function countPlay(name){
+  let c=localStorage.getItem(name)||0;
+  localStorage.setItem(name,++c);
+}
+
+/* ===== VISUALIZER ===== */
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;canvas.height=innerHeight;
@@ -142,64 +204,41 @@ src.connect(analyser);analyser.connect(audioCtx.destination);
 analyser.fftSize=256;
 const data=new Uint8Array(analyser.frequencyBinCount);
 
-function draw(){
-  <script>
-let frame = 0;
-let lastEnergy = 0;
+let lastEnergy=0;
 
 function draw(){
   requestAnimationFrame(draw);
   analyser.getByteFrequencyData(data);
-
-  ctx.fillStyle="rgba(0,0,0,.12)";
+  ctx.fillStyle="rgba(0,0,0,.15)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  const cx = canvas.width/2;
-  const cy = canvas.height/2;
+  let bass=0;
+  for(let i=0;i<30;i++)bass+=data[i];
+  bass/=30;
 
-  let bass = 0;
-  let mid = 0;
-  let treble = 0;
+  const cx=canvas.width/2,cy=canvas.height/2;
+  const radius=70+bass*(genreMode==="fast"?1.6:1.1);
 
-  for(let i=0;i<data.length;i++){
-    if(i < 20) bass += data[i];
-    else if(i < 80) mid += data[i];
-    else treble += data[i];
-  }
-
-  bass /= 20;
-  mid /= 60;
-  treble /= (data.length - 80);
-
-  // Detect drop
-  const energy = bass + mid;
-  const drop = energy - lastEnergy > 40;
-  lastEnergy = energy;
-
-  const speed = genreMode === "fast" ? 1.6 : 1.0;
-  const baseRadius = 70 + bass * speed;
-
-  // Reactive circle (FIXED)
   ctx.beginPath();
-  ctx.arc(cx, cy, baseRadius, 0, Math.PI * 2);
-  ctx.strokeStyle = `rgba(0,255,255,${0.4 + bass/300})`;
-  ctx.lineWidth = 3 + bass/40;
+  ctx.arc(cx,cy,radius,0,Math.PI*2);
+  ctx.strokeStyle="rgba(0,255,255,.6)";
+  ctx.lineWidth=3+bass/40;
   ctx.stroke();
 
-  // Particles
-  for(let i=0;i<80;i++){
-    const angle = (i/80)*Math.PI*2 + frame*0.002;
-    const r = baseRadius + mid*0.8;
-    ctx.fillStyle = drop ? "#ff00ff" : "#00ffff";
+  for(let i=0;i<60;i++){
+    const a=i*(Math.PI*2/60);
+    ctx.fillStyle="#ff00ff";
     ctx.fillRect(
-      cx + Math.cos(angle)*r,
-      cy + Math.sin(angle)*r,
-      2.5,
-      2.5
+      cx+Math.cos(a)*(radius+20),
+      cy+Math.sin(a)*(radius+20),
+      2,2
     );
   }
-
-  frame++;
 }
 draw();
+
+onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;}
 </script>
+
+</body>
+</html>
