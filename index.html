@@ -5,10 +5,10 @@
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- FAVICON -->
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+
 <style>
-:root{
-  --bg-img:url("");
-}
 *{box-sizing:border-box}
 body{
   margin:0;
@@ -18,26 +18,29 @@ body{
   overflow:hidden;
 }
 
-/* ===== FUNDOS ===== */
-#bgImage{
-  position:fixed;inset:0;
-  background-image:var(--bg-img);
-  background-size:cover;
-  background-position:center;
-  opacity:.35;
-  filter:blur(3px) saturate(120%);
+/* ===== VIDEO BACKGROUND ===== */
+#videoBg{
+  position:fixed;
+  inset:0;
+  object-fit:cover;
+  width:100%;
+  height:100%;
+  filter:blur(4px) brightness(.45) saturate(120%);
   transition:opacity .6s ease;
-  z-index:-4;
+  z-index:-5;
 }
-#bgOverlay{
+
+/* ===== OVERLAYS ===== */
+#overlay{
   position:fixed;inset:0;
   background:
     radial-gradient(circle at 20% 20%, rgba(255,0,255,.25), transparent 40%),
     radial-gradient(circle at 80% 30%, rgba(0,255,255,.25), transparent 45%),
     linear-gradient(180deg,#050508,#070712,#030305);
-  z-index:-3;
+  z-index:-4;
 }
-#bgGlow{
+
+#glow{
   position:fixed;inset:0;
   background:linear-gradient(120deg,
     rgba(255,0,255,.05),
@@ -45,20 +48,20 @@ body{
     rgba(255,0,255,.05)
   );
   animation:hue 18s linear infinite;
-  z-index:-2;
+  z-index:-3;
 }
 @keyframes hue{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
 
-canvas{position:fixed;inset:0;z-index:-1}
+canvas{position:fixed;inset:0;z-index:-2}
 
 /* ===== HEADER ===== */
 header{text-align:center;padding-top:40px}
 header h1{
   font-size:46px;
   letter-spacing:4px;
-  animation:glow 3s infinite alternate;
+  animation:glowText 3s infinite alternate;
 }
-@keyframes glow{
+@keyframes glowText{
   from{text-shadow:0 0 12px #ff00ff}
   to{text-shadow:0 0 32px #00ffff}
 }
@@ -88,7 +91,25 @@ header p{opacity:.7}
 .play-btn:hover{transform:scale(1.1)}
 .genre{margin-top:8px;font-size:13px;opacity:.85}
 
-/* ===== LETRAS ===== */
+/* ===== ADS ===== */
+#adBox{
+  position:fixed;
+  right:20px;
+  bottom:70px;
+  width:200px;
+  height:120px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(6px);
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:.7;
+  z-index:3;
+}
+
+/* ===== LYRICS ===== */
 #lyrics{
   text-align:center;
   margin-top:18px;
@@ -110,9 +131,11 @@ footer{
 
 <body>
 
-<div id="bgImage"></div>
-<div id="bgOverlay"></div>
-<div id="bgGlow"></div>
+<!-- VIDEO BACKGROUND -->
+<video id="videoBg" autoplay muted loop></video>
+
+<div id="overlay"></div>
+<div id="glow"></div>
 <canvas id="canvas"></canvas>
 
 <header>
@@ -122,27 +145,27 @@ footer{
 
 <div class="players">
   <div class="player">
-    <button class="play-btn" data-genre="happy" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button>
+    <button class="play-btn" data-video="happy" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button>
     <div class="genre">Happy Hardcore</div>
   </div>
 
   <div class="player">
-    <button class="play-btn" data-genre="handsup" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button>
+    <button class="play-btn" data-video="handsup" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button>
     <div class="genre">Hands Up</div>
   </div>
 
   <div class="player">
-    <button class="play-btn" data-genre="handsup" data-src="https://listen.technobase.fm/tunein-mp3">▶</button>
+    <button class="play-btn" data-video="handsup" data-src="https://listen.technobase.fm/tunein-mp3">▶</button>
     <div class="genre">Hands Up 2</div>
   </div>
 
   <div class="player">
-    <button class="play-btn" data-genre="rock" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button>
+    <button class="play-btn" data-video="rock" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button>
     <div class="genre">Rock</div>
   </div>
 
   <div class="player">
-    <button class="play-btn" data-genre="metal" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button>
+    <button class="play-btn" data-video="metal" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button>
     <div class="genre">Metal</div>
   </div>
 </div>
@@ -150,17 +173,20 @@ footer{
 <div id="lyrics">♪ Live broadcast — lyrics unavailable ♪</div>
 <footer>© 2026 Emotion & Dopamine</footer>
 
+<!-- AD PLACEHOLDER -->
+<div id="adBox">Your Ad Here</div>
+
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* ===== BACKGROUNDS POR GÊNERO ===== */
-const genreBG={
-  happy:"https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2",
-  handsup:"https://images.unsplash.com/photo-1518972559570-7cc1309f3229",
-  rock:"https://images.unsplash.com/photo-1511379938547-c1f69419868d",
-  metal:"https://images.unsplash.com/photo-1506157786151-b8491531f063"
+/* ===== VIDEOS POR GÊNERO ===== */
+const videos={
+  happy:"https://cdn.coverr.co/videos/coverr-rave-lights-9886/1080p.mp4",
+  handsup:"https://cdn.coverr.co/videos/coverr-dj-mixing-music-3847/1080p.mp4",
+  rock:"https://cdn.coverr.co/videos/coverr-rock-concert-1566/1080p.mp4",
+  metal:"https://cdn.coverr.co/videos/coverr-metal-concert-1723/1080p.mp4"
 };
-const bgImage=document.getElementById("bgImage");
+const videoBg=document.getElementById("videoBg");
 
 /* ===== AUDIO ===== */
 const audio=document.getElementById("audio");
@@ -173,12 +199,13 @@ buttons.forEach(btn=>{
     audio.play();
     btn.innerText="❚❚";
 
-    const g=btn.dataset.genre;
-    if(genreBG[g]){
-      bgImage.style.opacity=0;
+    const v=btn.dataset.video;
+    if(videos[v]){
+      videoBg.style.opacity=0;
       setTimeout(()=>{
-        bgImage.style.backgroundImage=`url('${genreBG[g]}')`;
-        bgImage.style.opacity=.35;
+        videoBg.src=videos[v];
+        videoBg.play();
+        videoBg.style.opacity=1;
       },300);
     }
   };
@@ -204,28 +231,24 @@ function draw(){
   ctx.fillStyle="rgba(0,0,0,.15)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  let bass=0,mid=0;
-  for(let i=0;i<20;i++)bass+=data[i];
-  for(let i=20;i<80;i++)mid+=data[i];
-  bass/=20;mid/=60;
+  let bass=0;
+  for(let i=0;i<25;i++)bass+=data[i];
+  bass/=25;
 
   const cx=canvas.width/2;
   const cy=canvas.height/2;
-  const radius=70+bass;
+  const r=70+bass;
 
-  // círculo principal
   ctx.beginPath();
-  ctx.arc(cx,cy,radius,0,Math.PI*2);
+  ctx.arc(cx,cy,r,0,Math.PI*2);
   ctx.strokeStyle=`rgba(0,255,255,${0.4+bass/300})`;
   ctx.lineWidth=3+bass/40;
   ctx.stroke();
 
-  // partículas circulares
-  for(let i=0;i<90;i++){
-    const ang=(i/90)*Math.PI*2+frame*0.002;
-    const r=radius+mid*.8;
+  for(let i=0;i<80;i++){
+    const a=(i/80)*Math.PI*2+frame*0.002;
     ctx.fillStyle="#ff00ff";
-    ctx.fillRect(cx+Math.cos(ang)*r,cy+Math.sin(ang)*r,2.2,2.2);
+    ctx.fillRect(cx+Math.cos(a)*(r+20),cy+Math.sin(a)*(r+20),2,2);
   }
   frame++;
 }
