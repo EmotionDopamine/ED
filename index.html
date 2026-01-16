@@ -1,433 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
 <title>Emotion&Dopamine</title>
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-  :root{
-    --bg1:#0b0b0b;
-    --muted: rgba(255,255,255,0.08);
-    --text:#e9f7ff;
-    --glass: rgba(255,255,255,0.03);
-  }
-  html,body{height:100%;margin:0}
-  body{
-    font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    color:var(--text);
-    background: radial-gradient(circle at center, #0d0d0d 0%, #070707 100%);
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-  }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, Helvetica, sans-serif;
+}
 
-  /* particle canvas covers background */
-  canvas#bg{ position:fixed; inset:0; z-index:0; display:block; }
+body{
+  background:radial-gradient(circle at top,#1b0036,#000);
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
 
-  /* Header like image */
-  .hero{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:12px; padding-top:40px; }
-  h1{
-    font-size:48px;
-    margin:0;
-    line-height:1;
-    background:linear-gradient(90deg,#ff4d6b,#ff9a2b);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 10px 30px rgba(255,120,60,0.12));
-    text-align:center;
-  }
-  .subtitle{ color:rgba(255,255,255,0.85); font-size:16px; margin-top:-6px; }
+h1{
+  font-size:3rem;
+  margin-bottom:10px;
+  animation:glow 2s infinite alternate;
+}
 
-  /* big central button instruction (optional like image) */
-  .center-cta{ margin-top:14px; z-index:2; }
+@keyframes glow{
+  from{text-shadow:0 0 10px #ff00ff;}
+  to{text-shadow:0 0 25px #00ffff;}
+}
 
-  /* players row */
-  .players{
-    z-index:2;
-    margin-top:38px;
-    display:flex;
-    gap:20px;
-    justify-content:center;
-    align-items:flex-start;
-    flex-wrap:wrap;
-    width:100%;
-    padding: 0 24px 40px 24px;
-    max-width:1200px;
-  }
+.subtitle{
+  opacity:.75;
+  margin-bottom:30px;
+}
 
-  .station{
-    width:260px;
-    background:var(--glass);
-    border-radius:14px;
-    padding:16px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:10px;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-  }
-  .station .title{ font-weight:700; font-size:16px; text-align:center; }
-  .station .genre{ font-size:13px; color:#ffdfe9; }
+.players{
+  display:flex;
+  gap:20px;
+  z-index:2;
+}
 
-  /* Custom play pill */
-  .play-pill{
-    display:inline-flex;
-    gap:10px;
-    align-items:center;
-    padding:12px 22px;
-    border-radius:999px;
-    color:white;
-    font-weight:700;
-    border:none;
-    cursor:pointer;
-    box-shadow:0 14px 40px rgba(0,0,0,0.45);
-    transition: transform .14s ease, box-shadow .14s ease, opacity .12s;
-  }
-  .play-pill:active{ transform:translateY(2px); }
+.player{
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(8px);
+  border-radius:18px;
+  padding:20px;
+  width:170px;
+  text-align:center;
+}
 
-  .pill-icon{
-    width:20px; height:20px; display:inline-block;
-  }
+.player h3{
+  font-size:1rem;
+  margin-bottom:12px;
+}
 
-  /* colors per station */
-  .pill-main{ background: linear-gradient(90deg,#ff3f6b,#ff9a2b); box-shadow:0 18px 50px rgba(255,77,109,0.12); }
-  .pill-hands{ background: linear-gradient(90deg,#00bcd4,#0066ff); box-shadow:0 18px 50px rgba(0,188,212,0.12); }
-  .pill-rock{ background: linear-gradient(90deg,#ff2b2b,#ff7043); box-shadow:0 18px 50px rgba(255,80,80,0.12); }
-  .pill-metal{ background: linear-gradient(90deg,#9b59ff,#6a0dad); box-shadow:0 18px 50px rgba(155,89,255,0.12); }
+.play-btn{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  font-size:28px;
+  background:linear-gradient(135deg,#ff00ff,#00ffff);
+  box-shadow:0 0 15px rgba(255,0,255,.7);
+}
 
-  /* lyrics area under each station */
-  .lyrics{
-    width:100%;
-    font-size:13px;
-    color: #dcefff;
-    background: rgba(255,255,255,0.02);
-    padding:8px 10px;
-    border-radius:8px;
-    max-height:120px;
-    overflow:auto;
-    min-height:46px;
-  }
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
 
-  footer{ position:fixed; bottom:12px; left:0; right:0; text-align:center; color:rgba(255,255,255,0.45); z-index:2; font-size:13px; }
-
-  /* chat floating button and panel */
-  #chatBtn{
-    position:fixed; right:22px; bottom:18px; z-index:5;
-    width:64px; height:64px; border-radius:999px; border:none; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    animation: pulse 2000ms infinite;
-  }
-  @keyframes pulse {
-    0%{ box-shadow:0 0 18px rgba(255,77,109,0.12) }
-    50%{ box-shadow:0 0 32px rgba(255,77,109,0.18) }
-    100%{ box-shadow:0 0 18px rgba(255,77,109,0.12) }
-  }
-  #chatBtn .bubble{ width:48px; height:48px; border-radius:999px; background:linear-gradient(90deg,#ff4d6b,#ff9a2b); display:flex; align-items:center; justify-content:center; color:white; font-size:20px; box-shadow:0 10px 30px rgba(255,77,109,0.12) }
-
-  #chatPanel{ position:fixed; right:18px; bottom:90px; width:340px; max-width:92vw; background:rgba(8,8,8,0.7); border:1px solid rgba(255,77,109,0.12); border-radius:12px; padding:12px; z-index:6; display:none; backdrop-filter: blur(8px); box-shadow:0 20px 60px rgba(0,0,0,0.6) }
-  #chatPanel h4{ margin:6px 0 10px 0; font-size:16px; color:#fff }
-  #chatPanel input, #chatPanel textarea{ width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:none; outline:none; background:rgba(255,255,255,0.02); color:#fff }
-  #chatPanel button.send{ width:100%; padding:10px; border-radius:8px; border:none; background:linear-gradient(90deg,#ff4d6b,#ff9a2b); color:#fff; font-weight:700 }
-  .messages{ max-height:220px; overflow:auto; margin-top:8px; display:flex; flex-direction:column; gap:8px }
-  .message{ background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:8px; font-size:13px; color:#f7fbff }
-
-  /* responsive layout */
-  @media(max-width:980px){
-    .players{ gap:14px; }
-    .station{ width:48%; }
-  }
-  @media(max-width:540px){
-    h1{ font-size:28px }
-    .station{ width:90% }
-    #chatPanel{ right:8px; left:8px; width:auto; bottom:100px }
-    #chatBtn{ right:12px; bottom:12px }
-  }
+footer{
+  margin-top:25px;
+  font-size:12px;
+  opacity:.6;
+  z-index:2;
+}
 </style>
 </head>
+
 <body>
-<canvas id="bg"></canvas>
 
-<div class="hero" role="banner">
-  <h1>Emotion&amp;Dopamine Radio</h1>
-  <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
+<canvas id="visualizer"></canvas>
+
+<h1>Emotion&Dopamine</h1>
+<div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
+
+<div class="players">
+
+  <div class="player">
+    <h3>Happy Hardcore</h3>
+    <button class="play-btn" onclick="playRadio(0)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Hands Up</h3>
+    <button class="play-btn" onclick="playRadio(1)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Hands Up 2</h3>
+    <button class="play-btn" onclick="playRadio(2)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Rock</h3>
+    <button class="play-btn" onclick="playRadio(3)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Metal</h3>
+    <button class="play-btn" onclick="playRadio(4)">▶</button>
+  </div>
+
 </div>
 
-<div class="players" id="players">
-  <!-- Station 1 (main) -->
-  <div class="station" data-id="1">
-    <div class="title">Emotion &amp; Dopamine Radio</div>
-    <div class="genre">Genre: Happy Hardcore</div>
-    <button class="play-pill pill-main" data-target="audio1"><span class="pill-icon">🎧</span><span class="pill-label">Listen Now</span></button>
-    <audio id="audio1" preload="none"><source src="https://stream.zeno.fm/r8s232x3xg0uv" type="audio/mpeg"></audio>
-    <div class="lyrics" id="lyrics1">—</div>
-  </div>
-
-  <!-- Station 2 -->
-  <div class="station" data-id="2">
-    <div class="title">Hands Up Radio</div>
-    <div class="genre">Genre: Hands Up</div>
-    <button class="play-pill pill-hands" data-target="audio2"><span class="pill-icon">🎵</span><span class="pill-label">Listen Now</span></button>
-    <audio id="audio2" preload="none"><source src="https://rautemusik.stream25.radiohost.de/club?ref=rm5beta&upd-meta&upd-scheme=https&_art=dD0xNzYxOTQwNTMyJmQ9ZWUyMGQxNjAyNGYyNDA5ZGMzM2M" type="audio/mpeg"></audio>
-    <div class="lyrics" id="lyrics2">—</div>
-  </div>
-
-  <!-- Station 3 -->
-  <div class="station" data-id="3">
-    <div class="title">Rock Radio</div>
-    <div class="genre">Genre: Rock</div>
-    <button class="play-pill pill-rock" data-target="audio3"><span class="pill-icon">🎸</span><span class="pill-label">Listen Now</span></button>
-    <audio id="audio3" preload="none"><source src="https://rautemusik.stream37.radiohost.de/rock?ref=rm5beta&upd-meta&upd-scheme=https&_art=dD0xNzYxOTQwNjU4JmQ9MTllMDRiNThjNzlhOTMwOGY3NWI" type="audio/mpeg"></audio>
-    <div class="lyrics" id="lyrics3">—</div>
-  </div>
-
-  <!-- Station 4 -->
-  <div class="station" data-id="4">
-    <div class="title">Metal Radio</div>
-    <div class="genre">Genre: Metal</div>
-    <button class="play-pill pill-metal" data-target="audio4"><span class="pill-icon">🤘</span><span class="pill-label">Listen Now</span></button>
-    <audio id="audio4" preload="none"><source src="https://rautemusik.stream43.radiohost.de/metal_mp3-192" type="audio/mpeg"></audio>
-    <div class="lyrics" id="lyrics4">—</div>
-  </div>
-</div>
-
-<footer>© 2025 Emotion&amp;Dopamine</footer>
-
-<!-- Chat balloon -->
-<button id="chatBtn" aria-label="Open chat">
-  <div class="bubble">💬</div>
-</button>
-
-<div id="chatPanel" aria-hidden="true">
-  <h4>Emotion&amp;Dopamine Wall</h4>
-  <input id="chatName" placeholder="Your name" />
-  <input id="chatCity" placeholder="City / State" />
-  <textarea id="chatMessage" rows="3" placeholder="Your message..."></textarea>
-  <button class="send" id="chatSend">Send</button>
-  <div class="messages" id="chatMessages"></div>
-</div>
+<footer>© 2025 Emotion & Dopamine</footer>
 
 <script>
-/* COMMENTS:
-  - Particles background (subtle dots) matches visual.
-  - Custom play buttons (pills) control hidden audio elements.
-  - Only one station plays at once.
-  - Lyrics fetch attempted for any playing station (best-effort).
-  - Chat balloon toggles a local mural stored in localStorage (kept local).
-*/
+/* =======================
+   STREAMS DE RÁDIO
+   ======================= */
+const streams = [
+  "https://stream.zeno.fm/r8s232x3xg0uv",            // Happy Hardcore
+  "https://rautemusik.stream25.radiohost.de/club", // Hands Up
+  "https://listen.technobase.fm/tunein-mp3",       // Hands Up 2
+  "https://rautemusik.stream37.radiohost.de/rock", // Rock
+  "https://rautemusik.stream43.radiohost.de/metal_mp3-192" // Metal
+];
 
-// PARTICLES (simple floating dots)
-const canvas = document.getElementById('bg');
-const ctx = canvas.getContext('2d');
-let W, H;
-function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-window.addEventListener('resize', resize);
+let audio = new Audio();
+audio.crossOrigin = "anonymous";
+
+let ctx, analyser, source;
+let initialized = false;
+
+/* =======================
+   CANVAS
+   ======================= */
+const canvas = document.getElementById("visualizer");
+const c = canvas.getContext("2d");
+
+function resize(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
 resize();
 
-const particleColors = ['#ff3f6b','#ff9a2b','#ffffff','#ff3f6b','#ffffff'];
-const particles = [];
-for(let i=0;i<90;i++){
-  particles.push({ x:Math.random()*W, y:Math.random()*H, r:Math.random()*2+0.5, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, c: particleColors[Math.floor(Math.random()*particleColors.length)], a:0.25+Math.random()*0.8 });
+/* =======================
+   AUDIO INIT
+   ======================= */
+function initAudio(){
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = ctx.createAnalyser();
+  analyser.fftSize = 256;
+
+  source = ctx.createMediaElementSource(audio);
+  source.connect(analyser);
+  analyser.connect(ctx.destination);
+
+  animate();
 }
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  // subtle vignette
-  ctx.fillStyle = 'rgba(5,5,5,0.2)'; ctx.fillRect(0,0,W,H);
-  for(const p of particles){
-    p.x += p.vx; p.y += p.vy;
-    if(p.x < -20) p.x = W+20; if(p.x > W+20) p.x = -20;
-    if(p.y < -20) p.y = H+20; if(p.y > H+20) p.y = -20;
-    ctx.beginPath();
-    ctx.fillStyle = p.c;
-    ctx.globalAlpha = p.a;
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-    ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-  requestAnimationFrame(draw);
-}
-draw();
 
-// AUDIO logic
-const stations = [
-  { id: 'audio1', lyricsEl: 'lyrics1', meta: 'zeno', mount: 'r8s232x3xg0uv' },
-  { id: 'audio2', lyricsEl: 'lyrics2', meta: 'radiohost', url: 'https://rautemusik.stream25.radiohost.de/club?ref=rm5beta' },
-  { id: 'audio3', lyricsEl: 'lyrics3', meta: 'radiohost', url: 'https://rautemusik.stream37.radiohost.de/rock?ref=rm5beta' },
-  { id: 'audio4', lyricsEl: 'lyrics4', meta: 'radiohost', url: 'https://rautemusik.stream43.radiohost.de/metal_mp3-192' },
-];
-const audios = stations.map(s => document.getElementById(s.id));
-const pills = document.querySelectorAll('.play-pill');
+/* =======================
+   PLAY RADIO (1 POR VEZ)
+   ======================= */
+function playRadio(index){
+  audio.pause();
+  audio.src = streams[index];
+  audio.load();
+  audio.play();
 
-// ensure only one plays
-audios.forEach(a => {
-  a.addEventListener('play', ()=> {
-    audios.forEach(other => { if(other !== a) other.pause(); });
-    document.body.classList.add('audio-active');
-    // show lyrics for current
-    const st = stations.find(s => s.id === a.id);
-    if(st) fetchAndShowLyrics(st);
-  });
-  a.addEventListener('pause', ()=> {
-    const any = audios.some(x => !x.paused);
-    if(!any) document.body.classList.remove('audio-active');
-  });
-});
-
-// pill click toggles its audio
-pills.forEach(btn => {
-  btn.addEventListener('click', async (e) => {
-    const targetId = btn.getAttribute('data-target');
-    const audio = document.getElementById(targetId);
-    if(!audio) return;
-    // toggle play/pause
-    if(audio.paused){
-      // attempt to resume audio context if needed
-      try{ await audio.play(); }catch(e){
-        console.log('play blocked', e);
-      }
-      // update pill label
-      btn.querySelector('.pill-label').textContent = 'Pause';
-      // reset other pills text
-      pills.forEach(p => { if(p!==btn) p.querySelector('.pill-label').textContent = 'Listen Now'; });
-    } else {
-      audio.pause();
-      btn.querySelector('.pill-label').textContent = 'Listen Now';
-    }
-  });
-});
-
-// attempt autoplay main on user gesture or listen button
-window.addEventListener('load', ()=> {
-  // do not force play to avoid autoplay blocking; user can press the main pill
-});
-
-// fetch metadata & lyrics (best-effort)
-async function fetchAndShowLyrics(station){
-  const el = document.getElementById(station.lyricsEl);
-  el.textContent = 'Loading track info...';
-  try{
-    let title = '';
-    if(station.meta === 'zeno'){
-      // zeno metadata endpoint (CORS allowed)
-      const res = await fetch('https://api.zeno.fm/mounts/metadata/' + station.mount);
-      if(res.ok){
-        const data = await res.json();
-        title = data.title || data.currentSong || '';
-      }
-    } else {
-      // Radiohost/stream metadata not reliably available - try to fetch ICY via a proxy (best-effort)
-      // We'll attempt a metadata endpoint via allorigins as a fallback (may fail due to stream response)
-      try{
-        const proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(station.url);
-        await fetch(proxy, { method: 'GET' }); // not parsing, just to detect availability
-        // No reliable title — fallback
-      }catch(e){}
-    }
-    if(!title) {
-      el.textContent = 'Track info not available.';
-      return;
-    }
-    el.innerHTML = '🎵 Now playing: <strong>'+escapeHtml(title)+'</strong><br>Searching lyrics...';
-    // attempt lyrics.ovh
-    let artist='', song='';
-    if(title.includes(' - ')){
-      const parts = title.split(' - ');
-      artist = parts[0].trim(); song = parts.slice(1).join(' - ').trim();
-    } else song = title;
-    // query lyrics.ovh
-    const lres = await fetch('https://api.lyrics.ovh/v1/'+encodeURIComponent(artist)+'/'+encodeURIComponent(song));
-    if(lres.ok){
-      const ldata = await lres.json();
-      if(ldata.lyrics) {
-        el.textContent = ldata.lyrics;
-        return;
-      }
-    }
-    el.textContent = 'Lyrics not available.';
-  }catch(err){
-    console.log('lyrics err', err);
-    el.textContent = 'Unable to fetch track info.';
+  if(!initialized){
+    initAudio();
+    initialized = true;
   }
 }
 
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
+/* =======================
+   AUTOPLAY PRINCIPAL
+   ======================= */
+window.addEventListener("click",()=>{
+  if(!initialized){
+    playRadio(0);
+  }
+},{once:true});
 
-// CHAT panel logic (local only)
-const chatBtn = document.getElementById('chatBtn');
-const chatPanel = document.getElementById('chatPanel');
-const chatSend = document.getElementById('chatSend');
-const chatMessages = document.getElementById('chatMessages');
+/* =======================
+   VISUALIZER
+   ======================= */
+function animate(){
+  requestAnimationFrame(animate);
 
-chatBtn.addEventListener('click', ()=> {
-  const open = chatPanel.style.display === 'block';
-  chatPanel.style.display = open ? 'none' : 'block';
-  chatPanel.setAttribute('aria-hidden', open ? 'true' : 'false');
-});
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(data);
 
-// load stored messages
-function loadMessages(){
-  const raw = localStorage.getItem('ed_messages');
-  if(!raw) return;
-  try{
-    const arr = JSON.parse(raw);
-    arr.forEach(m => appendMessage(m));
-  }catch(e){}
+  c.clearRect(0,0,canvas.width,canvas.height);
+
+  const cx = canvas.width/2;
+  const cy = canvas.height/2;
+  const baseRadius = 120;
+
+  for(let i=0;i<data.length;i++){
+    const angle = (i/data.length)*Math.PI*2;
+    const amp = data[i]*0.6;
+
+    const x = cx + Math.cos(angle)*(baseRadius+amp);
+    const y = cy + Math.sin(angle)*(baseRadius+amp);
+
+    c.beginPath();
+    c.arc(x,y,3,0,Math.PI*2);
+    c.fillStyle = `hsl(${i*4},100%,60%)`;
+    c.fill();
+  }
 }
-function saveMessage(obj){
-  const raw = localStorage.getItem('ed_messages');
-  let arr = raw ? JSON.parse(raw) : [];
-  arr.push(obj);
-  localStorage.setItem('ed_messages', JSON.stringify(arr));
-}
-function appendMessage({name, city, text, time}){
-  const div = document.createElement('div'); div.className='message';
-  div.innerHTML = `<strong>${escapeHtml(name)}</strong> <small>(${escapeHtml(city)})</small><div style="margin-top:6px">${escapeHtml(text)}</div><div style="opacity:0.6;font-size:11px;margin-top:6px">${escapeHtml(time)}</div>`;
-  chatMessages.prepend(div);
-}
-
-chatSend.addEventListener('click', ()=> {
-  const name = document.getElementById('chatName').value.trim();
-  const city = document.getElementById('chatCity').value.trim();
-  const text = document.getElementById('chatMessage').value.trim();
-  if(!name || !city || !text) return;
-  const obj = { name, city, text, time: new Date().toLocaleString() };
-  appendMessage(obj);
-  saveMessage(obj);
-  document.getElementById('chatMessage').value = '';
-});
-
-// init
-loadMessages();
-
-// Optional: start small audio analyser on first user gesture to pulse particles
-let audioCtx, analyser;
-document.addEventListener('click', function initAnalyser(){
-  try{
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const main = document.getElementById('audio1');
-    const src = audioCtx.createMediaElementSource(main);
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 128;
-    src.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    const data = new Uint8Array(analyser.frequencyBinCount);
-    (function loop(){
-      analyser.getByteFrequencyData(data);
-      const avg = data.reduce((s,v)=>s+v,0)/data.length;
-      // map to particle alpha
-      const level = Math.min(1, avg/140);
-      for(const p of particles){ p.a = 0.15 + Math.random()*0.25 + level*0.9*Math.random(); }
-      requestAnimationFrame(loop);
-    })();
-  }catch(e){ /* ignore */ }
-  document.removeEventListener('click', initAnalyser);
-}, {once:true});
-
 </script>
+
 </body>
 </html>
