@@ -28,7 +28,7 @@ h1{
 }
 @keyframes glow{
   from{text-shadow:0 0 12px #ff00ff;}
-  to{text-shadow:0 0 35px #00ffff;}
+  to{text-shadow:0 0 40px #00ffff;}
 }
 
 .subtitle{opacity:.75;margin-bottom:20px;}
@@ -55,7 +55,7 @@ h1{
 .play-btn{
   width:70px;height:70px;border-radius:50%;
   border:none;cursor:pointer;font-size:28px;color:#fff;
-  box-shadow:0 0 20px rgba(255,255,255,.5);
+  box-shadow:0 0 22px rgba(255,255,255,.5);
 }
 
 .hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
@@ -164,7 +164,7 @@ const streams=[
  "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
 ];
 
-const colors=["#ff00ff","#00ffff","#00ff99","#ff4444","#999"];
+const colors=["#ff00ff","#00ffff","#00ff99","#ff4444","#aaa"];
 let currentColor=colors[0];
 
 let audio=new Audio();
@@ -181,7 +181,7 @@ addEventListener("resize",resize);resize();
 function init(){
  ctx=new (window.AudioContext||window.webkitAudioContext)();
  analyser=ctx.createAnalyser();
- analyser.fftSize=256;
+ analyser.fftSize=512;
  source=ctx.createMediaElementSource(audio);
  source.connect(analyser);
  analyser.connect(ctx.destination);
@@ -201,7 +201,7 @@ function playRadio(i){
 /* AUTOPLAY */
 addEventListener("click",()=>{if(!started)playRadio(0);},{once:true});
 
-/* VISUALIZER */
+/* VISUALIZER – 360° FIX */
 function animate(){
  requestAnimationFrame(animate);
  const data=new Uint8Array(analyser.frequencyBinCount);
@@ -209,28 +209,34 @@ function animate(){
  c.clearRect(0,0,canvas.width,canvas.height);
 
  const cx=canvas.width/2,cy=canvas.height/2;
- data.forEach((v,i)=>{
-   const a=i/data.length*Math.PI*2;
-   const r=120+v*0.7;
+ const len=data.length;
+
+ for(let i=0;i<len;i++){
+   const amp=data[i];
+   const angle=(i/len)*Math.PI*2;
+   const radius=140 + amp*0.9;
+
+   const x=cx+Math.cos(angle)*radius;
+   const y=cy+Math.sin(angle)*radius;
+
    c.fillStyle=currentColor;
    c.beginPath();
-   c.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,3,0,Math.PI*2);
+   c.arc(x,y,3.5,0,Math.PI*2);
    c.fill();
- });
+ }
 }
 
 /* CHAT */
 function toggleChat(){
- const box=document.getElementById("chat-box");
- box.style.display=box.style.display==="block"?"none":"block";
+ chat-box.style.display = chat-box.style.display==="block"?"none":"block";
 }
 
 function sendMessage(){
- const n=name.value,c=city.value,m=msg.value;
- if(!n||!c||!m) return alert("Fill all fields");
- const saved=JSON.parse(localStorage.getItem("wall")||"[]");
- saved.push({n,c,m});
- localStorage.setItem("wall",JSON.stringify(saved));
+ if(!name.value||!city.value||!msg.value)
+   return alert("Fill all fields");
+ const wall=JSON.parse(localStorage.getItem("wall")||"[]");
+ wall.push({n:name.value,c:city.value,m:msg.value});
+ localStorage.setItem("wall",JSON.stringify(wall));
  msg.value="";
  alert("Message sent!");
 }
