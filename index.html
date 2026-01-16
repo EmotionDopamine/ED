@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 
 <style>
@@ -12,42 +11,30 @@ body{
   margin:0;
   background:#050508;
   color:#fff;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   overflow:hidden;
 }
-
-/* ===== BACKGROUND VISUAL ===== */
 canvas{
   position:fixed;
   inset:0;
   z-index:0;
 }
-
-/* ===== HEADER ===== */
 header{
   position:relative;
   z-index:2;
   text-align:center;
-  padding:40px 10px 10px;
+  padding-top:40px;
 }
-
 header h1{
   font-size:46px;
   letter-spacing:4px;
   animation:glow 3s infinite alternate;
 }
-
-header p{
-  opacity:.7;
-  margin-top:5px;
-}
-
+header p{opacity:.7}
 @keyframes glow{
-  from{ text-shadow:0 0 10px #ff00ff;}
-  to{ text-shadow:0 0 30px #00ffff;}
+  from{text-shadow:0 0 10px #ff00ff}
+  to{text-shadow:0 0 30px #00ffff}
 }
-
-/* ===== PLAYERS (UNCHANGED STYLE) ===== */
 .players{
   position:relative;
   z-index:2;
@@ -57,31 +44,24 @@ header p{
   margin-top:40px;
   flex-wrap:wrap;
 }
-
-.player{
-  text-align:center;
-}
-
+.player{text-align:center}
 .play-btn{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  border:none;
-  font-size:30px;
-  cursor:pointer;
-  color:#fff;
+  width:80px;height:80px;border-radius:50%;
+  border:none;font-size:30px;
+  cursor:pointer;color:#fff;
   background:linear-gradient(135deg,#ff00ff,#00ffff);
   box-shadow:0 0 18px rgba(255,0,255,.6);
 }
-
-.genre{
-  margin-top:8px;
-  font-size:13px;
-  letter-spacing:1px;
-  opacity:.85;
+.genre{margin-top:8px;font-size:13px;opacity:.85}
+#lyrics{
+  position:fixed;
+  bottom:40px;
+  width:100%;
+  text-align:center;
+  font-size:12px;
+  opacity:.6;
+  z-index:2;
 }
-
-/* ===== FOOTER ===== */
 footer{
   position:fixed;
   bottom:10px;
@@ -96,7 +76,7 @@ footer{
 
 <body>
 
-<canvas id="viz"></canvas>
+<canvas id="bg"></canvas>
 
 <header>
   <h1>Emotion&Dopamine</h1>
@@ -104,95 +84,85 @@ footer{
 </header>
 
 <div class="players">
-  <div class="player">
-    <button class="play-btn" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button>
-    <div class="genre">Happy Hardcore</div>
-  </div>
-
-  <div class="player">
-    <button class="play-btn" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button>
-    <div class="genre">Hands Up</div>
-  </div>
-
-  <div class="player">
-    <button class="play-btn" data-src="https://listen.technobase.fm/tunein-mp3">▶</button>
-    <div class="genre">Hands Up 2</div>
-  </div>
-
-  <div class="player">
-    <button class="play-btn" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button>
-    <div class="genre">Rock</div>
-  </div>
-
-  <div class="player">
-    <button class="play-btn" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button>
-    <div class="genre">Metal</div>
-  </div>
+  <div class="player"><button class="play-btn" data-genre="fast" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button><div class="genre">Happy Hardcore</div></div>
+  <div class="player"><button class="play-btn" data-genre="fast" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button><div class="genre">Hands Up</div></div>
+  <div class="player"><button class="play-btn" data-genre="fast" data-src="https://listen.technobase.fm/tunein-mp3">▶</button><div class="genre">Hands Up 2</div></div>
+  <div class="player"><button class="play-btn" data-genre="heavy" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button><div class="genre">Rock</div></div>
+  <div class="player"><button class="play-btn" data-genre="heavy" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button><div class="genre">Metal</div></div>
 </div>
 
+<div id="lyrics">♪ Lyrics will appear here ♪</div>
 <footer>© 2026 Emotion & Dopamine</footer>
 
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* ===== AUDIO CONTROL (FAST & CLEAN) ===== */
-const audio = document.getElementById("audio");
-const buttons = document.querySelectorAll(".play-btn");
+const audio=document.getElementById("audio");
+const buttons=document.querySelectorAll(".play-btn");
+const lyrics=document.getElementById("lyrics");
+
+let genreMode="fast";
 
 buttons.forEach(btn=>{
   btn.onclick=()=>{
     buttons.forEach(b=>b.innerText="▶");
+    genreMode=btn.dataset.genre;
     if(audio.src!==btn.dataset.src){
       audio.src=btn.dataset.src;
+      audio.volume=0;
       audio.play();
       btn.innerText="❚❚";
+      fadeIn();
       audioCtx.resume();
+      lyrics.innerText="♪ Live broadcast — lyrics unavailable ♪";
     }else{
-      audio.pause();
-      audio.src="";
+      audio.pause();audio.src="";
     }
-  };
+  }
 });
 
-/* ===== VISUALIZER – NEXT LEVEL (LIGHT) ===== */
-const canvas=document.getElementById("viz");
+function fadeIn(){
+  let v=0;
+  const i=setInterval(()=>{
+    v+=0.05;
+    audio.volume=Math.min(v,1);
+    if(v>=1)clearInterval(i);
+  },50);
+}
+
+/* ===== VISUAL ENGINE ===== */
+const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
+canvas.width=innerWidth;canvas.height=innerHeight;
 
 const audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-const source=audioCtx.createMediaElementSource(audio);
+const src=audioCtx.createMediaElementSource(audio);
 const analyser=audioCtx.createAnalyser();
-
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
-analyser.fftSize=128;
-
+src.connect(analyser);analyser.connect(audioCtx.destination);
+analyser.fftSize=256;
 const data=new Uint8Array(analyser.frequencyBinCount);
 
-function render(){
-  requestAnimationFrame(render);
+function draw(){
+  requestAnimationFrame(draw);
   analyser.getByteFrequencyData(data);
-
-  ctx.fillStyle="rgba(0,0,0,.12)";
+  ctx.fillStyle="rgba(0,0,0,.15)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  let x=0;
-  const barWidth=(canvas.width/data.length);
+  const cx=canvas.width/2, cy=canvas.height/2;
+  const speed = genreMode==="fast"?1.4:0.8;
 
   for(let i=0;i<data.length;i++){
-    const h=data[i]*1.3;
-    ctx.fillStyle=`rgba(0,255,255,.25)`;
-    ctx.fillRect(x,canvas.height-h,barWidth,h);
-    x+=barWidth;
+    const angle=i*0.15;
+    const radius=60+data[i]*speed;
+    ctx.beginPath();
+    ctx.arc(cx+Math.cos(angle)*radius,cy+Math.sin(angle)*radius,2.5,0,Math.PI*2);
+    ctx.fillStyle=`hsl(${i*4},100%,60%)`;
+    ctx.fill();
   }
 }
-render();
+draw();
 
-onresize=()=>{
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
-};
+onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;}
 </script>
 
 </body>
