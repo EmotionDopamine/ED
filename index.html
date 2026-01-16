@@ -6,63 +6,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ===== FUNDO PREMIUM ===== */
+:root{
+  --bg-img:url("");
+}
+
 body{
   margin:0;
   color:#fff;
   font-family:Arial,Helvetica,sans-serif;
   overflow:hidden;
+  background:#050508;
+}
+
+/* ===== CAMADA DE IMAGEM POR GÊNERO ===== */
+#bgImage{
+  position:fixed;
+  inset:0;
+  background-image:var(--bg-img);
+  background-size:cover;
+  background-position:center;
+  opacity:.35;
+  transition:opacity .6s ease, filter .6s ease;
+  filter:blur(2px) saturate(120%);
+  z-index:-3;
+}
+
+/* gradiente por cima */
+#bgOverlay{
+  position:fixed;
+  inset:0;
   background:
     radial-gradient(circle at 20% 20%, rgba(255,0,255,.25), transparent 40%),
     radial-gradient(circle at 80% 30%, rgba(0,255,255,.25), transparent 45%),
     radial-gradient(circle at 50% 80%, rgba(120,0,255,.25), transparent 45%),
     linear-gradient(180deg,#050508,#070712,#030305);
+  z-index:-2;
 }
 
-/* camada de glow suave */
-body::after{
-  content:"";
+/* glow animado */
+#bgGlow{
   position:fixed;
   inset:0;
-  background:
-    linear-gradient(120deg,
-      rgba(255,0,255,.06),
-      rgba(0,255,255,.06),
-      rgba(255,0,255,.06)
-    );
-  animation:bgMove 18s linear infinite;
+  background:linear-gradient(120deg,
+    rgba(255,0,255,.05),
+    rgba(0,255,255,.05),
+    rgba(255,0,255,.05)
+  );
+  animation:hue 18s linear infinite;
   z-index:-1;
 }
-
-@keyframes bgMove{
-  0%{filter:hue-rotate(0deg)}
-  100%{filter:hue-rotate(360deg)}
+@keyframes hue{
+  from{filter:hue-rotate(0deg)}
+  to{filter:hue-rotate(360deg)}
 }
 
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-}
+canvas{position:fixed;inset:0;z-index:0}
 
 /* ===== TOPO ===== */
-header{
-  text-align:center;
-  padding-top:40px;
-  z-index:2;
-  position:relative;
-}
+header{text-align:center;padding-top:40px;position:relative;z-index:2}
 header h1{
   font-size:46px;
   letter-spacing:4px;
   animation:glow 3s infinite alternate;
 }
-header p{opacity:.7}
-
 @keyframes glow{
   from{text-shadow:0 0 12px #ff00ff}
   to{text-shadow:0 0 32px #00ffff}
 }
+header p{opacity:.7}
 
 /* ===== PLAYERS ===== */
 .players{
@@ -70,11 +81,10 @@ header p{opacity:.7}
   justify-content:center;
   gap:30px;
   margin-top:40px;
-  z-index:2;
-  position:relative;
   flex-wrap:wrap;
+  position:relative;
+  z-index:2;
 }
-
 .player{text-align:center}
 
 .play-btn{
@@ -85,23 +95,11 @@ header p{opacity:.7}
   cursor:pointer;
   color:#fff;
   background:linear-gradient(135deg,#ff00ff,#00ffff);
-  box-shadow:
-    0 0 18px rgba(255,0,255,.6),
-    inset 0 0 12px rgba(255,255,255,.15);
-  transition:transform .2s, box-shadow .2s;
+  box-shadow:0 0 18px rgba(255,0,255,.6);
 }
-.play-btn:hover{
-  transform:scale(1.08);
-  box-shadow:
-    0 0 28px rgba(0,255,255,.9),
-    inset 0 0 14px rgba(255,255,255,.25);
-}
+.play-btn:hover{transform:scale(1.08)}
 
-.genre{
-  margin-top:8px;
-  font-size:13px;
-  opacity:.85;
-}
+.genre{margin-top:8px;font-size:13px;opacity:.85}
 
 /* ===== LETRAS ===== */
 #lyrics{
@@ -109,11 +107,10 @@ header p{opacity:.7}
   margin-top:15px;
   font-size:12px;
   opacity:.6;
-  z-index:2;
   position:relative;
+  z-index:2;
 }
 
-/* ===== FOOTER ===== */
 footer{
   position:fixed;
   bottom:10px;
@@ -123,53 +120,14 @@ footer{
   opacity:.6;
   z-index:2;
 }
-
-/* ===== CHAT ===== */
-#chatBtn{
-  position:fixed;
-  right:15px;
-  bottom:15px;
-  width:55px;height:55px;
-  border-radius:50%;
-  background:#00ffff;
-  color:#000;
-  border:none;
-  cursor:pointer;
-  z-index:5;
-}
-
-#chatBox{
-  position:fixed;
-  right:15px;
-  bottom:80px;
-  width:260px;
-  background:rgba(15,15,25,.95);
-  border-radius:12px;
-  padding:10px;
-  display:none;
-  z-index:5;
-  backdrop-filter:blur(8px);
-}
-
-#chatBox input,
-#chatBox textarea{
-  width:100%;
-  margin-bottom:6px;
-  border:none;
-  padding:6px;
-  border-radius:6px;
-}
-
-#chatMessages{
-  max-height:120px;
-  overflow:auto;
-  font-size:12px;
-}
 </style>
 </head>
 
 <body>
 
+<div id="bgImage"></div>
+<div id="bgOverlay"></div>
+<div id="bgGlow"></div>
 <canvas id="bg"></canvas>
 
 <header>
@@ -179,31 +137,31 @@ footer{
 
 <div class="players">
   <div class="player">
-    <button class="play-btn" data-genre="fast" data-name="Happy Hardcore"
+    <button class="play-btn" data-genre="happy"
       data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button>
     <div class="genre">Happy Hardcore</div>
   </div>
 
   <div class="player">
-    <button class="play-btn" data-genre="fast" data-name="Hands Up"
+    <button class="play-btn" data-genre="handsup"
       data-src="https://rautemusik.stream25.radiohost.de/club">▶</button>
     <div class="genre">Hands Up</div>
   </div>
 
   <div class="player">
-    <button class="play-btn" data-genre="fast" data-name="Hands Up 2"
+    <button class="play-btn" data-genre="handsup"
       data-src="https://listen.technobase.fm/tunein-mp3">▶</button>
     <div class="genre">Hands Up 2</div>
   </div>
 
   <div class="player">
-    <button class="play-btn" data-genre="heavy" data-name="Rock"
+    <button class="play-btn" data-genre="rock"
       data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button>
     <div class="genre">Rock</div>
   </div>
 
   <div class="player">
-    <button class="play-btn" data-genre="heavy" data-name="Metal"
+    <button class="play-btn" data-genre="metal"
       data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button>
     <div class="genre">Metal</div>
   </div>
@@ -212,69 +170,43 @@ footer{
 <div id="lyrics">♪ Live broadcast — lyrics unavailable ♪</div>
 <footer>© 2026 Emotion & Dopamine</footer>
 
-<button id="chatBtn">💬</button>
-
-<div id="chatBox">
-  <input id="name" placeholder="Name">
-  <input id="city" placeholder="City / State">
-  <textarea id="msg" placeholder="Message"></textarea>
-  <button onclick="sendMsg()">Send</button>
-  <div id="chatMessages"></div>
-</div>
-
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* CHAT */
-const chatBtn=document.getElementById("chatBtn");
-const chatBox=document.getElementById("chatBox");
-chatBtn.onclick=()=>chatBox.style.display=chatBox.style.display==="block"?"none":"block";
+/* ===== IMAGENS POR GÊNERO (PODE TROCAR AS URLS) ===== */
+const genreBackgrounds={
+  happy:"https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2",
+  handsup:"https://images.unsplash.com/photo-1518972559570-7cc1309f3229",
+  rock:"https://images.unsplash.com/photo-1511379938547-c1f69419868d",
+  metal:"https://images.unsplash.com/photo-1506157786151-b8491531f063"
+};
 
-function sendMsg(){
-  if(!name.value||!msg.value)return;
-  const data=JSON.parse(localStorage.getItem("chat")||"[]");
-  data.push(`${name.value} (${city.value}): ${msg.value}`);
-  localStorage.setItem("chat",JSON.stringify(data));
-  renderChat();
-  msg.value="";
-}
-function renderChat(){
-  const data=JSON.parse(localStorage.getItem("chat")||"[]");
-  chatMessages.innerHTML=data.slice(-6).join("<br>");
-}
-renderChat();
+const bgImage=document.getElementById("bgImage");
 
-/* AUDIO */
+/* ===== AUDIO ===== */
 const audio=document.getElementById("audio");
 const buttons=document.querySelectorAll(".play-btn");
-let genreMode="fast";
 
 buttons.forEach(btn=>{
   btn.onclick=()=>{
     buttons.forEach(b=>b.innerText="▶");
-    genreMode=btn.dataset.genre;
-    if(audio.src!==btn.dataset.src){
-      audio.src=btn.dataset.src;
-      audio.volume=0;
-      audio.play();
-      btn.innerText="❚❚";
-      fadeIn();
-      audioCtx.resume();
-    }else{
-      audio.pause();audio.src="";
-    }
-  }
-});
-function fadeIn(){
-  let v=0;
-  const i=setInterval(()=>{
-    v+=0.05;
-    audio.volume=Math.min(v,1);
-    if(v>=1)clearInterval(i);
-  },40);
-}
+    audio.src=btn.dataset.src;
+    audio.play();
+    btn.innerText="❚❚";
 
-/* VISUALIZER */
+    // troca imagem do fundo
+    const g=btn.dataset.genre;
+    if(genreBackgrounds[g]){
+      bgImage.style.opacity=0;
+      setTimeout(()=>{
+        bgImage.style.backgroundImage=`url('${genreBackgrounds[g]}')`;
+        bgImage.style.opacity=.35;
+      },300);
+    }
+  };
+});
+
+/* ===== VISUALIZER ===== */
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;canvas.height=innerHeight;
@@ -296,18 +228,15 @@ function draw(){
   for(let i=0;i<30;i++)bass+=data[i];
   bass/=30;
 
-  const cx=canvas.width/2,cy=canvas.height/2;
-  const r=70+bass*(genreMode==="fast"?1.6:1.1);
-
   ctx.beginPath();
-  ctx.arc(cx,cy,r,0,Math.PI*2);
-  ctx.strokeStyle="rgba(0,255,255,.65)";
+  ctx.arc(canvas.width/2,canvas.height/2,70+bass,0,Math.PI*2);
+  ctx.strokeStyle="rgba(0,255,255,.6)";
   ctx.lineWidth=3+bass/40;
   ctx.stroke();
 }
 draw();
 
-onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;}
+onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight}
 </script>
 
 </body>
