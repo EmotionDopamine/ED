@@ -8,6 +8,10 @@
 <!-- FAVICON -->
 <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 
+<!-- GOOGLE ADSENSE (SUBSTITUA O ca-pub) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX"
+crossorigin="anonymous"></script>
+
 <style>
 *{box-sizing:border-box}
 body{
@@ -22,15 +26,15 @@ body{
 #videoBg{
   position:fixed;
   inset:0;
-  object-fit:cover;
   width:100%;
   height:100%;
+  object-fit:cover;
   filter:blur(4px) brightness(.45) saturate(120%);
   transition:opacity .6s ease;
   z-index:-5;
 }
 
-/* ===== OVERLAYS ===== */
+/* ===== OVERLAY ===== */
 #overlay{
   position:fixed;inset:0;
   background:
@@ -40,28 +44,16 @@ body{
   z-index:-4;
 }
 
-#glow{
-  position:fixed;inset:0;
-  background:linear-gradient(120deg,
-    rgba(255,0,255,.05),
-    rgba(0,255,255,.05),
-    rgba(255,0,255,.05)
-  );
-  animation:hue 18s linear infinite;
-  z-index:-3;
-}
-@keyframes hue{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
-
-canvas{position:fixed;inset:0;z-index:-2}
+canvas{position:fixed;inset:0;z-index:-3}
 
 /* ===== HEADER ===== */
 header{text-align:center;padding-top:40px}
 header h1{
   font-size:46px;
   letter-spacing:4px;
-  animation:glowText 3s infinite alternate;
+  animation:glow 3s infinite alternate;
 }
-@keyframes glowText{
+@keyframes glow{
   from{text-shadow:0 0 12px #ff00ff}
   to{text-shadow:0 0 32px #00ffff}
 }
@@ -86,38 +78,47 @@ header p{opacity:.7}
   color:#fff;
   background:linear-gradient(135deg,#ff00ff,#00ffff);
   box-shadow:0 0 18px rgba(255,0,255,.6);
-  transition:.2s;
 }
-.play-btn:hover{transform:scale(1.1)}
 .genre{margin-top:8px;font-size:13px;opacity:.85}
 
-/* ===== ADS ===== */
-#adBox{
+/* ===== CHAT ===== */
+#chatBox{
   position:fixed;
   right:20px;
-  bottom:70px;
+  bottom:20px;
+  width:280px;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(6px);
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+}
+#messages{
+  height:140px;
+  overflow:auto;
+  margin-bottom:6px;
+}
+#chatBox input, #chatBox button{
+  width:100%;
+  margin-top:4px;
+  padding:5px;
+  border:none;
+  border-radius:6px;
+}
+#chatBox button{
+  background:#00ffff;
+  cursor:pointer;
+}
+
+/* ===== ADS ===== */
+#adSlot{
+  position:fixed;
+  left:20px;
+  bottom:20px;
   width:200px;
   height:120px;
-  background:rgba(0,0,0,.55);
-  border:1px solid rgba(255,255,255,.15);
-  backdrop-filter:blur(6px);
-  font-size:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:.7;
-  z-index:3;
 }
 
-/* ===== LYRICS ===== */
-#lyrics{
-  text-align:center;
-  margin-top:18px;
-  font-size:12px;
-  opacity:.6;
-}
-
-/* ===== FOOTER ===== */
 footer{
   position:fixed;
   bottom:10px;
@@ -131,11 +132,8 @@ footer{
 
 <body>
 
-<!-- VIDEO BACKGROUND -->
 <video id="videoBg" autoplay muted loop></video>
-
 <div id="overlay"></div>
-<div id="glow"></div>
 <canvas id="canvas"></canvas>
 
 <header>
@@ -148,112 +146,96 @@ footer{
     <button class="play-btn" data-video="happy" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button>
     <div class="genre">Happy Hardcore</div>
   </div>
-
   <div class="player">
     <button class="play-btn" data-video="handsup" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button>
     <div class="genre">Hands Up</div>
   </div>
-
   <div class="player">
     <button class="play-btn" data-video="handsup" data-src="https://listen.technobase.fm/tunein-mp3">▶</button>
     <div class="genre">Hands Up 2</div>
   </div>
-
   <div class="player">
     <button class="play-btn" data-video="rock" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button>
     <div class="genre">Rock</div>
   </div>
-
   <div class="player">
     <button class="play-btn" data-video="metal" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button>
     <div class="genre">Metal</div>
   </div>
 </div>
 
-<div id="lyrics">♪ Live broadcast — lyrics unavailable ♪</div>
-<footer>© 2026 Emotion & Dopamine</footer>
+<!-- ADS -->
+<div id="adSlot">
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-XXXXXXXX"
+     data-ad-slot="1234567890"
+     data-ad-format="auto"></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div>
 
-<!-- AD PLACEHOLDER -->
-<div id="adBox">Your Ad Here</div>
+<!-- CHAT -->
+<div id="chatBox">
+  <div id="messages"></div>
+  <input id="name" placeholder="Name + City">
+  <input id="text" placeholder="Message">
+  <button onclick="send()">Send</button>
+</div>
+
+<footer>© 2026 Emotion & Dopamine</footer>
 
 <audio id="audio" crossorigin="anonymous"></audio>
 
+<!-- FIREBASE CHAT -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
-/* ===== VIDEOS POR GÊNERO ===== */
+/* ===== FIREBASE CONFIG (SUBSTITUA) ===== */
+firebase.initializeApp({
+  apiKey:"YOUR_KEY",
+  authDomain:"YOUR_DOMAIN",
+  databaseURL:"YOUR_DB_URL",
+  projectId:"YOUR_ID"
+});
+const db=firebase.database();
+
+/* CHAT */
+function send(){
+  const n=name.value;
+  const t=text.value;
+  if(!n||!t)return;
+  db.ref("chat").push({n,t});
+  text.value="";
+}
+db.ref("chat").limitToLast(20).on("child_added",s=>{
+  messages.innerHTML+=`<div><b>${s.val().n}:</b> ${s.val().t}</div>`;
+  messages.scrollTop=messages.scrollHeight;
+});
+
+/* ===== VIDEO POR GÊNERO (AI STYLE) ===== */
 const videos={
-  happy:"https://cdn.coverr.co/videos/coverr-rave-lights-9886/1080p.mp4",
-  handsup:"https://cdn.coverr.co/videos/coverr-dj-mixing-music-3847/1080p.mp4",
-  rock:"https://cdn.coverr.co/videos/coverr-rock-concert-1566/1080p.mp4",
-  metal:"https://cdn.coverr.co/videos/coverr-metal-concert-1723/1080p.mp4"
+  happy:"https://cdn.coverr.co/videos/coverr-abstract-neon-motion-5407/1080p.mp4",
+  handsup:"https://cdn.coverr.co/videos/coverr-futuristic-shapes-5409/1080p.mp4",
+  rock:"https://cdn.coverr.co/videos/coverr-smoke-light-show-5692/1080p.mp4",
+  metal:"https://cdn.coverr.co/videos/coverr-dark-abstract-motion-5763/1080p.mp4"
 };
 const videoBg=document.getElementById("videoBg");
 
-/* ===== AUDIO ===== */
+/* AUDIO */
 const audio=document.getElementById("audio");
-const buttons=document.querySelectorAll(".play-btn");
-
-buttons.forEach(btn=>{
-  btn.onclick=()=>{
-    buttons.forEach(b=>b.innerText="▶");
-    audio.src=btn.dataset.src;
+document.querySelectorAll(".play-btn").forEach(b=>{
+  b.onclick=()=>{
+    audio.src=b.dataset.src;
     audio.play();
-    btn.innerText="❚❚";
-
-    const v=btn.dataset.video;
-    if(videos[v]){
-      videoBg.style.opacity=0;
-      setTimeout(()=>{
-        videoBg.src=videos[v];
-        videoBg.play();
-        videoBg.style.opacity=1;
-      },300);
-    }
+    videoBg.style.opacity=0;
+    setTimeout(()=>{
+      videoBg.src=videos[b.dataset.video];
+      videoBg.play();
+      videoBg.style.opacity=1;
+    },300);
   };
 });
-
-/* ===== VISUALIZER ===== */
-const canvas=document.getElementById("canvas");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;canvas.height=innerHeight;
-
-const audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-const src=audioCtx.createMediaElementSource(audio);
-const analyser=audioCtx.createAnalyser();
-src.connect(analyser);analyser.connect(audioCtx.destination);
-analyser.fftSize=256;
-const data=new Uint8Array(analyser.frequencyBinCount);
-
-let frame=0;
-function draw(){
-  requestAnimationFrame(draw);
-  analyser.getByteFrequencyData(data);
-
-  ctx.fillStyle="rgba(0,0,0,.15)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  let bass=0;
-  for(let i=0;i<25;i++)bass+=data[i];
-  bass/=25;
-
-  const cx=canvas.width/2;
-  const cy=canvas.height/2;
-  const r=70+bass;
-
-  ctx.beginPath();
-  ctx.arc(cx,cy,r,0,Math.PI*2);
-  ctx.strokeStyle=`rgba(0,255,255,${0.4+bass/300})`;
-  ctx.lineWidth=3+bass/40;
-  ctx.stroke();
-
-  for(let i=0;i<80;i++){
-    const a=(i/80)*Math.PI*2+frame*0.002;
-    ctx.fillStyle="#ff00ff";
-    ctx.fillRect(cx+Math.cos(a)*(r+20),cy+Math.sin(a)*(r+20),2,2);
-  }
-  frame++;
-}
-draw();
-onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight};
 </script>
 
 </body>
