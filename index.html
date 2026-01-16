@@ -8,238 +8,205 @@
 <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
-
 body{
-  background:radial-gradient(circle at top,#1b0036,#000);
+  margin:0;
+  background:#050505;
   color:#fff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  font-family: Arial, Helvetica, sans-serif;
   overflow:hidden;
 }
 
-h1{
-  font-size:3rem;
-  margin-bottom:6px;
-  animation:glow 2.5s infinite alternate;
-}
-@keyframes glow{
-  from{text-shadow:0 0 12px #ff00ff;}
-  to{text-shadow:0 0 40px #00ffff;}
+header{
+  text-align:center;
+  padding:30px 10px;
 }
 
-.subtitle{opacity:.75;margin-bottom:20px;}
+header h1{
+  font-size:48px;
+  letter-spacing:4px;
+  animation: glow 3s infinite alternate;
+}
+
+@keyframes glow{
+  from{ text-shadow:0 0 10px #ff00ff;}
+  to{ text-shadow:0 0 30px #00ffff;}
+}
 
 .players{
   display:flex;
-  gap:18px;
-  z-index:3;
-  flex-wrap:wrap;
   justify-content:center;
+  gap:30px;
+  z-index:5;
+  position:relative;
 }
 
 .player{
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(8px);
-  border-radius:20px;
-  padding:18px;
-  width:170px;
   text-align:center;
 }
-
-.player h3{font-size:1rem;margin-bottom:12px;}
 
 .play-btn{
-  width:70px;height:70px;border-radius:50%;
-  border:none;cursor:pointer;font-size:28px;color:#fff;
-  box-shadow:0 0 22px rgba(255,255,255,.5);
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  border:none;
+  font-size:32px;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,#ff00ff,#00ffff);
+  box-shadow:0 0 25px rgba(255,0,255,.6);
 }
 
-.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
-.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
-.handsup2{background:linear-gradient(135deg,#00ff99,#00cc66);}
-.rock{background:linear-gradient(135deg,#ff4444,#990000);}
-.metal{background:linear-gradient(135deg,#aaa,#222);}
-
-#lyrics{
-  margin-top:18px;
-  font-size:12px;
-  opacity:.75;
-  max-width:720px;
-  text-align:center;
-  z-index:3;
+.genre{
+  margin-top:10px;
+  letter-spacing:1px;
+  font-size:14px;
 }
 
 canvas{
   position:fixed;
   inset:0;
-  z-index:1;
+  z-index:0;
 }
 
 footer{
-  margin-top:18px;
-  font-size:12px;
-  opacity:.6;
-  z-index:3;
-}
-
-/* CHAT */
-#chat-btn{
   position:fixed;
-  bottom:20px;
-  right:20px;
-  width:55px;height:55px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#ff00ff,#00ffff);
-  border:none;cursor:pointer;
-  font-size:26px;color:#fff;
-  z-index:4;
-}
-
-#chat-box{
-  position:fixed;
-  bottom:90px;right:20px;
-  width:260px;
-  background:rgba(0,0,0,.85);
-  backdrop-filter:blur(10px);
-  border-radius:16px;
-  padding:15px;
-  display:none;
-  z-index:4;
-}
-
-#chat-box input,#chat-box textarea{
+  bottom:10px;
   width:100%;
-  margin-bottom:8px;
-  border:none;border-radius:8px;
-  padding:6px;
+  text-align:center;
+  font-size:12px;
+  opacity:.7;
 }
 
-#chat-box button{
-  width:100%;padding:8px;
-  border:none;border-radius:8px;
-  background:#00ffff;
+#fsBtn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:rgba(0,0,0,.6);
+  color:#fff;
+  border:1px solid #fff;
+  padding:8px 14px;
+  border-radius:20px;
   cursor:pointer;
+  z-index:10;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="visualizer"></canvas>
+<canvas id="viz"></canvas>
 
-<h1>Emotion&Dopamine</h1>
-<div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
+<header>
+  <h1>Emotion&Dopamine</h1>
+</header>
 
 <div class="players">
-  <div class="player"><h3>Happy Hardcore</h3><button class="play-btn hardcore" onclick="playRadio(0)">▶</button></div>
-  <div class="player"><h3>Hands Up</h3><button class="play-btn handsup" onclick="playRadio(1)">▶</button></div>
-  <div class="player"><h3>Hands Up 2</h3><button class="play-btn handsup2" onclick="playRadio(2)">▶</button></div>
-  <div class="player"><h3>Rock</h3><button class="play-btn rock" onclick="playRadio(3)">▶</button></div>
-  <div class="player"><h3>Metal</h3><button class="play-btn metal" onclick="playRadio(4)">▶</button></div>
+  <div class="player">
+    <button class="play-btn" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button>
+    <div class="genre">Happy Hardcore</div>
+  </div>
+
+  <div class="player">
+    <button class="play-btn" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button>
+    <div class="genre">Hands Up</div>
+  </div>
+
+  <div class="player">
+    <button class="play-btn" data-src="https://listen.technobase.fm/tunein-mp3">▶</button>
+    <div class="genre">Hands Up 2</div>
+  </div>
+
+  <div class="player">
+    <button class="play-btn" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button>
+    <div class="genre">Rock</div>
+  </div>
+
+  <div class="player">
+    <button class="play-btn" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button>
+    <div class="genre">Metal</div>
+  </div>
 </div>
 
-<div id="lyrics">🎵 Live radio – lyrics unavailable</div>
 <footer>© 2026 Emotion & Dopamine</footer>
 
-<button id="chat-btn" onclick="toggleChat()">💬</button>
+<button id="fsBtn">⛶ Fullscreen</button>
 
-<div id="chat-box">
-  <input id="name" placeholder="Name">
-  <input id="city" placeholder="City / State">
-  <textarea id="msg" rows="3" placeholder="Your message"></textarea>
-  <button onclick="sendMessage()">Send</button>
-</div>
+<audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* STREAMS */
-const streams=[
- "https://stream.zeno.fm/r8s232x3xg0uv",
- "https://rautemusik.stream25.radiohost.de/club",
- "https://listen.technobase.fm/tunein-mp3",
- "https://rautemusik.stream37.radiohost.de/rock",
- "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
-];
+/* ---------- AUDIO CONTROL ---------- */
+const audio = document.getElementById("audio");
+const buttons = document.querySelectorAll(".play-btn");
 
-const colors=["#ff00ff","#00ffff","#00ff99","#ff4444","#aaa"];
-let currentColor=colors[0];
+buttons.forEach(btn=>{
+  btn.onclick = ()=>{
+    buttons.forEach(b=>b.innerText="▶");
+    if(audio.src !== btn.dataset.src){
+      audio.src = btn.dataset.src;
+      audio.play();
+      btn.innerText="❚❚";
+    }else{
+      audio.pause();
+      audio.src="";
+    }
+  }
+});
 
-let audio=new Audio();
-audio.crossOrigin="anonymous";
-let ctx,analyser,source,started=false;
+/* ---------- FULLSCREEN ---------- */
+const fsBtn = document.getElementById("fsBtn");
+fsBtn.onclick=()=>{
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen();
+    fsBtn.innerText="✕ Exit";
+  }else{
+    document.exitFullscreen();
+    fsBtn.innerText="⛶ Fullscreen";
+  }
+};
 
-/* CANVAS */
-const canvas=document.getElementById("visualizer");
-const c=canvas.getContext("2d");
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
-addEventListener("resize",resize);resize();
+/* ---------- VISUALIZER ---------- */
+const canvas = document.getElementById("viz");
+const ctx = canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 
-/* INIT AUDIO */
-function init(){
- ctx=new (window.AudioContext||window.webkitAudioContext)();
- analyser=ctx.createAnalyser();
- analyser.fftSize=512;
- source=ctx.createMediaElementSource(audio);
- source.connect(analyser);
- analyser.connect(ctx.destination);
- animate();
+const audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+const src = audioCtx.createMediaElementSource(audio);
+const analyser = audioCtx.createAnalyser();
+src.connect(analyser);
+analyser.connect(audioCtx.destination);
+analyser.fftSize=256;
+
+const data = new Uint8Array(analyser.frequencyBinCount);
+
+function draw(){
+  requestAnimationFrame(draw);
+  analyser.getByteFrequencyData(data);
+  ctx.fillStyle="rgba(0,0,0,.15)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  const cx=canvas.width/2;
+  const cy=canvas.height/2;
+
+  for(let i=0;i<data.length;i++){
+    const angle=i*0.15;
+    const radius=data[i]*1.2;
+    const x=cx+Math.cos(angle)*radius;
+    const y=cy+Math.sin(angle)*radius;
+
+    ctx.beginPath();
+    ctx.arc(x,y,3,0,Math.PI*2);
+    ctx.fillStyle=`hsl(${i*4},100%,60%)`;
+    ctx.fill();
+  }
 }
 
-/* PLAY */
-function playRadio(i){
- audio.pause();
- audio.src=streams[i];
- audio.load();
- audio.play();
- currentColor=colors[i];
- if(!started){init();started=true;}
-}
+draw();
 
-/* AUTOPLAY */
-addEventListener("click",()=>{if(!started)playRadio(0);},{once:true});
-
-/* VISUALIZER – 360° FIX */
-function animate(){
- requestAnimationFrame(animate);
- const data=new Uint8Array(analyser.frequencyBinCount);
- analyser.getByteFrequencyData(data);
- c.clearRect(0,0,canvas.width,canvas.height);
-
- const cx=canvas.width/2,cy=canvas.height/2;
- const len=data.length;
-
- for(let i=0;i<len;i++){
-   const amp=data[i];
-   const angle=(i/len)*Math.PI*2;
-   const radius=140 + amp*0.9;
-
-   const x=cx+Math.cos(angle)*radius;
-   const y=cy+Math.sin(angle)*radius;
-
-   c.fillStyle=currentColor;
-   c.beginPath();
-   c.arc(x,y,3.5,0,Math.PI*2);
-   c.fill();
- }
-}
-
-/* CHAT */
-function toggleChat(){
- chat-box.style.display = chat-box.style.display==="block"?"none":"block";
-}
-
-function sendMessage(){
- if(!name.value||!city.value||!msg.value)
-   return alert("Fill all fields");
- const wall=JSON.parse(localStorage.getItem("wall")||"[]");
- wall.push({n:name.value,c:city.value,m:msg.value});
- localStorage.setItem("wall",JSON.stringify(wall));
- msg.value="";
- alert("Message sent!");
-}
+window.onresize=()=>{
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+};
 </script>
 
 </body>
