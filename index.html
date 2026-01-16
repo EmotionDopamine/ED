@@ -4,27 +4,40 @@
 <meta charset="UTF-8">
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 
 <style>
+*{box-sizing:border-box}
 body{
   margin:0;
-  background:#050505;
+  background:#040406;
   color:#fff;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   overflow:hidden;
 }
 
-header{
-  text-align:center;
-  padding:30px 10px;
+/* ===== BACKGROUND CANVAS ===== */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:0;
 }
 
+/* ===== HEADER ===== */
+header{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  padding-top:40px;
+}
 header h1{
-  font-size:48px;
+  font-size:46px;
   letter-spacing:4px;
-  animation: glow 3s infinite alternate;
+  animation:glow 3s infinite alternate;
+}
+header p{
+  opacity:.7;
+  margin-top:5px;
 }
 
 @keyframes glow{
@@ -32,12 +45,15 @@ header h1{
   to{ text-shadow:0 0 30px #00ffff;}
 }
 
+/* ===== PLAYERS ===== */
 .players{
+  position:relative;
+  z-index:2;
   display:flex;
   justify-content:center;
-  gap:30px;
-  z-index:5;
-  position:relative;
+  gap:35px;
+  margin-top:50px;
+  flex-wrap:wrap;
 }
 
 .player{
@@ -49,55 +65,58 @@ header h1{
   height:90px;
   border-radius:50%;
   border:none;
-  font-size:32px;
   cursor:pointer;
+  font-size:32px;
   color:#fff;
   background:linear-gradient(135deg,#ff00ff,#00ffff);
   box-shadow:0 0 25px rgba(255,0,255,.6);
+  transition:.2s;
+}
+.play-btn:hover{
+  transform:scale(1.08);
 }
 
 .genre{
   margin-top:10px;
+  font-size:13px;
   letter-spacing:1px;
-  font-size:14px;
+  opacity:.85;
 }
 
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-}
-
+/* ===== FOOTER ===== */
 footer{
   position:fixed;
   bottom:10px;
   width:100%;
   text-align:center;
   font-size:12px;
-  opacity:.7;
+  opacity:.6;
+  z-index:2;
 }
 
-#fsBtn{
+/* ===== FULLSCREEN BTN ===== */
+#fs{
   position:fixed;
-  top:20px;
-  right:20px;
+  top:15px;
+  right:15px;
+  z-index:3;
+  padding:8px 14px;
+  border-radius:20px;
   background:rgba(0,0,0,.6);
   color:#fff;
   border:1px solid #fff;
-  padding:8px 14px;
-  border-radius:20px;
   cursor:pointer;
-  z-index:10;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="viz"></canvas>
+<canvas id="visual"></canvas>
 
 <header>
   <h1>Emotion&Dopamine</h1>
+  <p>Feel the vibe. Let the dopamine flow.</p>
 </header>
 
 <div class="players">
@@ -129,81 +148,79 @@ footer{
 
 <footer>© 2026 Emotion & Dopamine</footer>
 
-<button id="fsBtn">⛶ Fullscreen</button>
+<button id="fs">⛶</button>
 
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* ---------- AUDIO CONTROL ---------- */
+/* ===== AUDIO CONTROL (one at a time) ===== */
 const audio = document.getElementById("audio");
 const buttons = document.querySelectorAll(".play-btn");
 
 buttons.forEach(btn=>{
-  btn.onclick = ()=>{
+  btn.onclick=()=>{
     buttons.forEach(b=>b.innerText="▶");
-    if(audio.src !== btn.dataset.src){
-      audio.src = btn.dataset.src;
+    if(audio.src!==btn.dataset.src){
+      audio.src=btn.dataset.src;
       audio.play();
       btn.innerText="❚❚";
+      ctxAudio.resume();
     }else{
       audio.pause();
       audio.src="";
     }
-  }
+  };
 });
 
-/* ---------- FULLSCREEN ---------- */
-const fsBtn = document.getElementById("fsBtn");
-fsBtn.onclick=()=>{
+/* ===== FULLSCREEN ===== */
+document.getElementById("fs").onclick=()=>{
   if(!document.fullscreenElement){
     document.documentElement.requestFullscreen();
-    fsBtn.innerText="✕ Exit";
   }else{
     document.exitFullscreen();
-    fsBtn.innerText="⛶ Fullscreen";
   }
 };
 
-/* ---------- VISUALIZER ---------- */
-const canvas = document.getElementById("viz");
-const ctx = canvas.getContext("2d");
+/* ===== VISUALIZER (FIXED – circle now reacts correctly) ===== */
+const canvas=document.getElementById("visual");
+const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 
-const audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-const src = audioCtx.createMediaElementSource(audio);
-const analyser = audioCtx.createAnalyser();
+const ctxAudio=new (window.AudioContext||window.webkitAudioContext)();
+const src=ctxAudio.createMediaElementSource(audio);
+const analyser=ctxAudio.createAnalyser();
 src.connect(analyser);
-analyser.connect(audioCtx.destination);
+analyser.connect(ctxAudio.destination);
 analyser.fftSize=256;
 
-const data = new Uint8Array(analyser.frequencyBinCount);
+const data=new Uint8Array(analyser.frequencyBinCount);
 
-function draw(){
-  requestAnimationFrame(draw);
+function animate(){
+  requestAnimationFrame(animate);
   analyser.getByteFrequencyData(data);
-  ctx.fillStyle="rgba(0,0,0,.15)";
+
+  ctx.fillStyle="rgba(0,0,0,.18)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   const cx=canvas.width/2;
   const cy=canvas.height/2;
 
   for(let i=0;i<data.length;i++){
-    const angle=i*0.15;
-    const radius=data[i]*1.2;
+    const angle=(i/data.length)*Math.PI*2;
+    const radius=80 + data[i]*1.5;   // <<< FIXED REACTION
     const x=cx+Math.cos(angle)*radius;
     const y=cy+Math.sin(angle)*radius;
 
     ctx.beginPath();
     ctx.arc(x,y,3,0,Math.PI*2);
-    ctx.fillStyle=`hsl(${i*4},100%,60%)`;
+    ctx.fillStyle=`hsl(${i*3},100%,60%)`;
     ctx.fill();
   }
 }
+animate();
 
-draw();
-
-window.onresize=()=>{
+onresize=()=>{
   canvas.width=innerWidth;
   canvas.height=innerHeight;
 };
