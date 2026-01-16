@@ -160,40 +160,43 @@ function playRadio(i){
 addEventListener("click",()=>{if(!started)playRadio(0);},{once:true});
 
 /* VISUALIZER */
+<script>
 function animate(){
- requestAnimationFrame(animate);
- const data=new Uint8Array(analyser.frequencyBinCount);
- analyser.getByteFrequencyData(data);
- c.clearRect(0,0,canvas.width,canvas.height);
+  requestAnimationFrame(animate);
 
- const cx=canvas.width/2,cy=canvas.height/2;
- const len=data.length;
+  const freqData = new Uint8Array(analyser.frequencyBinCount);
+  const timeData = new Uint8Array(analyser.fftSize);
 
- for(let i=0;i<len;i++){
-   const amp=data[i];
-   const angle=(i/len)*Math.PI*2;
-   const r=140+amp*0.8;
-   c.fillStyle=currentColor;
-   c.beginPath();
-   c.arc(cx+Math.cos(angle)*r,cy+Math.sin(angle)*r,3.5,0,Math.PI*2);
-   c.fill();
- }
-}
+  analyser.getByteFrequencyData(freqData);
+  analyser.getByteTimeDomainData(timeData);
 
-/* CHAT */
-function toggleChat(){
- const box=document.getElementById("chat-box");
- box.style.display = box.style.display==="block"?"none":"block";
-}
-function sendMessage(){
- if(!name.value||!city.value||!msg.value) return alert("Fill all fields");
- const wall=JSON.parse(localStorage.getItem("wall")||"[]");
- wall.push({n:name.value,c:city.value,m:msg.value});
- localStorage.setItem("wall",JSON.stringify(wall));
- msg.value="";
- alert("Message sent!");
+  c.clearRect(0,0,canvas.width,canvas.height);
+
+  const cx = canvas.width/2;
+  const cy = canvas.height/2;
+  const bars = 180;
+  const baseRadius = 150;
+
+  for(let i=0;i<bars;i++){
+    const freqIndex = Math.floor(i / bars * freqData.length);
+    const timeIndex = Math.floor(i / bars * timeData.length);
+
+    // Combinação real (resolve o lado morto)
+    const freq = freqData[freqIndex] / 255;
+    const wave = Math.abs(timeData[timeIndex] - 128) / 128;
+
+    const energy = (freq * 0.7 + wave * 0.3) + 0.15;
+
+    const angle = (i / bars) * Math.PI * 2;
+    const radius = baseRadius + energy * 130;
+
+    const x = cx + Math.cos(angle) * radius;
+    const y = cy + Math.sin(angle) * radius;
+
+    c.beginPath();
+    c.fillStyle = currentColor;
+    c.arc(x, y, 3.2, 0, Math.PI * 2);
+    c.fill();
+  }
 }
 </script>
-
-</body>
-</html>
