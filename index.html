@@ -6,204 +6,262 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
-*{box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
+
 body{
-  margin:0;
-  background:#050508;
+  background:radial-gradient(circle at top,#1b0036,#000);
   color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   overflow:hidden;
 }
-#videoBg{
-  position:fixed;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  filter:blur(4px) brightness(.45);
-  z-index:-5;
-}
-#overlay{
-  position:fixed;inset:0;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(255,0,255,.25), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(0,255,255,.25), transparent 45%),
-    linear-gradient(180deg,#050508,#030305);
-  z-index:-4;
-}
-canvas{position:fixed;inset:0;z-index:-3}
 
-header{text-align:center;padding-top:28px}
-header h1{
-  font-size:46px;
-  letter-spacing:4px;
-  text-shadow:0 0 25px #ff00ff;
+/* ===== TITLES ===== */
+h1{
+  font-size:3rem;
+  margin-bottom:8px;
+  animation:glow 2.5s infinite alternate;
 }
-header p{opacity:.7}
+@keyframes glow{
+  from{text-shadow:0 0 10px #ff00ff;}
+  to{text-shadow:0 0 30px #00ffff;}
+}
 
+.subtitle{opacity:.75;margin-bottom:25px;}
+
+/* ===== PLAYERS ===== */
 .players{
   display:flex;
-  justify-content:center;
-  gap:26px;
-  margin-top:28px;
+  gap:18px;
+  z-index:3;
   flex-wrap:wrap;
+  justify-content:center;
 }
-.player{text-align:center}
+
+.player{
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(8px);
+  border-radius:20px;
+  padding:18px;
+  width:170px;
+  text-align:center;
+}
+
+.player h3{font-size:1rem;margin-bottom:12px;}
+
 .play-btn{
-  width:78px;height:78px;
+  width:70px;
+  height:70px;
   border-radius:50%;
   border:none;
-  font-size:30px;
   cursor:pointer;
+  font-size:28px;
   color:#fff;
-  background:linear-gradient(135deg,#ff00ff,#00ffff);
-  box-shadow:0 0 18px rgba(255,0,255,.6);
-}
-.genre{margin-top:6px;font-size:12px;opacity:.85}
-
-/* MAP */
-#map{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  width:320px;
-  height:200px;
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 0 18px rgba(0,255,255,.3);
-  z-index:5;
 }
 
-footer{
-  position:fixed;
-  bottom:8px;
-  width:100%;
+.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
+.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
+.handsup2{background:linear-gradient(135deg,#00ff99,#00cc66);}
+.rock{background:linear-gradient(135deg,#ff4444,#990000);}
+.metal{background:linear-gradient(135deg,#999,#333);}
+
+.play-btn{box-shadow:0 0 18px rgba(255,255,255,.4);}
+
+/* ===== LYRICS ===== */
+#lyrics{
+  margin-top:20px;
+  font-size:12px;
+  opacity:.75;
+  max-width:700px;
   text-align:center;
+  z-index:3;
+}
+
+/* ===== CANVAS ===== */
+canvas{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  margin-top:18px;
   font-size:12px;
   opacity:.6;
+  z-index:3;
+}
+
+/* ===== CHAT BALLOON ===== */
+#chat-btn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ff00ff,#00ffff);
+  border:none;
+  cursor:pointer;
+  font-size:26px;
+  color:#fff;
+  z-index:4;
+}
+
+#chat-box{
+  position:fixed;
+  bottom:90px;
+  right:20px;
+  width:260px;
+  background:rgba(0,0,0,.8);
+  backdrop-filter:blur(8px);
+  border-radius:15px;
+  padding:15px;
+  display:none;
+  z-index:4;
+}
+
+#chat-box input, #chat-box textarea{
+  width:100%;
+  margin-bottom:8px;
+  border:none;
+  border-radius:8px;
+  padding:6px;
+}
+
+#chat-box button{
+  width:100%;
+  padding:8px;
+  border:none;
+  border-radius:8px;
+  background:#00ffff;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<video id="videoBg" autoplay muted loop></video>
-<div id="overlay"></div>
+<canvas id="visualizer"></canvas>
 
-<canvas id="viz"></canvas>
-
-<header>
-  <h1>Emotion&Dopamine</h1>
-  <p>Feel the vibe. Let the dopamine flow.</p>
-</header>
+<h1>Emotion&Dopamine</h1>
+<div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
 
 <div class="players">
-  <div class="player"><button class="play-btn" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button><div class="genre">Happy Hardcore</div></div>
-  <div class="player"><button class="play-btn" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button><div class="genre">Hands Up</div></div>
-  <div class="player"><button class="play-btn" data-src="https://listen.technobase.fm/tunein-mp3">▶</button><div class="genre">Hands Up 2</div></div>
-  <div class="player"><button class="play-btn" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button><div class="genre">Rock</div></div>
-  <div class="player"><button class="play-btn" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button><div class="genre">Metal</div></div>
+  <div class="player">
+    <h3>Happy Hardcore</h3>
+    <button class="play-btn hardcore" onclick="playRadio(0)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Hands Up</h3>
+    <button class="play-btn handsup" onclick="playRadio(1)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Hands Up 2</h3>
+    <button class="play-btn handsup2" onclick="playRadio(2)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Rock</h3>
+    <button class="play-btn rock" onclick="playRadio(3)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Metal</h3>
+    <button class="play-btn metal" onclick="playRadio(4)">▶</button>
+  </div>
 </div>
 
-<div id="map"></div>
+<div id="lyrics">🎵 Lyrics will appear here when available…</div>
+
 <footer>© 2026 Emotion & Dopamine</footer>
 
-<audio id="audio" crossorigin="anonymous"></audio>
+<button id="chat-btn" onclick="toggleChat()">💬</button>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<div id="chat-box">
+  <input placeholder="Name">
+  <input placeholder="City / State">
+  <textarea rows="3" placeholder="Your message"></textarea>
+  <button onclick="sendMessage()">Send</button>
+</div>
 
 <script>
-/* ===== FIREBASE (SUBSTITUA) ===== */
-firebase.initializeApp({
-  apiKey:"YOUR_KEY",
-  databaseURL:"YOUR_DB_URL"
-});
-const db=firebase.database();
+/* ===== STREAMS ===== */
+const streams=[
+ "https://stream.zeno.fm/r8s232x3xg0uv",
+ "https://rautemusik.stream25.radiohost.de/club",
+ "https://listen.technobase.fm/tunein-mp3",
+ "https://rautemusik.stream37.radiohost.de/rock",
+ "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
+];
 
-/* ===== MAPA ===== */
-const map=L.map("map",{zoomControl:false,attributionControl:false}).setView([0,0],2);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+let audio=new Audio();
+audio.crossOrigin="anonymous";
+let ctx,analyser,source,started=false;
 
-const markers={};
+/* ===== CANVAS ===== */
+const canvas=document.getElementById("visualizer");
+const c=canvas.getContext("2d");
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+addEventListener("resize",resize);resize();
 
-/* ===== GEOLOCALIZAÇÃO ===== */
-fetch("https://ipapi.co/json/")
-.then(r=>r.json())
-.then(d=>{
-  const id=Date.now();
-  db.ref("listeners/"+id).set({
-    lat:d.latitude,
-    lon:d.longitude,
-    city:d.city,
-    country:d.country_name,
-    t:Date.now()
-  });
-  setInterval(()=>db.ref("listeners/"+id+"/t").set(Date.now()),20000);
-});
-
-/* LISTENERS */
-db.ref("listeners").on("value",snap=>{
-  Object.values(markers).forEach(m=>map.removeLayer(m));
-  for(const k in snap.val()){
-    const u=snap.val()[k];
-    markers[k]=L.circleMarker([u.lat,u.lon],{
-      radius:6,color:"#00ffff"
-    }).addTo(map).bindPopup(`${u.city}, ${u.country}`);
-  }
-});
-
-/* ===== AUDIO ===== */
-const audio=document.getElementById("audio");
-document.querySelectorAll(".play-btn").forEach(b=>{
-  b.onclick=()=>{
-    audio.src=b.dataset.src;
-    audio.play();
-  };
-});
-
-/* ===== VISUALIZER CIRCULAR CORRIGIDO ===== */
-const canvas=document.getElementById("viz");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;canvas.height=innerHeight;
-
-const actx=new (window.AudioContext||window.webkitAudioContext)();
-const src=actx.createMediaElementSource(audio);
-const analyser=actx.createAnalyser();
-src.connect(analyser);analyser.connect(actx.destination);
-analyser.fftSize=1024;
-
-const data=new Uint8Array(analyser.frequencyBinCount);
-const smooth=new Float32Array(analyser.frequencyBinCount);
-
-function draw(){
-  requestAnimationFrame(draw);
-  analyser.getByteFrequencyData(data);
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  const cx=canvas.width/2, cy=canvas.height/2;
-  const base=110, bars=180;
-
-  for(let i=0;i<bars;i++){
-    const idx=Math.floor(i*(data.length/bars));
-    smooth[idx]+=((data[idx]/255)-smooth[idx])*0.15;
-
-    const amp=smooth[idx];
-    const ang=(i/bars)*Math.PI*2;
-    const r=base+amp*160;
-
-    ctx.strokeStyle=`rgba(255,0,255,${0.3+amp})`;
-    ctx.beginPath();
-    ctx.moveTo(cx+Math.cos(ang)*base,cy+Math.sin(ang)*base);
-    ctx.lineTo(cx+Math.cos(ang)*r,cy+Math.sin(ang)*r);
-    ctx.stroke();
-  }
+/* ===== AUDIO INIT ===== */
+function init(){
+ ctx=new (window.AudioContext||window.webkitAudioContext)();
+ analyser=ctx.createAnalyser();
+ analyser.fftSize=256;
+ source=ctx.createMediaElementSource(audio);
+ source.connect(analyser);
+ analyser.connect(ctx.destination);
+ animate();
 }
-draw();
 
-onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight};
+/* ===== PLAY RADIO ===== */
+function playRadio(i){
+ audio.pause();
+ audio.src=streams[i];
+ audio.load();
+ audio.play();
+ if(!started){init();started=true;}
+}
+
+/* ===== AUTOPLAY ===== */
+addEventListener("click",()=>{if(!started)playRadio(0);},{once:true});
+
+/* ===== VISUALIZER ===== */
+function animate(){
+ requestAnimationFrame(animate);
+ const data=new Uint8Array(analyser.frequencyBinCount);
+ analyser.getByteFrequencyData(data);
+ c.clearRect(0,0,canvas.width,canvas.height);
+ const cx=canvas.width/2,cy=canvas.height/2;
+ data.forEach((v,i)=>{
+   const a=i/data.length*Math.PI*2;
+   const r=120+v*0.6;
+   c.fillStyle=`hsl(${i*4},100%,60%)`;
+   c.beginPath();
+   c.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,3,0,Math.PI*2);
+   c.fill();
+ });
+}
+
+/* ===== CHAT ===== */
+function toggleChat(){
+ const box=document.getElementById("chat-box");
+ box.style.display=box.style.display==="block"?"none":"block";
+}
+function sendMessage(){
+ alert("Message sent! (local demo)");
+}
 </script>
 
 </body>
