@@ -4,6 +4,235 @@
 <meta charset="UTF-8">
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Emotion&Dopamine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#050508;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;
+}
+
+/* ===== VIDEO BG ===== */
+#videoBg{
+  position:fixed;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  filter:blur(4px) brightness(.45);
+  z-index:-6;
+}
+
+/* ===== OVERLAY ===== */
+#overlay{
+  position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,0,255,.25), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(0,255,255,.25), transparent 45%),
+    linear-gradient(180deg,#050508,#030305);
+  z-index:-5;
+}
+
+canvas{position:fixed;inset:0;z-index:-4}
+
+/* ===== HEADER ===== */
+header{text-align:center;padding-top:30px}
+header h1{
+  font-size:46px;
+  letter-spacing:4px;
+  text-shadow:0 0 20px #ff00ff;
+}
+header p{opacity:.7}
+
+/* ===== PLAYERS ===== */
+.players{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  margin-top:30px;
+  flex-wrap:wrap;
+}
+.player{text-align:center}
+
+.play-btn{
+  width:78px;height:78px;
+  border-radius:50%;
+  border:none;
+  font-size:30px;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,#ff00ff,#00ffff);
+  box-shadow:0 0 18px rgba(255,0,255,.6);
+}
+.genre{margin-top:8px;font-size:13px;opacity:.85}
+
+/* ===== GLOBE ===== */
+#globeBox{
+  position:fixed;
+  left:20px;
+  bottom:20px;
+  width:160px;
+  height:160px;
+  text-align:center;
+  font-size:11px;
+  opacity:.85;
+}
+#location{margin-top:6px}
+
+/* ===== FOOTER ===== */
+footer{
+  position:fixed;
+  bottom:10px;
+  width:100%;
+  text-align:center;
+  font-size:12px;
+  opacity:.6;
+}
+</style>
+</head>
+
+<body>
+
+<video id="videoBg" autoplay muted loop></video>
+<div id="overlay"></div>
+
+<canvas id="visualizer"></canvas>
+<canvas id="globe"></canvas>
+
+<header>
+  <h1>Emotion&Dopamine</h1>
+  <p>Feel the vibe. Let the dopamine flow.</p>
+</header>
+
+<div class="players">
+  <div class="player">
+    <button class="play-btn" data-video="happy" data-src="https://stream.zeno.fm/r8s232x3xg0uv">▶</button>
+    <div class="genre">Happy Hardcore</div>
+  </div>
+  <div class="player">
+    <button class="play-btn" data-video="handsup" data-src="https://rautemusik.stream25.radiohost.de/club">▶</button>
+    <div class="genre">Hands Up</div>
+  </div>
+  <div class="player">
+    <button class="play-btn" data-video="handsup" data-src="https://listen.technobase.fm/tunein-mp3">▶</button>
+    <div class="genre">Hands Up 2</div>
+  </div>
+  <div class="player">
+    <button class="play-btn" data-video="rock" data-src="https://rautemusik.stream37.radiohost.de/rock">▶</button>
+    <div class="genre">Rock</div>
+  </div>
+  <div class="player">
+    <button class="play-btn" data-video="metal" data-src="https://rautemusik.stream43.radiohost.de/metal_mp3-192">▶</button>
+    <div class="genre">Metal</div>
+  </div>
+</div>
+
+<div id="globeBox">
+  <canvas id="globeCanvas" width="160" height="160"></canvas>
+  <div id="location">Locating...</div>
+</div>
+
+<footer>© 2026 Emotion & Dopamine</footer>
+
+<audio id="audio" crossorigin="anonymous"></audio>
+
+<script>
+/* ===== VIDEO POR GÊNERO ===== */
+const videos={
+  happy:"https://cdn.coverr.co/videos/coverr-abstract-neon-motion-5407/1080p.mp4",
+  handsup:"https://cdn.coverr.co/videos/coverr-futuristic-shapes-5409/1080p.mp4",
+  rock:"https://cdn.coverr.co/videos/coverr-smoke-light-show-5692/1080p.mp4",
+  metal:"https://cdn.coverr.co/videos/coverr-dark-abstract-motion-5763/1080p.mp4"
+};
+const videoBg=document.getElementById("videoBg");
+
+/* ===== AUDIO ===== */
+const audio=document.getElementById("audio");
+document.querySelectorAll(".play-btn").forEach(btn=>{
+  btn.onclick=()=>{
+    audio.src=btn.dataset.src;
+    audio.play();
+    videoBg.src=videos[btn.dataset.video];
+  };
+});
+
+/* ===== VISUALIZER 360° CORRIGIDO ===== */
+const canvas=document.getElementById("visualizer");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;canvas.height=innerHeight;
+
+const audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+const src=audioCtx.createMediaElementSource(audio);
+const analyser=audioCtx.createAnalyser();
+src.connect(analyser);analyser.connect(audioCtx.destination);
+analyser.fftSize=512;
+const data=new Uint8Array(analyser.frequencyBinCount);
+
+function draw(){
+  requestAnimationFrame(draw);
+  analyser.getByteFrequencyData(data);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const cx=canvas.width/2;
+  const cy=canvas.height/2;
+  const base=90;
+  const bars=data.length;
+
+  for(let i=0;i<bars;i++){
+    const amp=data[i]/255;
+    const angle=(i/bars)*Math.PI*2;
+    const r=base+amp*140;
+
+    ctx.strokeStyle=`rgba(0,255,255,${amp})`;
+    ctx.beginPath();
+    ctx.moveTo(cx+Math.cos(angle)*base,cy+Math.sin(angle)*base);
+    ctx.lineTo(cx+Math.cos(angle)*r,cy+Math.sin(angle)*r);
+    ctx.stroke();
+  }
+}
+draw();
+
+/* ===== GLOBO + GEO ===== */
+const g=document.getElementById("globeCanvas");
+const gctx=g.getContext("2d");
+let rot=0;
+
+function drawGlobe(){
+  gctx.clearRect(0,0,160,160);
+  gctx.strokeStyle="#00ffff";
+  gctx.beginPath();
+  gctx.arc(80,80,60,0,Math.PI*2);
+  gctx.stroke();
+
+  for(let i=0;i<6;i++){
+    gctx.beginPath();
+    gctx.ellipse(80,80,60,20*Math.sin(rot+i),0,0,Math.PI*2);
+    gctx.stroke();
+  }
+  rot+=0.01;
+  requestAnimationFrame(drawGlobe);
+}
+drawGlobe();
+
+/* GEO IP */
+fetch("https://ipapi.co/json/")
+.then(r=>r.json())
+.then(d=>{
+  document.getElementById("location").innerText=
+    d.city+" · "+d.country_name;
+});
+</script>
+
+</body>
+</html>
 
 <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 
