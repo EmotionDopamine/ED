@@ -5,9 +5,9 @@
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" type="image/png" href="https://img.icons8.com/neon/96/headphone.png">
-<link rel="apple-touch-icon" href="https://img.icons8.com/neon/180/headphone.png">
-<link rel="shortcut icon" href="https://img.icons8.com/neon/192/headphone.png">
+<link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
+<link rel="shortcut icon" href="https://img.icons8.com/neon/96/headphone.png?v=2">
+<link rel="apple-touch-icon" href="https://img.icons8.com/neon/180/headphone.png?v=2">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
@@ -106,7 +106,7 @@ canvas{
   z-index:1;
 }
 
-/* ===== COMMUNITY WALL & MAP (COMPACT) ===== */
+/* ===== COMMUNITY WALL & MAP ===== */
 .container-extra {
   display: flex;
   flex-wrap: wrap;
@@ -261,7 +261,6 @@ audio.crossOrigin="anonymous";
 let ctx,analyser,source,started=false;
 let currentIdx = -1;
 
-/* ===== AUDIO CONTROL ===== */
 function playRadio(i){
   const btns = document.querySelectorAll('.play-btn');
   const boxes = document.querySelectorAll('.player');
@@ -298,7 +297,6 @@ function playRadio(i){
   if(!started){init();started=true;}
 }
 
-/* ===== CANVAS & VISUALIZER ===== */
 const canvas=document.getElementById("visualizer");
 const c=canvas.getContext("2d");
 function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
@@ -317,16 +315,13 @@ function init(){
 function animate(){
  requestAnimationFrame(animate);
  if(!analyser || audio.paused) return;
-
  const data=new Uint8Array(analyser.frequencyBinCount);
  analyser.getByteFrequencyData(data);
  c.clearRect(0,0,canvas.width,canvas.height);
-
  const cx=canvas.width/2;
  const cy=canvas.height/2;
  const baseRadius=140;
  const bars=180;
-
  for(let i=0;i<bars;i++){
    const v=data[i];
    const angle=(i/bars)*Math.PI*2;
@@ -344,7 +339,6 @@ function animate(){
  }
 }
 
-/* ===== MURAL PERSISTENCE ===== */
 function postToWall() {
   const name = document.getElementById("wall-name");
   const msg = document.getElementById("wall-msg");
