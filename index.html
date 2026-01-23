@@ -99,7 +99,7 @@ footer{
   z-index:3;
 }
 
-/* ===== CHAT BALLOON ===== */
+/* ===== CHAT ===== */
 #chat-btn{
   position:fixed;
   bottom:20px;
@@ -218,7 +218,7 @@ addEventListener("resize",resize);resize();
 function init(){
  ctx=new (window.AudioContext||window.webkitAudioContext)();
  analyser=ctx.createAnalyser();
- analyser.fftSize=256;
+ analyser.fftSize=512;
  source=ctx.createMediaElementSource(audio);
  source.connect(analyser);
  analyser.connect(ctx.destination);
@@ -237,21 +237,38 @@ function playRadio(i){
 /* ===== AUTOPLAY ===== */
 addEventListener("click",()=>{if(!started)playRadio(0);},{once:true});
 
-/* ===== VISUALIZER ===== */
+/* ===== VISUALIZER (CORRIGIDO – 360° REAL) ===== */
 function animate(){
  requestAnimationFrame(animate);
+ if(!analyser) return;
+
  const data=new Uint8Array(analyser.frequencyBinCount);
  analyser.getByteFrequencyData(data);
+
  c.clearRect(0,0,canvas.width,canvas.height);
- const cx=canvas.width/2,cy=canvas.height/2;
- data.forEach((v,i)=>{
-   const a=i/data.length*Math.PI*2;
-   const r=120+v*0.6;
-   c.fillStyle=`hsl(${i*4},100%,60%)`;
+
+ const cx=canvas.width/2;
+ const cy=canvas.height/2;
+ const baseRadius=140;
+ const bars=180;
+
+ for(let i=0;i<bars;i++){
+   const v=data[i];
+   const angle=(i/bars)*Math.PI*2;
+   const barLen=v*0.9;
+
+   const x1=cx+Math.cos(angle)*baseRadius;
+   const y1=cy+Math.sin(angle)*baseRadius;
+   const x2=cx+Math.cos(angle)*(baseRadius+barLen);
+   const y2=cy+Math.sin(angle)*(baseRadius+barLen);
+
+   c.strokeStyle=`hsl(${i*2},100%,60%)`;
+   c.lineWidth=3;
    c.beginPath();
-   c.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,3,0,Math.PI*2);
-   c.fill();
- });
+   c.moveTo(x1,y1);
+   c.lineTo(x2,y2);
+   c.stroke();
+ }
 }
 
 /* ===== CHAT ===== */
