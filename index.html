@@ -5,237 +5,264 @@
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" href="data:image/svg+xml,
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-<text y='0.9em' font-size='90'>🎧</text>
-</svg>">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 
 <style>
-html,body{
-  margin:0;
-  padding:0;
-  background:#050510;
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
+
+body{
+  background:radial-gradient(circle at top,#1b0036,#000);
   color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   overflow:hidden;
 }
-#app{
-  position:relative;
-  width:100vw;
-  height:100vh;
+
+/* ===== TITLES ===== */
+h1{
+  font-size:3rem;
+  margin-bottom:8px;
+  animation:glow 2.5s infinite alternate;
+}
+@keyframes glow{
+  from{text-shadow:0 0 10px #ff00ff;}
+  to{text-shadow:0 0 30px #00ffff;}
 }
 
-/* ===== BACKGROUND VIDEO ===== */
-video.bg{
-  position:absolute;
+.subtitle{opacity:.75;margin-bottom:25px;}
+
+/* ===== PLAYERS ===== */
+.players{
+  display:flex;
+  gap:18px;
+  z-index:3;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.player{
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(8px);
+  border-radius:20px;
+  padding:18px;
+  width:170px;
+  text-align:center;
+}
+
+.player h3{font-size:1rem;margin-bottom:12px;}
+
+.play-btn{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  font-size:28px;
+  color:#fff;
+}
+
+.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
+.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
+.handsup2{background:linear-gradient(135deg,#00ff99,#00cc66);}
+.rock{background:linear-gradient(135deg,#ff4444,#990000);}
+.metal{background:linear-gradient(135deg,#999,#333);}
+
+.play-btn{box-shadow:0 0 18px rgba(255,255,255,.4);}
+
+/* ===== LYRICS ===== */
+#lyrics{
+  margin-top:20px;
+  font-size:12px;
+  opacity:.75;
+  max-width:700px;
+  text-align:center;
+  z-index:3;
+}
+
+/* ===== CANVAS ===== */
+canvas{
+  position:fixed;
   top:0;left:0;
   width:100%;
   height:100%;
-  object-fit:cover;
-  filter:blur(10px) brightness(0.4);
-  z-index:0;
+  z-index:1;
 }
 
-/* ===== HEADER ===== */
-header{
-  position:absolute;
-  top:20px;
-  width:100%;
-  text-align:center;
-  z-index:10;
-}
-header h1{
-  font-size:42px;
-  letter-spacing:2px;
-  text-shadow:0 0 20px #ff00ff,0 0 40px #00ffff;
-}
-
-/* ===== PLAYER BAR ===== */
-#players{
-  position:absolute;
-  bottom:40px;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  z-index:10;
-}
-.player{
-  background:rgba(0,0,0,.6);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:14px;
-  padding:12px 18px;
-  cursor:pointer;
-  transition:.3s;
-}
-.player:hover{transform:scale(1.07);}
-.player.active{box-shadow:0 0 20px #00ffff;}
-
-/* ===== TRACK INFO ===== */
-#track{
-  position:absolute;
-  bottom:110px;
-  width:100%;
-  text-align:center;
-  font-size:18px;
-  opacity:.9;
-  z-index:10;
-}
-
-/* ===== VISUALIZER ===== */
-canvas{
-  position:absolute;
-  inset:0;
-  z-index:2;
-}
-
-/* ===== ADS PLACEHOLDER ===== */
-#ad{
-  position:absolute;
-  top:20px;
-  right:20px;
-  width:300px;
-  height:250px;
-  background:rgba(255,255,255,.05);
-  border:1px dashed rgba(255,255,255,.2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:14px;
+/* ===== FOOTER ===== */
+footer{
+  margin-top:18px;
+  font-size:12px;
   opacity:.6;
-  z-index:10;
+  z-index:3;
+}
+
+/* ===== CHAT BALLOON ===== */
+#chat-btn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ff00ff,#00ffff);
+  border:none;
+  cursor:pointer;
+  font-size:26px;
+  color:#fff;
+  z-index:4;
+}
+
+#chat-box{
+  position:fixed;
+  bottom:90px;
+  right:20px;
+  width:260px;
+  background:rgba(0,0,0,.8);
+  backdrop-filter:blur(8px);
+  border-radius:15px;
+  padding:15px;
+  display:none;
+  z-index:4;
+}
+
+#chat-box input, #chat-box textarea{
+  width:100%;
+  margin-bottom:8px;
+  border:none;
+  border-radius:8px;
+  padding:6px;
+}
+
+#chat-box button{
+  width:100%;
+  padding:8px;
+  border:none;
+  border-radius:8px;
+  background:#00ffff;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
-<div id="app">
 
-<video class="bg" id="bgVideo" autoplay muted loop></video>
+<canvas id="visualizer"></canvas>
 
-<header>
-  <h1>Emotion&Dopamine</h1>
-</header>
+<h1>Emotion&Dopamine</h1>
+<div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
 
-<div id="track">Not playing</div>
+<div class="players">
+  <div class="player">
+    <h3>Happy Hardcore</h3>
+    <button class="play-btn hardcore" onclick="playRadio(0)">▶</button>
+  </div>
 
-<div id="players">
-  <div class="player" data-stream="https://stream.zeno.fm/r8s232x3xg0uv">Happy Hardcore</div>
-  <div class="player" data-stream="https://listen.technobase.fm/tunein-mp3">Hands Up 2</div>
-  <div class="player" data-stream="https://stream.zeno.fm/fx2h0m1z7k0uv">Trance</div>
-  <div class="player" data-stream="https://stream.zeno.fm/5s7zzk0f4p8uv">Hardstyle</div>
+  <div class="player">
+    <h3>Hands Up</h3>
+    <button class="play-btn handsup" onclick="playRadio(1)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Hands Up 2</h3>
+    <button class="play-btn handsup2" onclick="playRadio(2)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Rock</h3>
+    <button class="play-btn rock" onclick="playRadio(3)">▶</button>
+  </div>
+
+  <div class="player">
+    <h3>Metal</h3>
+    <button class="play-btn metal" onclick="playRadio(4)">▶</button>
+  </div>
 </div>
 
-<div id="ad">Ads / Monetization</div>
+<div id="lyrics">🎵 Lyrics will appear here when available…</div>
 
-<canvas id="viz"></canvas>
+<footer>© 2026 Emotion & Dopamine</footer>
 
-<audio id="audio" crossorigin="anonymous"></audio>
+<button id="chat-btn" onclick="toggleChat()">💬</button>
+
+<div id="chat-box">
+  <input placeholder="Name">
+  <input placeholder="City / State">
+  <textarea rows="3" placeholder="Your message"></textarea>
+  <button onclick="sendMessage()">Send</button>
+</div>
 
 <script>
-/* =============================
-   AUDIO + METADATA FIX REAL
-   ============================= */
+/* ===== STREAMS ===== */
+const streams=[
+ "https://stream.zeno.fm/r8s232x3xg0uv",
+ "https://rautemusik.stream25.radiohost.de/club",
+ "https://listen.technobase.fm/tunein-mp3",
+ "https://rautemusik.stream37.radiohost.de/rock",
+ "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
+];
 
-const audio = document.getElementById('audio');
-const trackEl = document.getElementById('track');
-const players = document.querySelectorAll('.player');
+let audio=new Audio();
+audio.crossOrigin="anonymous";
+let ctx,analyser,source,started=false;
 
-/* MediaSession metadata (works when stream allows) */
-function setMedia(title){
-  if('mediaSession' in navigator){
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: title || 'Live Stream',
-      artist: 'Emotion&Dopamine'
-    });
-  }
+/* ===== CANVAS ===== */
+const canvas=document.getElementById("visualizer");
+const c=canvas.getContext("2d");
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+addEventListener("resize",resize);resize();
+
+/* ===== AUDIO INIT ===== */
+function init(){
+ ctx=new (window.AudioContext||window.webkitAudioContext)();
+ analyser=ctx.createAnalyser();
+ analyser.fftSize=256;
+ source=ctx.createMediaElementSource(audio);
+ source.connect(analyser);
+ analyser.connect(ctx.destination);
+ animate();
 }
 
-/* Try to read stream title (best possible on web) */
-function updateTrack(){
-  let title = audio.currentSrc.split('/').pop();
-  trackEl.textContent = "Live Stream";
-  setMedia("Live Stream");
+/* ===== PLAY RADIO ===== */
+function playRadio(i){
+ audio.pause();
+ audio.src=streams[i];
+ audio.load();
+ audio.play();
+ if(!started){init();started=true;}
 }
 
-/* =============================
-   VISUALIZER (FIXED CIRCLE)
-   ============================= */
-const canvas = document.getElementById('viz');
-const ctx = canvas.getContext('2d');
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+/* ===== AUTOPLAY ===== */
+addEventListener("click",()=>{if(!started)playRadio(0);},{once:true});
 
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioCtx();
-const src = audioCtx.createMediaElementSource(audio);
-const analyser = audioCtx.createAnalyser();
-analyser.fftSize = 512;
-src.connect(analyser);
-analyser.connect(audioCtx.destination);
-
-const data = new Uint8Array(analyser.frequencyBinCount);
-
-function draw(){
-  requestAnimationFrame(draw);
-  analyser.getByteFrequencyData(data);
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  const cx = canvas.width/2;
-  const cy = canvas.height/2;
-  const radius = 140;
-
-  for(let i=0;i<data.length;i++){
-    const angle = (i/data.length)*Math.PI*2;
-    const amp = data[i]*0.7;
-    const x1 = cx + Math.cos(angle)*radius;
-    const y1 = cy + Math.sin(angle)*radius;
-    const x2 = cx + Math.cos(angle)*(radius+amp);
-    const y2 = cy + Math.sin(angle)*(radius+amp);
-
-    ctx.strokeStyle = `hsl(${i*2},100%,60%)`;
-    ctx.beginPath();
-    ctx.moveTo(x1,y1);
-    ctx.lineTo(x2,y2);
-    ctx.stroke();
-  }
+/* ===== VISUALIZER ===== */
+function animate(){
+ requestAnimationFrame(animate);
+ const data=new Uint8Array(analyser.frequencyBinCount);
+ analyser.getByteFrequencyData(data);
+ c.clearRect(0,0,canvas.width,canvas.height);
+ const cx=canvas.width/2,cy=canvas.height/2;
+ data.forEach((v,i)=>{
+   const a=i/data.length*Math.PI*2;
+   const r=120+v*0.6;
+   c.fillStyle=`hsl(${i*4},100%,60%)`;
+   c.beginPath();
+   c.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,3,0,Math.PI*2);
+   c.fill();
+ });
 }
-draw();
 
-/* =============================
-   PLAYER CONTROL
-   ============================= */
-players.forEach(p=>{
-  p.onclick = ()=>{
-    players.forEach(x=>x.classList.remove('active'));
-    p.classList.add('active');
-
-    audio.pause();
-    audio.src = p.dataset.stream;
-    audio.load();
-
-    audioCtx.resume();
-    audio.play();
-
-    updateTrack();
-    changeBG(p.textContent);
-  };
-});
-
-/* =============================
-   BACKGROUND BY GENRE
-   ============================= */
-const bg = document.getElementById('bgVideo');
-function changeBG(name){
-  let src = '';
-  if(name.includes('Happy')) src='https://cdn.coverr.co/videos/coverr-neon-lights-1570/1080p.mp4';
-  else if(name.includes('Hands')) src='https://cdn.coverr.co/videos/coverr-night-drive-9631/1080p.mp4';
-  else if(name.includes('Trance')) src='https://cdn.coverr.co/videos/coverr-abstract-waves-7845/1080p.mp4';
-  else src='https://cdn.coverr.co/videos/coverr-club-lights-1578/1080p.mp4';
-  bg.src = src;
+/* ===== CHAT ===== */
+function toggleChat(){
+ const box=document.getElementById("chat-box");
+ box.style.display=box.style.display==="block"?"none":"block";
+}
+function sendMessage(){
+ alert("Message sent! (local demo)");
 }
 </script>
 
-</div>
 </body>
 </html>
