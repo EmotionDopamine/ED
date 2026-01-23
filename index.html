@@ -18,7 +18,7 @@ body{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
+  overflow-x:hidden; /* Alterado para permitir scroll se o mural crescer */
 }
 
 /* ===== TITLES ===== */
@@ -94,6 +94,7 @@ canvas{
 /* ===== FOOTER ===== */
 footer{
   margin-top:18px;
+  margin-bottom: 20px;
   font-size:12px;
   opacity:.6;
   z-index:3;
@@ -144,6 +145,60 @@ footer{
   background:#00ffff;
   cursor:pointer;
 }
+
+/* ===== NOVOS ELEMENTOS: MURAL E MAPA ===== */
+.container-extra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  z-index: 3;
+  margin-top: 30px;
+  width: 90%;
+  max-width: 1000px;
+}
+
+#mural {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#mural h2 { font-size: 1.2rem; margin-bottom: 15px; color: #00ffff; }
+
+#mural-messages {
+  height: 150px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  text-align: left;
+  padding-right: 5px;
+}
+
+.msg-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  border-left: 3px solid #ff00ff;
+}
+
+.msg-item b { color: #00ffff; }
+
+#map-container {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+#map-container h2 { font-size: 1rem; margin-bottom: 10px; }
+
 </style>
 </head>
 
@@ -183,15 +238,29 @@ footer{
 
 <div id="lyrics">🎵 Lyrics will appear here when available…</div>
 
+<div class="container-extra">
+  <div id="mural">
+    <h2>Mural da Comunidade</h2>
+    <div id="mural-messages">
+      <div class="msg-item"><b>Sistema:</b> Bem-vindo ao mural! Deixe seu comentário.</div>
+    </div>
+  </div>
+
+  <div id="map-container">
+    <h2>Visitantes pelo Mundo</h2>
+    <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
+  </div>
+</div>
+
 <footer>© 2026 Emotion & Dopamine</footer>
 
 <button id="chat-btn" onclick="toggleChat()">💬</button>
 
 <div id="chat-box">
-  <input placeholder="Name">
-  <input placeholder="City / State">
-  <textarea rows="3" placeholder="Your message"></textarea>
-  <button onclick="sendMessage()">Send</button>
+  <input id="chat-name" placeholder="Nome">
+  <input id="chat-city" placeholder="Cidade / Estado">
+  <textarea id="chat-msg" rows="3" placeholder="Sua mensagem"></textarea>
+  <button onclick="sendMessage()">Enviar para o Mural</button>
 </div>
 
 <script>
@@ -271,13 +340,51 @@ function animate(){
  }
 }
 
-/* ===== CHAT ===== */
+/* ===== CHAT & MURAL LOGIC ===== */
 function toggleChat(){
  const box=document.getElementById("chat-box");
  box.style.display=box.style.display==="block"?"none":"block";
 }
+
+// Filtro de palavras ofensivas
+const forbiddenWords = ["palavrão1", "palavrão2", "ofensa1", "ofensa2"]; // Adicione as palavras que desejar filtrar aqui
+
+function filterText(text) {
+  let filtered = text;
+  forbiddenWords.forEach(word => {
+    const regex = new RegExp(word, "gi");
+    filtered = filtered.replace(regex, "****");
+  });
+  return filtered;
+}
+
 function sendMessage(){
- alert("Message sent! (local demo)");
+ const nameInput = document.getElementById("chat-name");
+ const cityInput = document.getElementById("chat-city");
+ const msgInput = document.getElementById("chat-msg");
+ const mural = document.getElementById("mural-messages");
+
+ if(nameInput.value === "" || msgInput.value === "") {
+   alert("Por favor, preencha nome e mensagem.");
+   return;
+ }
+
+ // Aplicar Filtro
+ const cleanName = filterText(nameInput.value);
+ const cleanCity = filterText(cityInput.value);
+ const cleanMsg = filterText(msgInput.value);
+
+ // Criar elemento no mural
+ const newMsg = document.createElement("div");
+ newMsg.className = "msg-item";
+ newMsg.innerHTML = `<b>${cleanName}</b> (${cleanCity || 'Global'}): ${cleanMsg}`;
+ 
+ mural.prepend(newMsg);
+
+ // Limpar campos e fechar chat
+ msgInput.value = "";
+ toggleChat();
+ alert("Mensagem publicada no mural!");
 }
 </script>
 
