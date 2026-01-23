@@ -48,29 +48,39 @@ h1{
   backdrop-filter:blur(8px);
   border-radius:20px;
   padding:18px;
-  width:170px;
+  width:160px;
   text-align:center;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-.player h3{font-size:1rem;margin-bottom:12px;}
+.player h3{font-size:0.9rem;margin-bottom:12px;}
 
 .play-btn{
-  width:70px;
-  height:70px;
+  width:60px;
+  height:60px;
   border-radius:50%;
   border:none;
   cursor:pointer;
-  font-size:28px;
+  font-size:24px;
   color:#fff;
+  box-shadow:0 0 15px rgba(255,255,255,0.2);
+  transition: transform 0.2s;
 }
+.play-btn:active { transform: scale(0.9); }
 
-.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
-.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
-.handsup2{background:linear-gradient(135deg,#00ff99,#00cc66);}
-.rock{background:linear-gradient(135deg,#ff4444,#990000);}
-.metal{background:linear-gradient(135deg,#999,#333);}
+/* Station Colors (Applied when active) */
+.hardcore-bg { background: linear-gradient(135deg,#ff00ff,#ff6600) !important; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); }
+.handsup-bg { background: linear-gradient(135deg,#00ffff,#0066ff) !important; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); }
+.handsup2-bg { background: linear-gradient(135deg,#00ff99,#00cc66) !important; box-shadow: 0 0 20px rgba(0, 255, 153, 0.4); }
+.rock-bg { background: linear-gradient(135deg,#ff4444,#990000) !important; box-shadow: 0 0 20px rgba(255, 68, 68, 0.4); }
+.metal-bg { background: linear-gradient(135deg,#999,#333) !important; box-shadow: 0 0 20px rgba(153, 153, 153, 0.4); }
 
-.play-btn{box-shadow:0 0 18px rgba(255,255,255,.4);}
+.play-btn.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
+.play-btn.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
+.play-btn.handsup2{background:linear-gradient(135deg,#00ff99,#00cc66);}
+.play-btn.rock{background:linear-gradient(135deg,#ff4444,#990000);}
+.play-btn.metal{background:linear-gradient(135deg,#999,#333);}
 
 /* ===== LYRICS ===== */
 #lyrics{
@@ -91,96 +101,82 @@ canvas{
   z-index:1;
 }
 
-/* ===== FOOTER ===== */
-footer{
-  margin-top:25px;
-  margin-bottom: 25px;
-  font-size:12px;
-  opacity:.6;
-  z-index:3;
-}
-
-/* ===== NEW: COMMUNITY WALL & MAP STYLES ===== */
+/* ===== COMMUNITY WALL & MAP (SMALLER) ===== */
 .container-extra {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
   z-index: 5;
-  margin-top: 35px;
+  margin-top: 30px;
   width: 95%;
-  max-width: 1000px;
-  position: relative;
+  max-width: 900px;
 }
 
 #mural {
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(10px);
   border-radius: 15px;
-  padding: 20px;
-  width: 100%;
-  max-width: 450px;
-  border: 1px solid rgba(255, 0, 255, 0.4);
-  box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+  padding: 15px;
+  width: 320px; /* Reduced width */
+  border: 1px solid rgba(255, 0, 255, 0.3);
 }
 
-#mural h2 { font-size: 1.3rem; margin-bottom: 15px; color: #ff00ff; text-align: center; letter-spacing: 1px; }
+#mural h2 { font-size: 1rem; margin-bottom: 10px; color: #ff00ff; text-align: center; }
 
 #mural-messages {
-  height: 200px;
+  height: 120px; /* Reduced height */
   overflow-y: auto;
-  margin-bottom: 15px;
-  text-align: left;
-  padding-right: 5px;
+  margin-bottom: 10px;
+  font-size: 12px;
 }
 
 .msg-item {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  border-left: 3px solid #00ffff;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 6px;
+  border-radius: 5px;
+  margin-bottom: 5px;
 }
 .msg-item b { color: #00ffff; }
 
 #mural input, #mural textarea {
   width: 100%;
-  margin-bottom: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 8px;
   background: rgba(255,255,255,0.05);
   color: #fff;
+  font-size: 12px;
   outline: none;
 }
 
 #mural button {
   width: 100%;
-  padding: 12px;
+  padding: 8px;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   background: linear-gradient(90deg, #ff00ff, #00ffff);
   color: #fff;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s;
+  font-size: 12px;
 }
-#mural button:hover { transform: scale(1.02); }
 
 #map-container {
   background: rgba(0, 0, 0, 0.7);
-  padding: 20px;
+  padding: 15px;
   border-radius: 15px;
   text-align: center;
-  border: 1px solid rgba(0, 255, 255, 0.4);
-  min-width: 320px;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  width: 320px;
 }
-#map-container h2 { font-size: 1.3rem; margin-bottom: 15px; color: #00ffff; letter-spacing: 1px; }
+#map-container h2 { font-size: 1rem; margin-bottom: 10px; color: #00ffff; }
 
-/* Custom Scrollbar for Mural */
-#mural-messages::-webkit-scrollbar { width: 5px; }
-#mural-messages::-webkit-scrollbar-thumb { background: #ff00ff; border-radius: 10px; }
+footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
+
+#mural-messages::-webkit-scrollbar { width: 3px; }
+#mural-messages::-webkit-scrollbar-thumb { background: #ff00ff; }
 </style>
 </head>
 
@@ -192,27 +188,27 @@ footer{
 <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
 
 <div class="players">
-  <div class="player">
+  <div class="player" id="player-0">
     <h3>Happy Hardcore</h3>
     <button class="play-btn hardcore" onclick="playRadio(0)">▶</button>
   </div>
 
-  <div class="player">
+  <div class="player" id="player-1">
     <h3>Hands Up</h3>
     <button class="play-btn handsup" onclick="playRadio(1)">▶</button>
   </div>
 
-  <div class="player">
+  <div class="player" id="player-2">
     <h3>Hands Up 2</h3>
     <button class="play-btn handsup2" onclick="playRadio(2)">▶</button>
   </div>
 
-  <div class="player">
+  <div class="player" id="player-3">
     <h3>Rock</h3>
     <button class="play-btn rock" onclick="playRadio(3)">▶</button>
   </div>
 
-  <div class="player">
+  <div class="player" id="player-4">
     <h3>Metal</h3>
     <button class="play-btn metal" onclick="playRadio(4)">▶</button>
   </div>
@@ -223,11 +219,10 @@ footer{
 <div class="container-extra">
   <div id="mural">
     <h2>Community Wall</h2>
-    <div id="mural-messages">
-      </div>
-    <input id="wall-name" maxlength="20" placeholder="Your Name">
-    <textarea id="wall-msg" maxlength="150" rows="2" placeholder="Write a comment..."></textarea>
-    <button onclick="postToWall()">Post Message</button>
+    <div id="mural-messages"></div>
+    <input id="wall-name" maxlength="15" placeholder="Name">
+    <textarea id="wall-msg" maxlength="100" rows="1" placeholder="Comment..."></textarea>
+    <button onclick="postToWall()">Post</button>
   </div>
 
   <div id="map-container">
@@ -239,7 +234,6 @@ footer{
 <footer>© 2026 Emotion & Dopamine</footer>
 
 <script>
-/* ===== STREAMS ===== */
 const streams=[
  "https://stream.zeno.fm/r8s232x3xg0uv",
  "https://rautemusik.stream25.radiohost.de/club",
@@ -248,17 +242,53 @@ const streams=[
  "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
 ];
 
+const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup2-bg', 'rock-bg', 'metal-bg'];
 let audio=new Audio();
 audio.crossOrigin="anonymous";
 let ctx,analyser,source,started=false;
+let currentIdx = -1;
 
-/* ===== CANVAS ===== */
+/* ===== AUDIO CONTROL ===== */
+function playRadio(i){
+  const btns = document.querySelectorAll('.play-btn');
+  const boxes = document.querySelectorAll('.player');
+
+  // If clicking the same radio: Toggle Play/Pause
+  if (currentIdx === i) {
+    if (audio.paused) {
+      audio.play();
+      btns[i].innerText = "⏸";
+      boxes[i].classList.add(stationClasses[i]);
+    } else {
+      audio.pause();
+      btns[i].innerText = "▶";
+      boxes[i].classList.remove(stationClasses[i]);
+    }
+    return;
+  }
+
+  // If clicking a different radio
+  if(currentIdx !== -1) {
+    btns[currentIdx].innerText = "▶";
+    boxes[currentIdx].classList.remove(stationClasses[currentIdx]);
+  }
+
+  currentIdx = i;
+  audio.src = streams[i];
+  audio.load();
+  audio.play();
+  btns[i].innerText = "⏸";
+  boxes[i].classList.add(stationClasses[i]);
+
+  if(!started){init();started=true;}
+}
+
+/* ===== CANVAS & VISUALIZER ===== */
 const canvas=document.getElementById("visualizer");
 const c=canvas.getContext("2d");
 function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
 addEventListener("resize",resize);resize();
 
-/* ===== AUDIO INIT ===== */
 function init(){
  ctx=new (window.AudioContext||window.webkitAudioContext)();
  analyser=ctx.createAnalyser();
@@ -269,26 +299,12 @@ function init(){
  animate();
 }
 
-/* ===== PLAY RADIO ===== */
-function playRadio(i){
- audio.pause();
- audio.src=streams[i];
- audio.load();
- audio.play();
- if(!started){init();started=true;}
-}
-
-/* ===== AUTOPLAY ===== */
-addEventListener("click",()=>{if(!started)playRadio(0);},{once:true});
-
-/* ===== VISUALIZER ===== */
 function animate(){
  requestAnimationFrame(animate);
- if(!analyser) return;
+ if(!analyser || audio.paused) return;
 
  const data=new Uint8Array(analyser.frequencyBinCount);
  analyser.getByteFrequencyData(data);
-
  c.clearRect(0,0,canvas.width,canvas.height);
 
  const cx=canvas.width/2;
@@ -299,13 +315,11 @@ function animate(){
  for(let i=0;i<bars;i++){
    const v=data[i];
    const angle=(i/bars)*Math.PI*2;
-   const barLen=v*0.9;
-
+   const barLen=v*0.8;
    const x1=cx+Math.cos(angle)*baseRadius;
    const y1=cy+Math.sin(angle)*baseRadius;
    const x2=cx+Math.cos(angle)*(baseRadius+barLen);
    const y2=cy+Math.sin(angle)*(baseRadius+barLen);
-
    c.strokeStyle=`hsl(${i*2},100%,60%)`;
    c.lineWidth=3;
    c.beginPath();
@@ -315,9 +329,8 @@ function animate(){
  }
 }
 
-/* ===== MURAL LOGIC & PERSISTENCE ===== */
-// List of forbidden words for the filter
-const forbiddenWords = ["badword1", "badword2", "spam"]; 
+/* ===== MURAL PERSISTENCE ===== */
+const forbiddenWords = ["badword1", "badword2"]; 
 
 function filterText(text) {
   let filtered = text;
@@ -329,39 +342,26 @@ function filterText(text) {
 }
 
 function postToWall() {
-  const nameInput = document.getElementById("wall-name");
-  const msgInput = document.getElementById("wall-msg");
+  const name = document.getElementById("wall-name");
+  const msg = document.getElementById("wall-msg");
   const wall = document.getElementById("mural-messages");
 
-  if(!nameInput.value.trim() || !msgInput.value.trim()) {
-    alert("Please fill in both name and message.");
-    return;
-  }
-
-  const cleanName = filterText(nameInput.value);
-  const cleanMsg = filterText(msgInput.value);
+  if(!name.value.trim() || !msg.value.trim()) return;
 
   const item = document.createElement("div");
   item.className = "msg-item";
-  item.innerHTML = `<b>${cleanName}:</b> ${cleanMsg}`;
+  item.innerHTML = `<b>${filterText(name.value)}:</b> ${filterText(msg.value)}`;
   
   wall.prepend(item);
-  
-  // Save to LocalStorage
   localStorage.setItem("emotionMural", wall.innerHTML);
-
-  msgInput.value = "";
+  msg.value = "";
 }
 
-// Load saved messages on startup
 window.onload = () => {
   const saved = localStorage.getItem("emotionMural");
   const wall = document.getElementById("mural-messages");
-  if(saved) {
-    wall.innerHTML = saved;
-  } else {
-    wall.innerHTML = '<div class="msg-item"><b>System:</b> No messages yet. Be the first!</div>';
-  }
+  if(saved) wall.innerHTML = saved;
+  else wall.innerHTML = '<div class="msg-item">Welcome! Post a comment.</div>';
 };
 </script>
 
