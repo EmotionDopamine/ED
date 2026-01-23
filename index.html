@@ -93,115 +93,94 @@ canvas{
 
 /* ===== FOOTER ===== */
 footer{
-  margin-top:18px;
-  margin-bottom: 20px;
+  margin-top:25px;
+  margin-bottom: 25px;
   font-size:12px;
   opacity:.6;
   z-index:3;
 }
 
-/* ===== CHAT & MURAL (NEW ENGLISH BOXES) ===== */
-#chat-btn{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#ff00ff,#00ffff);
-  border:none;
-  cursor:pointer;
-  font-size:26px;
-  color:#fff;
-  z-index:10; /* Increased to ensure clickability */
-}
-
-#chat-box{
-  position:fixed;
-  bottom:90px;
-  right:20px;
-  width:260px;
-  background:rgba(0,0,0,.9);
-  backdrop-filter:blur(10px);
-  border-radius:15px;
-  padding:15px;
-  display:none;
-  z-index:10;
-}
-
+/* ===== NEW: COMMUNITY WALL & MAP STYLES ===== */
 .container-extra {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
   z-index: 5;
-  margin-top: 30px;
+  margin-top: 35px;
   width: 95%;
   max-width: 1000px;
-  position: relative; /* Fix for clicking/typing */
+  position: relative;
 }
 
 #mural {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
   border-radius: 15px;
   padding: 20px;
   width: 100%;
   max-width: 450px;
-  border: 1px solid rgba(255, 0, 255, 0.3);
+  border: 1px solid rgba(255, 0, 255, 0.4);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
 }
 
-#mural h2 { font-size: 1.2rem; margin-bottom: 15px; color: #ff00ff; text-align: center; }
+#mural h2 { font-size: 1.3rem; margin-bottom: 15px; color: #ff00ff; text-align: center; letter-spacing: 1px; }
 
 #mural-messages {
-  height: 180px;
+  height: 200px;
   overflow-y: auto;
   margin-bottom: 15px;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-right: 5px;
 }
 
 .msg-item {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px;
   border-radius: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   font-size: 13px;
+  border-left: 3px solid #00ffff;
 }
 .msg-item b { color: #00ffff; }
 
-#mural input, #mural textarea, #chat-box input, #chat-box textarea {
+#mural input, #mural textarea {
   width: 100%;
-  margin-bottom: 8px;
-  border: none;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  padding: 8px;
-  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  background: rgba(255,255,255,0.05);
   color: #fff;
   outline: none;
 }
 
-#mural button, #chat-box button {
+#mural button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: none;
   border-radius: 8px;
   background: linear-gradient(90deg, #ff00ff, #00ffff);
   color: #fff;
   font-weight: bold;
   cursor: pointer;
+  transition: transform 0.2s;
 }
+#mural button:hover { transform: scale(1.02); }
 
 #map-container {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   padding: 20px;
   border-radius: 15px;
   text-align: center;
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  min-width: 300px;
+  border: 1px solid rgba(0, 255, 255, 0.4);
+  min-width: 320px;
 }
-#map-container h2 { font-size: 1.2rem; margin-bottom: 15px; color: #00ffff; }
+#map-container h2 { font-size: 1.3rem; margin-bottom: 15px; color: #00ffff; letter-spacing: 1px; }
 
+/* Custom Scrollbar for Mural */
+#mural-messages::-webkit-scrollbar { width: 5px; }
+#mural-messages::-webkit-scrollbar-thumb { background: #ff00ff; border-radius: 10px; }
 </style>
 </head>
 
@@ -245,10 +224,9 @@ footer{
   <div id="mural">
     <h2>Community Wall</h2>
     <div id="mural-messages">
-      <div class="msg-item"><b>System:</b> Welcome! Join the conversation below.</div>
-    </div>
-    <input id="wall-name" placeholder="Your Name">
-    <textarea id="wall-msg" rows="2" placeholder="Write a comment..."></textarea>
+      </div>
+    <input id="wall-name" maxlength="20" placeholder="Your Name">
+    <textarea id="wall-msg" maxlength="150" rows="2" placeholder="Write a comment..."></textarea>
     <button onclick="postToWall()">Post Message</button>
   </div>
 
@@ -259,15 +237,6 @@ footer{
 </div>
 
 <footer>© 2026 Emotion & Dopamine</footer>
-
-<button id="chat-btn" onclick="toggleChat()">💬</button>
-
-<div id="chat-box">
-  <input id="chat-name" placeholder="Name">
-  <input id="chat-city" placeholder="City / State">
-  <textarea id="chat-msg" rows="3" placeholder="Your message"></textarea>
-  <button onclick="sendMessage()">Send</button>
-</div>
 
 <script>
 /* ===== STREAMS ===== */
@@ -346,54 +315,54 @@ function animate(){
  }
 }
 
-/* ===== MURAL & FILTER LOGIC ===== */
-const offensiveWords = ["badword1", "badword2", "offensive1"]; // Add words to filter here
+/* ===== MURAL LOGIC & PERSISTENCE ===== */
+// List of forbidden words for the filter
+const forbiddenWords = ["badword1", "badword2", "spam"]; 
 
-function filterOffensive(text) {
+function filterText(text) {
   let filtered = text;
-  offensiveWords.forEach(word => {
-    const reg = new RegExp(word, "gi");
-    filtered = filtered.replace(reg, "****");
+  forbiddenWords.forEach(word => {
+    const regex = new RegExp(word, "gi");
+    filtered = filtered.replace(regex, "****");
   });
   return filtered;
 }
 
 function postToWall() {
-  const name = document.getElementById("wall-name");
-  const msg = document.getElementById("wall-msg");
+  const nameInput = document.getElementById("wall-name");
+  const msgInput = document.getElementById("wall-msg");
   const wall = document.getElementById("mural-messages");
 
-  if(!name.value || !msg.value) return alert("Please enter name and message");
+  if(!nameInput.value.trim() || !msgInput.value.trim()) {
+    alert("Please fill in both name and message.");
+    return;
+  }
 
-  const cleanName = filterOffensive(name.value);
-  const cleanMsg = filterOffensive(msg.value);
+  const cleanName = filterText(nameInput.value);
+  const cleanMsg = filterText(msgInput.value);
 
   const item = document.createElement("div");
   item.className = "msg-item";
   item.innerHTML = `<b>${cleanName}:</b> ${cleanMsg}`;
+  
   wall.prepend(item);
+  
+  // Save to LocalStorage
+  localStorage.setItem("emotionMural", wall.innerHTML);
 
-  msg.value = "";
+  msgInput.value = "";
 }
 
-function toggleChat(){
- const box=document.getElementById("chat-box");
- box.style.display=box.style.display==="block"?"none":"block";
-}
-
-function sendMessage(){
-  const name = document.getElementById("chat-name").value;
-  const msg = document.getElementById("chat-msg").value;
-  if(name && msg) {
-    const wall = document.getElementById("mural-messages");
-    const item = document.createElement("div");
-    item.className = "msg-item";
-    item.innerHTML = `<b>${filterOffensive(name)}:</b> ${filterOffensive(msg)}`;
-    wall.prepend(item);
-    toggleChat();
-    alert("Message sent to Wall!");
+// Load saved messages on startup
+window.onload = () => {
+  const saved = localStorage.getItem("emotionMural");
+  const wall = document.getElementById("mural-messages");
+  if(saved) {
+    wall.innerHTML = saved;
+  } else {
+    wall.innerHTML = '<div class="msg-item"><b>System:</b> No messages yet. Be the first!</div>';
   }
-}
+};
 </script>
 
 </body>
