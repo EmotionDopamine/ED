@@ -5,11 +5,10 @@
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
-<link rel="shortcut icon" href="https://img.icons8.com/neon/96/headphone.png?v=2">
-<link rel="apple-touch-icon" href="https://img.icons8.com/neon/180/headphone.png?v=2">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAADXklEQVR4nO2dS2hcVRjHf+fcmSStSduYpE2tGrGidVMRXwiitS60C9GF7ly0iAtBEBfSShS6E7S4E7S4UBe6E7S4UBfSShS60YVWRAtatVpt07SZTmYy99wujS9Nmsxk5t6ZzP0/MOfXzD3fOf97z/nOueeec6Asy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Isy7Is67v6B8mC98v4N88pAAAAAElFTkSuQmCC">
 
 <style>
+/* O CSS permanece igual, focado na estética Neon */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
 
 body{
@@ -23,28 +22,12 @@ body{
   overflow-x:hidden;
 }
 
-/* ===== TITLES ===== */
-h1{
-  font-size:3rem;
-  margin-bottom:8px;
-  animation:glow 2.5s infinite alternate;
-}
-@keyframes glow{
-  from{text-shadow:0 0 10px #ff00ff;}
-  to{text-shadow:0 0 30px #00ffff;}
-}
+h1{font-size:3rem;margin-bottom:8px;animation:glow 2.5s infinite alternate;}
+@keyframes glow{from{text-shadow:0 0 10px #ff00ff;}to{text-shadow:0 0 30px #00ffff;}}
 
 .subtitle{opacity:.75;margin-bottom:25px;}
 
-/* ===== PLAYERS ===== */
-.players{
-  display:flex;
-  gap:18px;
-  z-index:3;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
+.players{display:flex;gap:18px;z-index:3;flex-wrap:wrap;justify-content:center;}
 .player{
   background:rgba(0,0,0,.6);
   backdrop-filter:blur(8px);
@@ -55,27 +38,18 @@ h1{
   transition: all 0.4s ease;
   border: 1px solid rgba(255,255,255,0.1);
 }
-
 .player h3{font-size:0.9rem;margin-bottom:12px;}
 
 .play-btn{
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  border:none;
-  cursor:pointer;
-  font-size:24px;
-  color:#fff;
-  box-shadow:0 0 15px rgba(255,255,255,0.2);
-  transition: transform 0.2s;
+  width:60px;height:60px;border-radius:50%;border:none;cursor:pointer;
+  font-size:24px;color:#fff;box-shadow:0 0 15px rgba(255,255,255,0.2);
 }
 
-/* Station Colors (Active States) */
-.hardcore-bg { background: linear-gradient(135deg,#ff00ff,#ff6600) !important; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); border-color: #ff00ff; }
-.handsup-bg { background: linear-gradient(135deg,#00ffff,#0066ff) !important; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); border-color: #00ffff; }
-.handsup2-bg { background: linear-gradient(135deg,#00ff99,#00cc66) !important; box-shadow: 0 0 20px rgba(0, 255, 153, 0.4); border-color: #00ff99; }
-.rock-bg { background: linear-gradient(135deg,#ff4444,#990000) !important; box-shadow: 0 0 20px rgba(255, 68, 68, 0.4); border-color: #ff4444; }
-.metal-bg { background: linear-gradient(135deg,#999,#333) !important; box-shadow: 0 0 20px rgba(153, 153, 153, 0.4); border-color: #999; }
+.hardcore-bg { background: linear-gradient(135deg,#ff00ff,#ff6600) !important; border-color: #ff00ff; }
+.handsup-bg { background: linear-gradient(135deg,#00ffff,#0066ff) !important; border-color: #00ffff; }
+.handsup2-bg { background: linear-gradient(135deg,#00ff99,#00cc66) !important; border-color: #00ff99; }
+.rock-bg { background: linear-gradient(135deg,#ff4444,#990000) !important; border-color: #ff4444; }
+.metal-bg { background: linear-gradient(135deg,#999,#333) !important; border-color: #999; }
 
 .play-btn.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
 .play-btn.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
@@ -83,140 +57,37 @@ h1{
 .play-btn.rock{background:linear-gradient(135deg,#ff4444,#990000);}
 .play-btn.metal{background:linear-gradient(135deg,#999,#333);}
 
-/* ===== LYRICS ===== */
-#lyrics{
-  margin-top:25px;
-  font-size:16px;
-  font-style: italic;
-  color: #00ffff;
-  height: 50px;
-  max-width:600px;
-  text-align:center;
-  z-index:3;
-  transition: all 0.5s;
-  text-shadow: 0 0 10px rgba(0,255,255,0.5);
-}
+#lyrics{margin-top:25px;font-size:16px;font-style:italic;color:#00ffff;height:50px;text-align:center;z-index:3;text-shadow:0 0 10px rgba(0,255,255,0.5);}
 
-/* ===== CANVAS ===== */
-canvas{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  z-index:1;
-}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;}
 
-/* ===== COMMUNITY WALL & MAP ===== */
-.container-extra {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  z-index: 5;
-  margin-top: 30px;
-  width: 95%;
-  max-width: 900px;
-}
+.container-extra {display:flex;flex-wrap:wrap;justify-content:center;gap:15px;z-index:5;margin-top:30px;width:95%;max-width:900px;}
+#mural {background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);border-radius:15px;padding:15px;width:320px;border:1px solid rgba(255,0,255,0.3);}
+#mural h2 {font-size:1rem;margin-bottom:10px;color:#ff00ff;text-align:center;}
+#mural-messages {height:120px;overflow-y:auto;margin-bottom:10px;font-size:12px;}
+.msg-item {background:rgba(255,255,255,0.05);padding:6px;border-radius:5px;margin-bottom:5px;}
+.msg-item b {color:#00ffff;}
+#mural input, #mural textarea {width:100%;margin-bottom:8px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;padding:8px;background:rgba(255,255,255,0.05);color:#fff;font-size:12px;outline:none;}
+#mural button {width:100%;padding:8px;border:none;border-radius:5px;background:linear-gradient(90deg,#ff00ff,#00ffff);color:#fff;font-weight:bold;cursor:pointer;font-size:12px;}
 
-#mural {
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  padding: 15px;
-  width: 320px;
-  border: 1px solid rgba(255, 0, 255, 0.3);
-}
+#map-container {background:rgba(0,0,0,0.7);padding:15px;border-radius:15px;text-align:center;border:1px solid rgba(0,255,255,0.3);width:320px;}
+#map-container h2 {font-size:1rem;margin-bottom:10px;color:#00ffff;}
 
-#mural h2 { font-size: 1rem; margin-bottom: 10px; color: #ff00ff; text-align: center; }
-
-#mural-messages {
-  height: 120px;
-  overflow-y: auto;
-  margin-bottom: 10px;
-  font-size: 12px;
-}
-
-.msg-item {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 6px;
-  border-radius: 5px;
-  margin-bottom: 5px;
-}
-.msg-item b { color: #00ffff; }
-
-#mural input, #mural textarea {
-  width: 100%;
-  margin-bottom: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-  padding: 8px;
-  background: rgba(255,255,255,0.05);
-  color: #fff;
-  font-size: 12px;
-  outline: none;
-}
-
-#mural button {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 5px;
-  background: linear-gradient(90deg, #ff00ff, #00ffff);
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-#map-container {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 15px;
-  border-radius: 15px;
-  text-align: center;
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  width: 320px;
-}
-#map-container h2 { font-size: 1rem; margin-bottom: 10px; color: #00ffff; }
-
-footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
-
-#mural-messages::-webkit-scrollbar { width: 3px; }
-#mural-messages::-webkit-scrollbar-thumb { background: #ff00ff; }
+footer {margin:20px 0;font-size:11px;opacity:0.5;z-index:3;}
 </style>
 </head>
 
 <body>
-
 <canvas id="visualizer"></canvas>
-
 <h1>Emotion&Dopamine</h1>
 <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
 
 <div class="players">
-  <div class="player" id="player-0">
-    <h3>Happy Hardcore</h3>
-    <button class="play-btn hardcore" onclick="playRadio(0)">▶</button>
-  </div>
-
-  <div class="player" id="player-1">
-    <h3>Hands Up</h3>
-    <button class="play-btn handsup" onclick="playRadio(1)">▶</button>
-  </div>
-
-  <div class="player" id="player-2">
-    <h3>Hands Up 2</h3>
-    <button class="play-btn handsup2" onclick="playRadio(2)">▶</button>
-  </div>
-
-  <div class="player" id="player-3">
-    <h3>Rock</h3>
-    <button class="play-btn rock" onclick="playRadio(3)">▶</button>
-  </div>
-
-  <div class="player" id="player-4">
-    <h3>Metal</h3>
-    <button class="play-btn metal" onclick="playRadio(4)">▶</button>
-  </div>
+  <div class="player" id="player-0"><h3>Happy Hardcore</h3><button class="play-btn hardcore" onclick="playRadio(0)">▶</button></div>
+  <div class="player" id="player-1"><h3>Hands Up</h3><button class="play-btn handsup" onclick="playRadio(1)">▶</button></div>
+  <div class="player" id="player-2"><h3>Hands Up 2</h3><button class="play-btn handsup2" onclick="playRadio(2)">▶</button></div>
+  <div class="player" id="player-3"><h3>Rock</h3><button class="play-btn rock" onclick="playRadio(3)">▶</button></div>
+  <div class="player" id="player-4"><h3>Metal</h3><button class="play-btn metal" onclick="playRadio(4)">▶</button></div>
 </div>
 
 <div id="lyrics">Select a station to feel the dopamine...</div>
@@ -229,7 +100,6 @@ footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
     <textarea id="wall-msg" maxlength="100" rows="1" placeholder="Comment..."></textarea>
     <button onclick="postToWall()">Post</button>
   </div>
-
   <div id="map-container">
     <h2>Global Visitors</h2>
     <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
@@ -239,126 +109,59 @@ footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 <footer>© 2026 Emotion & Dopamine</footer>
 
 <script>
-const streams=[
- "https://stream.zeno.fm/r8s232x3xg0uv",
- "https://rautemusik.stream25.radiohost.de/club",
- "https://listen.technobase.fm/tunein-mp3",
- "https://rautemusik.stream37.radiohost.de/rock",
- "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
-];
-
-const stationLyrics = [
-  "♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪",
-  "♪ Put your hands up in the air! The rhythm is taking control! ♪",
-  "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
-  "♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪",
-  "♪ Heavy metal thunder! Breaking the chains of reality. ♪"
-];
-
-const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup2-bg', 'rock-bg', 'metal-bg'];
-let audio=new Audio();
-audio.crossOrigin="anonymous";
-let ctx,analyser,source,started=false;
-let currentIdx = -1;
+const streams=["https://stream.zeno.fm/r8s232x3xg0uv","https://rautemusik.stream25.radiohost.de/club","https://listen.technobase.fm/tunein-mp3","https://rautemusik.stream37.radiohost.de/rock","https://rautemusik.stream43.radiohost.de/metal_mp3-192"];
+const stationLyrics=["♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪","♪ Put your hands up in the air! The rhythm is taking control! ♪","♪ Hands up for the weekend! Let the melody guide your soul. ♪","♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪","♪ Heavy metal thunder! Breaking the chains of reality. ♪"];
+const stationClasses=['hardcore-bg','handsup-bg','handsup2-bg','rock-bg','metal-bg'];
+let audio=new Audio(); audio.crossOrigin="anonymous";
+let ctx,analyser,source,started=false,currentIdx=-1;
 
 function playRadio(i){
-  const btns = document.querySelectorAll('.play-btn');
-  const boxes = document.querySelectorAll('.player');
-  const lyricsDiv = document.getElementById('lyrics');
-
-  if (currentIdx === i) {
-    if (audio.paused) {
-      audio.play();
-      btns[i].innerText = "⏸";
-      boxes[i].classList.add(stationClasses[i]);
-      lyricsDiv.innerText = stationLyrics[i];
-    } else {
-      audio.pause();
-      btns[i].innerText = "▶";
-      boxes[i].classList.remove(stationClasses[i]);
-      lyricsDiv.innerText = "Paused... Waiting for the beat.";
-    }
+  const btns=document.querySelectorAll('.play-btn'), boxes=document.querySelectorAll('.player'), lyr=document.getElementById('lyrics');
+  if(currentIdx===i){
+    if(audio.paused){audio.play(); btns[i].innerText="⏸"; boxes[i].classList.add(stationClasses[i]); lyr.innerText=stationLyrics[i];}
+    else{audio.pause(); btns[i].innerText="▶"; boxes[i].classList.remove(stationClasses[i]); lyr.innerText="Paused...";}
     return;
   }
-
-  if(currentIdx !== -1) {
-    btns[currentIdx].innerText = "▶";
-    boxes[currentIdx].classList.remove(stationClasses[currentIdx]);
-  }
-
-  currentIdx = i;
-  audio.src = streams[i];
-  audio.load();
-  audio.play();
-  btns[i].innerText = "⏸";
-  boxes[i].classList.add(stationClasses[i]);
-  lyricsDiv.innerText = stationLyrics[i];
-
+  if(currentIdx!==-1){btns[currentIdx].innerText="▶"; boxes[currentIdx].classList.remove(stationClasses[currentIdx]);}
+  currentIdx=i; audio.src=streams[i]; audio.load(); audio.play();
+  btns[i].innerText="⏸"; boxes[i].classList.add(stationClasses[i]); lyr.innerText=stationLyrics[i];
   if(!started){init();started=true;}
 }
 
-const canvas=document.getElementById("visualizer");
-const c=canvas.getContext("2d");
+const canvas=document.getElementById("visualizer"), c=canvas.getContext("2d");
 function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
-addEventListener("resize",resize);resize();
+window.onresize=resize; resize();
 
 function init(){
- ctx=new (window.AudioContext||window.webkitAudioContext)();
- analyser=ctx.createAnalyser();
- analyser.fftSize=512;
- source=ctx.createMediaElementSource(audio);
- source.connect(analyser);
- analyser.connect(ctx.destination);
- animate();
+  ctx=new(window.AudioContext||window.webkitAudioContext)();
+  analyser=ctx.createAnalyser(); analyser.fftSize=512;
+  source=ctx.createMediaElementSource(audio);
+  source.connect(analyser); analyser.connect(ctx.destination);
+  animate();
 }
 
 function animate(){
- requestAnimationFrame(animate);
- if(!analyser || audio.paused) return;
- const data=new Uint8Array(analyser.frequencyBinCount);
- analyser.getByteFrequencyData(data);
- c.clearRect(0,0,canvas.width,canvas.height);
- const cx=canvas.width/2;
- const cy=canvas.height/2;
- const baseRadius=140;
- const bars=180;
- for(let i=0;i<bars;i++){
-   const v=data[i];
-   const angle=(i/bars)*Math.PI*2;
-   const barLen=v*0.8;
-   const x1=cx+Math.cos(angle)*baseRadius;
-   const y1=cy+Math.sin(angle)*baseRadius;
-   const x2=cx+Math.cos(angle)*(baseRadius+barLen);
-   const y2=cy+Math.sin(angle)*(baseRadius+barLen);
-   c.strokeStyle=`hsl(${i*2},100%,60%)`;
-   c.lineWidth=3;
-   c.beginPath();
-   c.moveTo(x1,y1);
-   c.lineTo(x2,y2);
-   c.stroke();
- }
+  requestAnimationFrame(animate); if(!analyser||audio.paused)return;
+  const data=new Uint8Array(analyser.frequencyBinCount); analyser.getByteFrequencyData(data);
+  c.clearRect(0,0,canvas.width,canvas.height);
+  const cx=canvas.width/2, cy=canvas.height/2, rad=140;
+  for(let i=0;i<180;i++){
+    const v=data[i], ang=(i/180)*Math.PI*2, x1=cx+Math.cos(ang)*rad, y1=cy+Math.sin(ang)*rad, x2=cx+Math.cos(ang)*(rad+v*0.8), y2=cy+Math.sin(ang)*(rad+v*0.8);
+    c.strokeStyle=`hsl(${i*2},100%,60%)`; c.lineWidth=3; c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke();
+  }
 }
 
-function postToWall() {
-  const name = document.getElementById("wall-name");
-  const msg = document.getElementById("wall-msg");
-  const wall = document.getElementById("mural-messages");
-  if(!name.value.trim() || !msg.value.trim()) return;
-  const item = document.createElement("div");
-  item.className = "msg-item";
-  item.innerHTML = `<b>${name.value}:</b> ${msg.value}`;
-  wall.prepend(item);
-  localStorage.setItem("emotionMural", wall.innerHTML);
-  msg.value = "";
+function postToWall(){
+  const n=document.getElementById("wall-name"), m=document.getElementById("wall-msg"), w=document.getElementById("mural-messages");
+  if(!n.value.trim()||!m.value.trim())return;
+  const div=document.createElement("div"); div.className="msg-item"; div.innerHTML=`<b>${n.value}:</b> ${m.value}`;
+  w.prepend(div); localStorage.setItem("emotionMural",w.innerHTML); m.value="";
 }
 
-window.onload = () => {
-  const saved = localStorage.getItem("emotionMural");
-  const wall = document.getElementById("mural-messages");
-  if(saved) wall.innerHTML = saved;
-  else wall.innerHTML = '<div class="msg-item">Welcome to the wall!</div>';
+window.onload=()=>{
+  const s=localStorage.getItem("emotionMural"), w=document.getElementById("mural-messages");
+  if(s) w.innerHTML=s; else w.innerHTML='<div class="msg-item">Welcome!</div>';
 };
 </script>
-
 </body>
 </html>
