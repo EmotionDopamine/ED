@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Emotion&Dopamine</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
 
 <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
 
 <style>
-/* Reset e Fontes Padrão */
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
+/* Reset e Ajustes de Toque */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;-webkit-tap-highlight-color:transparent;}
 
 body{
   background-color: #000;
@@ -21,11 +21,12 @@ body{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  overflow:hidden; /* Evita scroll por causa do grid */
+  overflow-x:hidden; 
   position: relative;
+  padding: 20px 10px;
 }
 
-/* ===== NOVO FUNDO: 3D NEON GRID ===== */
+/* ===== FUNDO: 3D NEON GRID ===== */
 .grid-container {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -38,28 +39,28 @@ body{
   position: absolute;
   bottom: -30%; left: -50%; width: 200%; height: 100%;
   background-image: 
-    linear-gradient(to right, rgba(255, 0, 255, 0.2) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 0, 255, 0.2) 1px, transparent 1px);
-  background-size: 50px 50px;
+    linear-gradient(to right, rgba(255, 0, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 0, 255, 0.15) 1px, transparent 1px);
+  background-size: 40px 40px;
   transform: rotateX(60deg);
   animation: moveGrid 4s linear infinite;
 }
 
 @keyframes moveGrid {
   0% { transform: rotateX(60deg) translateY(0); }
-  100% { transform: rotateX(60deg) translateY(50px); }
+  100% { transform: rotateX(60deg) translateY(40px); }
 }
 
-/* ===== TÍTULO NEON ===== */
+/* ===== TÍTULO RESPONSIVO ===== */
 h1{
   font-family: 'Monoton', cursive;
-  font-size: 3.5rem;
+  font-size: clamp(1.8rem, 8vw, 3.5rem); /* Ajusta conforme o tamanho da tela */
   font-weight: 400;
   color: #fff;
   margin-bottom: 5px;
   z-index: 3;
   text-align: center;
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
   animation: neonPulse 3s infinite alternate;
 }
 
@@ -68,40 +69,48 @@ h1{
   to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff; }
 }
 
-/* SUBTÍTULO COM FONTE PADRÃO */
 .subtitle{
   font-family: Arial, sans-serif !important;
   opacity:.8;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   z-index: 3;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 3vw, 1rem);
+  text-align: center;
 }
 
-/* PLAYERS */
-.players{display:flex;gap:15px;z-index:3;flex-wrap:wrap;justify-content:center;}
-.player{
-  background:rgba(0,0,0,0.8);
-  backdrop-filter:blur(5px);
-  border-radius:15px;
-  padding:15px;
-  width:150px;
-  text-align:center;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: 0.3s;
+/* ===== PLAYERS ADAPTÁVEIS ===== */
+.players{
+  display: flex;
+  gap: 10px;
+  z-index: 3;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1000px;
 }
-.player h3{font-size:0.85rem;margin-bottom:10px; font-family: Arial, sans-serif;}
+
+.player{
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(5px);
+  border-radius: 12px;
+  padding: 12px;
+  width: 140px; /* Base para desktop */
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.player h3{font-size: 0.8rem; margin-bottom: 8px; white-space: nowrap;}
 
 .play-btn{
-  width:55px;height:55px;border-radius:50%;border:none;cursor:pointer;
-  font-size:20px;color:#fff;
+  width: 45px; height: 45px; border-radius: 50%; border: none; cursor: pointer;
+  font-size: 18px; color: #fff; transition: 0.2s;
 }
 
 /* Cores Ativas */
-.hardcore-bg { background: rgba(255,0,255,0.2) !important; border-color: #ff00ff !important; box-shadow: 0 0 15px #ff00ff; }
-.handsup-bg { background: rgba(0,255,255,0.2) !important; border-color: #00ffff !important; box-shadow: 0 0 15px #00ffff; }
-.handsup2-bg { background: rgba(0,255,153,0.2) !important; border-color: #00ff99 !important; box-shadow: 0 0 15px #00ff99; }
-.rock-bg { background: rgba(255,68,68,0.2) !important; border-color: #ff4444 !important; box-shadow: 0 0 15px #ff4444; }
-.metal-bg { background: rgba(153,153,153,0.2) !important; border-color: #999 !important; box-shadow: 0 0 15px #999; }
+.hardcore-bg { border-color: #ff00ff !important; box-shadow: 0 0 10px #ff00ff; }
+.handsup-bg { border-color: #00ffff !important; box-shadow: 0 0 10px #00ffff; }
+.handsup2-bg { border-color: #00ff99 !important; box-shadow: 0 0 10px #00ff99; }
+.rock-bg { border-color: #ff4444 !important; box-shadow: 0 0 10px #ff4444; }
+.metal-bg { border-color: #999 !important; box-shadow: 0 0 10px #999; }
 
 .play-btn.hardcore{background: #ff00ff;}
 .play-btn.handsup{background: #00ffff;}
@@ -109,64 +118,61 @@ h1{
 .play-btn.rock{background: #ff4444;}
 .play-btn.metal{background: #666;}
 
-#lyrics{margin: 20px 0; font-size:15px; font-style: italic; color: #00ffff; height: 40px; z-index:3; text-align: center;}
+#lyrics{
+  margin: 15px 0; font-size: 0.9rem; font-style: italic; color: #00ffff; 
+  height: 40px; z-index: 3; text-align: center; max-width: 90%;
+}
 
 /* CANVAS VISUALIZER */
 canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
 
-/* MAPA */
+/* MAPA RESPONSIVO */
 #map-container {
-  z-index: 5; margin-top: 10px; background: rgba(0,0,0,0.8);
-  padding: 15px; border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.2); width: 280px; text-align: center;
+  z-index: 5; margin-top: 10px; background: rgba(0,0,0,0.85);
+  padding: 10px; border-radius: 12px; border: 1px solid rgba(0, 255, 255, 0.2); 
+  width: 260px; text-align: center;
 }
-#map-container h2 { font-size: 0.8rem; color: #00ffff; margin-bottom: 10px; }
+#map-container h2 { font-size: 0.75rem; color: #00ffff; margin-bottom: 8px; }
 
-footer { margin: 15px 0; font-size: 10px; opacity: 0.5; z-index: 3; }
+footer { margin: 15px 0; font-size: 9px; opacity: 0.5; z-index: 3; }
+
+/* ===== AJUSTES ESPECÍFICOS PARA CELULAR (Telas < 600px) ===== */
+@media (max-width: 600px) {
+  .player {
+    width: 45%; /* Coloca dois por linha em celulares pequenos */
+    min-width: 130px;
+  }
+  .grid-container { perspective: 200px; } /* Altera o ângulo da grade no celular */
+  body { justify-content: flex-start; padding-top: 40px; } /* Começa do topo no celular */
+}
 </style>
 </head>
 
 <body>
 
-<div class="grid-container">
-  <div class="grid"></div>
-</div>
-
+<div class="grid-container"><div class="grid"></div></div>
 <canvas id="visualizer"></canvas>
 
 <h1>Emotion&Dopamine</h1>
 <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
 
 <div class="players">
-  <div class="player" id="player-0">
-    <h3>Happy Hardcore</h3>
-    <button class="play-btn hardcore" onclick="playRadio(0)">▶</button>
-  </div>
-  <div class="player" id="player-1">
-    <h3>Hands Up</h3>
-    <button class="play-btn handsup" onclick="playRadio(1)">▶</button>
-  </div>
-  <div class="player" id="player-2">
-    <h3>Hands Up 2</h3>
-    <button class="play-btn handsup2" onclick="playRadio(2)">▶</button>
-  </div>
-  <div class="player" id="player-3">
-    <h3>Rock</h3>
-    <button class="play-btn rock" onclick="playRadio(3)">▶</button>
-  </div>
-  <div class="player" id="player-4">
-    <h3>Metal</h3>
-    <button class="play-btn metal" onclick="playRadio(4)">▶</button>
-  </div>
+  <div class="player" id="player-0"><h3>Happy Hardcore</h3><button class="play-btn hardcore" onclick="playRadio(0)">▶</button></div>
+  <div class="player" id="player-1"><h3>Hands Up</h3><button class="play-btn handsup" onclick="playRadio(1)">▶</button></div>
+  <div class="player" id="player-2"><h3>Hands Up 2</h3><button class="play-btn handsup2" onclick="playRadio(2)">▶</button></div>
+  <div class="player" id="player-3"><h3>Rock</h3><button class="play-btn rock" onclick="playRadio(3)">▶</button></div>
+  <div class="player" id="player-4"><h3>Metal</h3><button class="play-btn metal" onclick="playRadio(4)">▶</button></div>
 </div>
 
 <div id="lyrics">Select a station to feel the dopamine...</div>
 
 <div id="map-container">
   <h2>Global Visitors</h2>
-  <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
+  <div style="transform: scale(0.9);"> <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
+  </div>
 </div>
 
-<footer>© 2026 Emotion&Dopamine</footer>
+<footer>© 2026 Emotion & Dopamine</footer>
 
 <script>
 const streams=[
@@ -178,16 +184,15 @@ const streams=[
 ];
 
 const stationLyrics = [
-  "♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪",
-  "♪ Put your hands up in the air! The rhythm is taking control! ♪",
-  "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
-  "♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪",
-  "♪ Heavy metal thunder! Breaking the chains of reality. ♪"
+  "♪ Happiness is just a state of mind... ♪",
+  "♪ Put your hands up in the air! ♪",
+  "♪ Hands up for the weekend! ♪",
+  "♪ Long live Rock 'n' Roll... ♪",
+  "♪ Heavy metal thunder! ♪"
 ];
 
 const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup2-bg', 'rock-bg', 'metal-bg'];
-let audio=new Audio();
-audio.crossOrigin="anonymous";
+let audio=new Audio(); audio.crossOrigin="anonymous";
 let ctx, analyser, source, started=false, currentIdx = -1;
 
 function playRadio(i){
@@ -197,13 +202,10 @@ function playRadio(i){
 
   if (currentIdx === i) {
     if (audio.paused) {
-      audio.play();
-      btns[i].innerText = "⏸";
+      audio.play(); btns[i].innerText = "⏸";
       boxes[i].classList.add(stationClasses[i]);
-      lyricsDiv.innerText = stationLyrics[i];
     } else {
-      audio.pause();
-      btns[i].innerText = "▶";
+      audio.pause(); btns[i].innerText = "▶";
       boxes[i].classList.remove(stationClasses[i]);
       lyricsDiv.innerText = "Paused...";
     }
@@ -217,8 +219,7 @@ function playRadio(i){
 
   currentIdx = i;
   audio.src = streams[i];
-  audio.load();
-  audio.play();
+  audio.load(); audio.play();
   btns[i].innerText = "⏸";
   boxes[i].classList.add(stationClasses[i]);
   lyricsDiv.innerText = stationLyrics[i];
@@ -233,16 +234,13 @@ function resize(){
   canvas.width=window.innerWidth;
   canvas.height=window.innerHeight;
 }
-window.onresize=resize; 
-resize();
+window.onresize=resize; resize();
 
 function init(){
   ctx=new (window.AudioContext||window.webkitAudioContext)();
-  analyser=ctx.createAnalyser();
-  analyser.fftSize=512;
+  analyser=ctx.createAnalyser(); analyser.fftSize=256;
   source=ctx.createMediaElementSource(audio);
-  source.connect(analyser);
-  analyser.connect(ctx.destination);
+  source.connect(analyser); analyser.connect(ctx.destination);
   animate();
 }
 
@@ -252,26 +250,27 @@ function animate(){
 
   const data=new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(data);
-  
   c.clearRect(0, 0, canvas.width, canvas.height);
 
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
-  const baseRadius = 150;
-  const bars = 180;
+  
+  // RADIUS DINÂMICO: Se for celular, o círculo é menor.
+  const baseRadius = Math.min(canvas.width, canvas.height) * 0.25; 
+  const bars = 100;
 
   for(let i=0; i<bars; i++){
     const v = data[i];
     const angle = (i / bars) * Math.PI * 2;
-    const barLen = v * 0.8;
+    const barLen = v * (canvas.width < 600 ? 0.4 : 0.7); // Barras menores no celular
 
     const x1 = cx + Math.cos(angle) * baseRadius;
     const y1 = cy + Math.sin(angle) * baseRadius;
     const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
     const y2 = cy + Math.sin(angle) * (baseRadius + barLen);
 
-    c.strokeStyle = `hsl(${i * 2}, 100%, 60%)`;
-    c.lineWidth = 3;
+    c.strokeStyle = `hsl(${i * 3.6}, 100%, 60%)`;
+    c.lineWidth = canvas.width < 600 ? 2 : 4;
     c.lineCap = "round";
     c.beginPath();
     c.moveTo(x1, y1);
@@ -280,6 +279,5 @@ function animate(){
   }
 }
 </script>
-
 </body>
 </html>
