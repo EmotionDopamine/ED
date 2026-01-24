@@ -7,153 +7,129 @@
 
 <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
 
 <style>
+/* Reset e Fontes Padrão */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
 
 body{
-  background:radial-gradient(circle at top,#1b0036,#000);
+  background-color: #000;
   color:#fff;
   min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  overflow-x:hidden;
+  overflow:hidden; /* Evita scroll por causa do grid */
+  position: relative;
 }
 
-/* ===== TÍTULO ARTÍSTICO NEON ===== */
+/* ===== NOVO FUNDO: 3D NEON GRID ===== */
+.grid-container {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  perspective: 450px;
+  z-index: 0;
+  background: radial-gradient(circle at 50% 50%, #1a0033 0%, #000 80%);
+}
+
+.grid {
+  position: absolute;
+  bottom: -30%; left: -50%; width: 200%; height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(255, 0, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 0, 255, 0.2) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: rotateX(60deg);
+  animation: moveGrid 4s linear infinite;
+}
+
+@keyframes moveGrid {
+  0% { transform: rotateX(60deg) translateY(0); }
+  100% { transform: rotateX(60deg) translateY(50px); }
+}
+
+/* ===== TÍTULO NEON ===== */
 h1{
-  /* Aplica a nova fonte artística */
   font-family: 'Monoton', cursive;
-  font-size: 3.8rem; /* Um pouco maior para destacar os detalhes */
+  font-size: 3.5rem;
   font-weight: 400;
-  color: #fff; /* O centro do tubo neon é branco */
-  margin-bottom: 10px;
+  color: #fff;
+  margin-bottom: 5px;
   z-index: 3;
   text-align: center;
-  letter-spacing: 2px; /* Espaçamento para respirar */
-  
-  /* Efeito de Neon multicamadas */
-  text-shadow: 
-      0 0 5px #fff,    /* Brilho interno branco */
-      0 0 10px #fff,   /* Brilho interno suave */
-      0 0 20px #ff00ff, /* Primeira camada de cor (Magenta) */
-      0 0 40px #ff00ff, /* Segunda camada de cor */
-      0 0 80px #ff00ff; /* Brilho externo distante */
-      
-  /* Animação de pulsação */
-  animation: neon-pulse 3s infinite alternate ease-in-out;
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+  animation: neonPulse 3s infinite alternate;
 }
 
-/* Nova animação de brilho que alterna entre Magenta e Ciano */
-@keyframes neon-pulse{
-  0%, 100% {
-      text-shadow: 
-      0 0 5px #fff,
-      0 0 10px #fff,
-      0 0 20px #ff00ff,
-      0 0 40px #ff00ff,
-      0 0 70px #ff00ff;
-  }
-  50% {
-      text-shadow: 
-      0 0 5px #fff,
-      0 0 10px #fff,
-      0 0 20px #00ffff,
-      0 0 40px #00ffff,
-      0 0 90px #00ffff; /* Brilho máximo azulado */
-  }
+@keyframes neonPulse {
+  from { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
+  to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff; }
 }
 
-.subtitle{opacity:.75;margin-bottom:25px; z-index: 3; font-size: 1rem; letter-spacing: 1px;}
+/* SUBTÍTULO COM FONTE PADRÃO */
+.subtitle{
+  font-family: Arial, sans-serif !important;
+  opacity:.8;
+  margin-bottom: 25px;
+  z-index: 3;
+  font-size: 1rem;
+}
 
 /* PLAYERS */
-.players{
-  display:flex;
-  gap:18px;
-  z-index:3;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
+.players{display:flex;gap:15px;z-index:3;flex-wrap:wrap;justify-content:center;}
 .player{
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(8px);
-  border-radius:20px;
-  padding:18px;
-  width:160px;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(5px);
+  border-radius:15px;
+  padding:15px;
+  width:150px;
   text-align:center;
-  transition: all 0.4s ease;
   border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.3s;
 }
-
-.player h3{font-size:0.9rem;margin-bottom:12px;}
+.player h3{font-size:0.85rem;margin-bottom:10px; font-family: Arial, sans-serif;}
 
 .play-btn{
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  border:none;
-  cursor:pointer;
-  font-size:24px;
-  color:#fff;
-  transition: transform 0.2s;
+  width:55px;height:55px;border-radius:50%;border:none;cursor:pointer;
+  font-size:20px;color:#fff;
 }
 
-/* Station Colors */
-.hardcore-bg { background: linear-gradient(135deg,#ff00ff,#ff6600) !important; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); border-color: #ff00ff; }
-.handsup-bg { background: linear-gradient(135deg,#00ffff,#0066ff) !important; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); border-color: #00ffff; }
-.handsup2-bg { background: linear-gradient(135deg,#00ff99,#00cc66) !important; box-shadow: 0 0 20px rgba(0, 255, 153, 0.4); border-color: #00ff99; }
-.rock-bg { background: linear-gradient(135deg,#ff4444,#990000) !important; box-shadow: 0 0 20px rgba(255, 68, 68, 0.4); border-color: #ff4444; }
-.metal-bg { background: linear-gradient(135deg,#999,#333) !important; box-shadow: 0 0 20px rgba(153, 153, 153, 0.4); border-color: #999; }
+/* Cores Ativas */
+.hardcore-bg { background: rgba(255,0,255,0.2) !important; border-color: #ff00ff !important; box-shadow: 0 0 15px #ff00ff; }
+.handsup-bg { background: rgba(0,255,255,0.2) !important; border-color: #00ffff !important; box-shadow: 0 0 15px #00ffff; }
+.handsup2-bg { background: rgba(0,255,153,0.2) !important; border-color: #00ff99 !important; box-shadow: 0 0 15px #00ff99; }
+.rock-bg { background: rgba(255,68,68,0.2) !important; border-color: #ff4444 !important; box-shadow: 0 0 15px #ff4444; }
+.metal-bg { background: rgba(153,153,153,0.2) !important; border-color: #999 !important; box-shadow: 0 0 15px #999; }
 
-.play-btn.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
-.play-btn.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
-.play-btn.handsup2{background:linear-gradient(135deg,#00ff99,#00cc66);}
-.play-btn.rock{background:linear-gradient(135deg,#ff4444,#990000);}
-.play-btn.metal{background:linear-gradient(135deg,#999,#333);}
+.play-btn.hardcore{background: #ff00ff;}
+.play-btn.handsup{background: #00ffff;}
+.play-btn.handsup2{background: #00ff99;}
+.play-btn.rock{background: #ff4444;}
+.play-btn.metal{background: #666;}
 
-#lyrics{
-  margin: 25px 0;
-  font-size:16px;
-  font-style: italic;
-  color: #00ffff;
-  height: 50px;
-  z-index:3;
-  text-shadow: 0 0 10px rgba(0,255,255,0.5);
-}
+#lyrics{margin: 20px 0; font-size:15px; font-style: italic; color: #00ffff; height: 40px; z-index:3; text-align: center;}
 
-/* VISUALIZER CANVAS */
-canvas{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  z-index:1;
-  pointer-events: none;
-}
+/* CANVAS VISUALIZER */
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
 
+/* MAPA */
 #map-container {
-  z-index: 5;
-  margin-top: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 15px;
-  border-radius: 15px;
-  text-align: center;
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  width: 280px;
+  z-index: 5; margin-top: 10px; background: rgba(0,0,0,0.8);
+  padding: 15px; border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.2); width: 280px; text-align: center;
 }
-#map-container h2 { font-size: 0.9rem; margin-bottom: 10px; color: #00ffff; }
+#map-container h2 { font-size: 0.8rem; color: #00ffff; margin-bottom: 10px; }
 
-footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
+footer { margin: 15px 0; font-size: 10px; opacity: 0.5; z-index: 3; }
 </style>
 </head>
 
 <body>
+
+<div class="grid-container">
+  <div class="grid"></div>
+</div>
 
 <canvas id="visualizer"></canvas>
 
@@ -229,7 +205,7 @@ function playRadio(i){
       audio.pause();
       btns[i].innerText = "▶";
       boxes[i].classList.remove(stationClasses[i]);
-      lyricsDiv.innerText = "Paused... Waiting for the beat.";
+      lyricsDiv.innerText = "Paused...";
     }
     return;
   }
@@ -281,20 +257,20 @@ function animate(){
 
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
-  const baseRadius = 160;
-  const bars = 200;
+  const baseRadius = 150;
+  const bars = 180;
 
   for(let i=0; i<bars; i++){
     const v = data[i];
     const angle = (i / bars) * Math.PI * 2;
-    const barLen = v * 0.9;
+    const barLen = v * 0.8;
 
     const x1 = cx + Math.cos(angle) * baseRadius;
     const y1 = cy + Math.sin(angle) * baseRadius;
     const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
     const y2 = cy + Math.sin(angle) * (baseRadius + barLen);
 
-    c.strokeStyle = `hsl(${i * 1.8}, 100%, 60%)`;
+    c.strokeStyle = `hsl(${i * 2}, 100%, 60%)`;
     c.lineWidth = 3;
     c.lineCap = "round";
     c.beginPath();
