@@ -15,11 +15,7 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
 
 body{
-  /* ===== NOVO FUNDO ANIMADO "AURORA DARK FLOW" ===== */
-  background: linear-gradient(-45deg, #000000, #1a0033, #330033, #000033);
-  background-size: 400% 400%;
-  animation: gradientBG 20s ease infinite;
-  
+  background:radial-gradient(circle at top,#1b0036,#000);
   color:#fff;
   min-height:100vh;
   display:flex;
@@ -27,58 +23,86 @@ body{
   align-items:center;
   justify-content:center;
   overflow-x:hidden;
-  position: relative; /* Necessário para o canvas de fundo */
 }
 
-/* Animação do Fundo */
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* ===== OVERLAY PARA DAR PROFUNDIDADE ===== */
-/* Cria uma vinheta escura nas bordas para focar no centro */
-body::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
-  pointer-events: none;
-  z-index: 2; /* Fica acima do visualizador, mas abaixo do conteúdo */
-}
-
-/* ===== TÍTULO NEON ===== */
+/* ===== TÍTULO ARTÍSTICO NEON ===== */
 h1{
+  /* Aplica a nova fonte artística */
   font-family: 'Monoton', cursive;
-  font-size: 3.8rem;
+  font-size: 3.8rem; /* Um pouco maior para destacar os detalhes */
   font-weight: 400;
-  color: #fff;
+  color: #fff; /* O centro do tubo neon é branco */
   margin-bottom: 10px;
   z-index: 3;
   text-align: center;
-  letter-spacing: 2px;
-  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 80px #ff00ff;
+  letter-spacing: 2px; /* Espaçamento para respirar */
+  
+  /* Efeito de Neon multicamadas */
+  text-shadow: 
+      0 0 5px #fff,    /* Brilho interno branco */
+      0 0 10px #fff,   /* Brilho interno suave */
+      0 0 20px #ff00ff, /* Primeira camada de cor (Magenta) */
+      0 0 40px #ff00ff, /* Segunda camada de cor */
+      0 0 80px #ff00ff; /* Brilho externo distante */
+      
+  /* Animação de pulsação */
   animation: neon-pulse 3s infinite alternate ease-in-out;
 }
 
+/* Nova animação de brilho que alterna entre Magenta e Ciano */
 @keyframes neon-pulse{
-  0%, 100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 70px #ff00ff; }
-  50% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 90px #00ffff; }
+  0%, 100% {
+      text-shadow: 
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 20px #ff00ff,
+      0 0 40px #ff00ff,
+      0 0 70px #ff00ff;
+  }
+  50% {
+      text-shadow: 
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 20px #00ffff,
+      0 0 40px #00ffff,
+      0 0 90px #00ffff; /* Brilho máximo azulado */
+  }
 }
 
 .subtitle{opacity:.75;margin-bottom:25px; z-index: 3; font-size: 1rem; letter-spacing: 1px;}
 
 /* PLAYERS */
-.players{display:flex;gap:18px;z-index:3;flex-wrap:wrap;justify-content:center;}
-.player{
-  background:rgba(0,0,0,.5); /* Um pouco mais transparente para ver o fundo */
-  backdrop-filter:blur(10px); /* Mais desfoque para destacar do fundo novo */
-  border-radius:20px; padding:18px; width:160px; text-align:center;
-  transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.1);
+.players{
+  display:flex;
+  gap:18px;
+  z-index:3;
+  flex-wrap:wrap;
+  justify-content:center;
 }
+
+.player{
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(8px);
+  border-radius:20px;
+  padding:18px;
+  width:160px;
+  text-align:center;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
 .player h3{font-size:0.9rem;margin-bottom:12px;}
-.play-btn{width:60px;height:60px;border-radius:50%;border:none;cursor:pointer;font-size:24px;color:#fff;transition:transform 0.2s;}
+
+.play-btn{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  font-size:24px;
+  color:#fff;
+  transition: transform 0.2s;
+}
 
 /* Station Colors */
 .hardcore-bg { background: linear-gradient(135deg,#ff00ff,#ff6600) !important; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); border-color: #ff00ff; }
@@ -93,16 +117,35 @@ h1{
 .play-btn.rock{background:linear-gradient(135deg,#ff4444,#990000);}
 .play-btn.metal{background:linear-gradient(135deg,#999,#333);}
 
-#lyrics{margin: 25px 0;font-size:16px;font-style: italic;color: #00ffff;height: 50px;z-index:3;text-shadow: 0 0 10px rgba(0,255,255,0.5);}
+#lyrics{
+  margin: 25px 0;
+  font-size:16px;
+  font-style: italic;
+  color: #00ffff;
+  height: 50px;
+  z-index:3;
+  text-shadow: 0 0 10px rgba(0,255,255,0.5);
+}
 
 /* VISUALIZER CANVAS */
-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events: none;}
+canvas{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  pointer-events: none;
+}
 
-/* MAP CONTAINER */
 #map-container {
-  z-index: 5; margin-top: 10px; background: rgba(0,0,0,0.6); /* Mais transparente */
-  backdrop-filter: blur(10px);
-  padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(0, 255, 255, 0.3); width: 280px;
+  z-index: 5;
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  width: 280px;
 }
 #map-container h2 { font-size: 0.9rem; margin-bottom: 10px; color: #00ffff; }
 
