@@ -7,6 +7,10 @@
 
 <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
 
@@ -21,18 +25,51 @@ body{
   overflow-x:hidden;
 }
 
+/* ===== TÍTULO ARTÍSTICO NEON ===== */
 h1{
-  font-size:3rem;
-  margin-bottom:8px;
+  /* Aplica a nova fonte artística */
+  font-family: 'Monoton', cursive;
+  font-size: 3.8rem; /* Um pouco maior para destacar os detalhes */
+  font-weight: 400;
+  color: #fff; /* O centro do tubo neon é branco */
+  margin-bottom: 10px;
   z-index: 3;
-  animation:glow 2.5s infinite alternate;
-}
-@keyframes glow{
-  from{text-shadow:0 0 10px #ff00ff;}
-  to{text-shadow:0 0 30px #00ffff;}
+  text-align: center;
+  letter-spacing: 2px; /* Espaçamento para respirar */
+  
+  /* Efeito de Neon multicamadas */
+  text-shadow: 
+      0 0 5px #fff,    /* Brilho interno branco */
+      0 0 10px #fff,   /* Brilho interno suave */
+      0 0 20px #ff00ff, /* Primeira camada de cor (Magenta) */
+      0 0 40px #ff00ff, /* Segunda camada de cor */
+      0 0 80px #ff00ff; /* Brilho externo distante */
+      
+  /* Animação de pulsação */
+  animation: neon-pulse 3s infinite alternate ease-in-out;
 }
 
-.subtitle{opacity:.75;margin-bottom:25px; z-index: 3;}
+/* Nova animação de brilho que alterna entre Magenta e Ciano */
+@keyframes neon-pulse{
+  0%, 100% {
+      text-shadow: 
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 20px #ff00ff,
+      0 0 40px #ff00ff,
+      0 0 70px #ff00ff;
+  }
+  50% {
+      text-shadow: 
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 20px #00ffff,
+      0 0 40px #00ffff,
+      0 0 90px #00ffff; /* Brilho máximo azulado */
+  }
+}
+
+.subtitle{opacity:.75;margin-bottom:25px; z-index: 3; font-size: 1rem; letter-spacing: 1px;}
 
 /* PLAYERS */
 .players{
@@ -244,13 +281,13 @@ function animate(){
 
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
-  const baseRadius = 160; // Tamanho do círculo central
+  const baseRadius = 160;
   const bars = 200;
 
   for(let i=0; i<bars; i++){
     const v = data[i];
     const angle = (i / bars) * Math.PI * 2;
-    const barLen = v * 0.9; // Sensibilidade das barras
+    const barLen = v * 0.9;
 
     const x1 = cx + Math.cos(angle) * baseRadius;
     const y1 = cy + Math.sin(angle) * baseRadius;
