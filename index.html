@@ -6,11 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
-
 <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
 
 <style>
-/* Reset e Ajustes de Toque */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;-webkit-tap-highlight-color:transparent;}
 
 body{
@@ -23,7 +21,7 @@ body{
   justify-content:center;
   overflow-x:hidden; 
   position: relative;
-  padding: 20px 10px;
+  padding: 20px;
 }
 
 /* ===== FUNDO: 3D NEON GRID ===== */
@@ -41,26 +39,26 @@ body{
   background-image: 
     linear-gradient(to right, rgba(255, 0, 255, 0.15) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 0, 255, 0.15) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 50px 50px;
   transform: rotateX(60deg);
-  animation: moveGrid 4s linear infinite;
+  animation: moveGrid 5s linear infinite;
 }
 
 @keyframes moveGrid {
   0% { transform: rotateX(60deg) translateY(0); }
-  100% { transform: rotateX(60deg) translateY(40px); }
+  100% { transform: rotateX(60deg) translateY(50px); }
 }
 
-/* ===== TÍTULO RESPONSIVO ===== */
+/* ===== TITULO: GRANDE NO PC, ADAPTÁVEL NO CELULAR ===== */
 h1{
   font-family: 'Monoton', cursive;
-  font-size: clamp(1.8rem, 8vw, 3.5rem); /* Ajusta conforme o tamanho da tela */
+  font-size: clamp(2.2rem, 8vw, 4.5rem); /* Aumentado o máximo para 4.5rem */
   font-weight: 400;
   color: #fff;
   margin-bottom: 5px;
   z-index: 3;
   text-align: center;
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
   animation: neonPulse 3s infinite alternate;
 }
 
@@ -70,80 +68,83 @@ h1{
 }
 
 .subtitle{
-  font-family: Arial, sans-serif !important;
   opacity:.8;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   z-index: 3;
-  font-size: clamp(0.8rem, 3vw, 1rem);
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem); /* Subtítulo mais presente */
   text-align: center;
 }
 
-/* ===== PLAYERS ADAPTÁVEIS ===== */
+/* ===== PLAYERS: LARGOS NO PC, LADO A LADO NO CELULAR ===== */
 .players{
   display: flex;
-  gap: 10px;
+  gap: 20px;
   z-index: 3;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 1000px;
+  max-width: 1200px;
 }
 
 .player{
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(5px);
-  border-radius: 12px;
-  padding: 12px;
-  width: 140px; /* Base para desktop */
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 20px;
+  width: 180px; /* Tamanho confortável para Desktop */
   text-align: center;
   border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.3s ease, border-color 0.3s;
 }
 
-.player h3{font-size: 0.8rem; margin-bottom: 8px; white-space: nowrap;}
+.player h3{font-size: 1rem; margin-bottom: 12px; white-space: nowrap;}
 
 .play-btn{
-  width: 45px; height: 45px; border-radius: 50%; border: none; cursor: pointer;
-  font-size: 18px; color: #fff; transition: 0.2s;
+  width: 65px; height: 65px; border-radius: 50%; border: none; cursor: pointer;
+  font-size: 24px; color: #fff; transition: 0.2s;
 }
 
-/* Cores Ativas */
-.hardcore-bg { border-color: #ff00ff !important; box-shadow: 0 0 10px #ff00ff; }
-.handsup-bg { border-color: #00ffff !important; box-shadow: 0 0 10px #00ffff; }
-.handsup2-bg { border-color: #00ff99 !important; box-shadow: 0 0 10px #00ff99; }
-.rock-bg { border-color: #ff4444 !important; box-shadow: 0 0 10px #ff4444; }
-.metal-bg { border-color: #999 !important; box-shadow: 0 0 10px #999; }
+/* Estados Ativos */
+.hardcore-bg { border-color: #ff00ff !important; box-shadow: 0 0 15px #ff00ff; }
+.handsup-bg { border-color: #00ffff !important; box-shadow: 0 0 15px #00ffff; }
+.handsup2-bg { border-color: #00ff99 !important; box-shadow: 0 0 15px #00ff99; }
+.rock-bg { border-color: #ff4444 !important; box-shadow: 0 0 15px #ff4444; }
+.metal-bg { border-color: #999 !important; box-shadow: 0 0 15px #999; }
 
-.play-btn.hardcore{background: #ff00ff;}
-.play-btn.handsup{background: #00ffff;}
-.play-btn.handsup2{background: #00ff99;}
-.play-btn.rock{background: #ff4444;}
-.play-btn.metal{background: #666;}
+.play-btn.hardcore{background: linear-gradient(135deg, #ff00ff, #800080);}
+.play-btn.handsup{background: linear-gradient(135deg, #00ffff, #008080);}
+.play-btn.handsup2{background: linear-gradient(135deg, #00ff99, #008044);}
+.play-btn.rock{background: linear-gradient(135deg, #ff4444, #800000);}
+.play-btn.metal{background: linear-gradient(135deg, #666, #333);}
 
 #lyrics{
-  margin: 15px 0; font-size: 0.9rem; font-style: italic; color: #00ffff; 
-  height: 40px; z-index: 3; text-align: center; max-width: 90%;
+  margin: 30px 0; font-size: 1.1rem; font-style: italic; color: #00ffff; 
+  height: 40px; z-index: 3; text-align: center;
 }
 
 /* CANVAS VISUALIZER */
 canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
 
-/* MAPA RESPONSIVO */
+/* MAPA */
 #map-container {
-  z-index: 5; margin-top: 10px; background: rgba(0,0,0,0.85);
-  padding: 10px; border-radius: 12px; border: 1px solid rgba(0, 255, 255, 0.2); 
-  width: 260px; text-align: center;
+  z-index: 5; margin-top: 15px; background: rgba(0,0,0,0.8);
+  padding: 20px; border-radius: 20px; border: 1px solid rgba(0, 255, 255, 0.2); 
+  width: 320px; text-align: center;
 }
-#map-container h2 { font-size: 0.75rem; color: #00ffff; margin-bottom: 8px; }
+#map-container h2 { font-size: 0.9rem; color: #00ffff; margin-bottom: 12px; }
 
-footer { margin: 15px 0; font-size: 9px; opacity: 0.5; z-index: 3; }
+footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 
-/* ===== AJUSTES ESPECÍFICOS PARA CELULAR (Telas < 600px) ===== */
-@media (max-width: 600px) {
+/* ===== MEDIA QUERY: CELULAR ===== */
+@media (max-width: 650px) {
+  body { justify-content: flex-start; padding-top: 30px; }
   .player {
-    width: 45%; /* Coloca dois por linha em celulares pequenos */
-    min-width: 130px;
+    width: 46%; /* Dois por linha no celular */
+    min-width: 140px;
+    padding: 15px;
   }
-  .grid-container { perspective: 200px; } /* Altera o ângulo da grade no celular */
-  body { justify-content: flex-start; padding-top: 40px; } /* Começa do topo no celular */
+  .play-btn { width: 55px; height: 55px; font-size: 20px; }
+  h1 { margin-bottom: 10px; }
+  .grid-container { perspective: 250px; }
 }
 </style>
 </head>
@@ -168,8 +169,7 @@ footer { margin: 15px 0; font-size: 9px; opacity: 0.5; z-index: 3; }
 
 <div id="map-container">
   <h2>Global Visitors</h2>
-  <div style="transform: scale(0.9);"> <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
-  </div>
+  <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
 </div>
 
 <footer>© 2026 Emotion & Dopamine</footer>
@@ -238,7 +238,7 @@ window.onresize=resize; resize();
 
 function init(){
   ctx=new (window.AudioContext||window.webkitAudioContext)();
-  analyser=ctx.createAnalyser(); analyser.fftSize=256;
+  analyser=ctx.createAnalyser(); analyser.fftSize=512;
   source=ctx.createMediaElementSource(audio);
   source.connect(analyser); analyser.connect(ctx.destination);
   animate();
@@ -255,22 +255,23 @@ function animate(){
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
   
-  // RADIUS DINÂMICO: Se for celular, o círculo é menor.
-  const baseRadius = Math.min(canvas.width, canvas.height) * 0.25; 
-  const bars = 100;
+  // RADIUS PROPORCIONAL: Maior no PC, menor no Celular
+  const isMobile = window.innerWidth < 650;
+  const baseRadius = isMobile ? Math.min(cx, cy) * 0.5 : 180; 
+  const bars = isMobile ? 120 : 180;
 
   for(let i=0; i<bars; i++){
     const v = data[i];
     const angle = (i / bars) * Math.PI * 2;
-    const barLen = v * (canvas.width < 600 ? 0.4 : 0.7); // Barras menores no celular
+    const barLen = v * (isMobile ? 0.5 : 0.8);
 
     const x1 = cx + Math.cos(angle) * baseRadius;
     const y1 = cy + Math.sin(angle) * baseRadius;
     const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
     const y2 = cy + Math.sin(angle) * (baseRadius + barLen);
 
-    c.strokeStyle = `hsl(${i * 3.6}, 100%, 60%)`;
-    c.lineWidth = canvas.width < 600 ? 2 : 4;
+    c.strokeStyle = `hsl(${i * (360/bars)}, 100%, 60%)`;
+    c.lineWidth = isMobile ? 2 : 4;
     c.lineCap = "round";
     c.beginPath();
     c.moveTo(x1, y1);
