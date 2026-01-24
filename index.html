@@ -116,51 +116,28 @@ h1{
 .play-btn.metal{background: linear-gradient(135deg, #666, #333);}
 
 #lyrics{
-  margin: 25px 0; font-size: 1.1rem; font-style: italic; color: #00ffff; 
+  margin: 30px 0; font-size: 1.1rem; font-style: italic; color: #00ffff; 
   height: 40px; z-index: 3; text-align: center;
 }
 
-/* CANVAS DE FUNDO */
-#visualizer{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
 
-/* ===== CONTAINER DO MAPA REAL ===== */
-#map-wrapper {
-  z-index: 5; margin-top: 20px;
-  display: flex; flex-direction: column; align-items: center;
-}
-
+/* ===== MAPA REDUZIDO ===== */
 #map-container {
-  background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(0, 255, 255, 0.2); 
-  border-radius: 50%; 
-  width: 220px; height: 220px;
-  overflow: hidden; /* Garante que o widget fique redondo */
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-  position: relative;
-}
-
-/* Texto de Localização do Usuário */
-#user-location {
-  margin-top: 15px;
-  color: #00ff99;
-  font-size: 0.8rem;
-  background: rgba(0,0,0,0.8);
-  padding: 5px 15px;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 255, 153, 0.3);
-  z-index: 5;
+  z-index: 5; margin-top: 15px; background: rgba(0,0,0,0.8);
+  padding: 10px; border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.2); 
+  width: 220px; /* Reduzi de 320px para 220px */
   text-align: center;
-  min-height: 25px;
 }
+#map-container h2 { font-size: 0.7rem; color: #00ffff; margin-bottom: 8px; opacity: 0.7; }
 
-footer { margin: 30px 0 10px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
+footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 
 @media (max-width: 650px) {
   body { justify-content: flex-start; padding-top: 30px; }
   .player { width: 46%; min-width: 140px; padding: 15px; }
   .play-btn { width: 55px; height: 55px; font-size: 20px; }
-  #map-container { width: 180px; height: 180px; }
+  #map-container { width: 180px; } /* Ainda menor no telemóvel */
 }
 </style>
 </head>
@@ -183,15 +160,13 @@ footer { margin: 30px 0 10px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 
 <div id="lyrics">Select a station to feel the dopamine...</div>
 
-<div id="map-wrapper">
-  <div id="map-container">
-    <script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=53331899133&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33&amp;bv=35&amp;rs=100&amp;as=100" async="async"></script>
+<div id="map-container">
+  <h2>Global Visitors</h2>
+  <div style="transform: scale(0.8); transform-origin: top center;"> <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
   </div>
-  
-  <div id="user-location">Detecting your location...</div>
 </div>
 
-<footer>© 2026 Emotion & Dopamine</footer>
+<footer>© 2026 Emotion&Dopamine</footer>
 
 <script>
 const streams=[
@@ -203,11 +178,11 @@ const streams=[
 ];
 
 const stationLyrics = [
-  "♪ Happiness is just a state of mind... ♪",
-  "♪ Put your hands up in the air! ♪",
-  "♪ Hands up for the weekend! ♪",
-  "♪ Long live Rock 'n' Roll... ♪",
-  "♪ Heavy metal thunder! ♪"
+  "♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪",
+  "♪ Put your hands up in the air! The rhythm is taking control! ♪",
+  "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
+  "♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪",
+  "♪ Heavy metal thunder! Breaking the chains of reality. ♪"
 ];
 
 const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup2-bg', 'rock-bg', 'metal-bg'];
@@ -219,12 +194,13 @@ function playRadio(i){
   const boxes = document.querySelectorAll('.player');
   const lyricsDiv = document.getElementById('lyrics');
 
+  // Lógica de Pausa/Play na mesma rádio
   if (currentIdx === i) {
     if (audio.paused) {
       audio.play(); 
       btns[i].innerText = "⏸";
       boxes[i].classList.add(stationClasses[i]);
-      lyricsDiv.innerText = stationLyrics[i]; 
+      lyricsDiv.innerText = stationLyrics[i]; // CORREÇÃO: Volta a mostrar o texto ao dar play
     } else {
       audio.pause(); 
       btns[i].innerText = "▶";
@@ -234,6 +210,7 @@ function playRadio(i){
     return;
   }
 
+  // Troca de Rádio
   if(currentIdx !== -1) {
     btns[currentIdx].innerText = "▶";
     boxes[currentIdx].classList.remove(stationClasses[currentIdx]);
@@ -300,19 +277,6 @@ function animate(){
     c.stroke();
   }
 }
-
-// SCRIPT PARA DETECTAR O IP DO USUÁRIO (API EXTERNA)
-fetch('https://ipapi.co/json/')
-  .then(response => response.json())
-  .then(data => {
-    const locDiv = document.getElementById('user-location');
-    locDiv.innerText = `Connected from: ${data.city}, ${data.country_name}`;
-  })
-  .catch(error => {
-    console.log('Erro ao obter IP:', error);
-    document.getElementById('user-location').innerText = "Location hidden (Privacy or AdBlock)";
-  });
 </script>
-
 </body>
 </html>
