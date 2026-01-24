@@ -21,157 +21,253 @@ body{
   overflow-x:hidden;
 }
 
-h1{font-size:3rem;margin-bottom:8px;animation:glow 2.5s infinite alternate;}
-@keyframes glow{from{text-shadow:0 0 10px #ff00ff;}to{text-shadow:0 0 30px #00ffff;}}
+/* ===== TITLES ===== */
+h1{
+  font-size:3rem;
+  margin-bottom:8px;
+  animation:glow 2.5s infinite alternate;
+}
+@keyframes glow{
+  from{text-shadow:0 0 10px #ff00ff;}
+  to{text-shadow:0 0 30px #00ffff;}
+}
 
-.subtitle{opacity:.75;margin-bottom:25px; font-size: 0.9rem;}
+.subtitle{opacity:.75;margin-bottom:25px;}
 
-/* PLAYERS */
-.players{display:flex;gap:15px;z-index:3;flex-wrap:wrap;justify-content:center;}
+/* ===== PLAYERS ===== */
+.players{
+  display:flex;
+  gap:18px;
+  z-index:3;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
 .player{
   background:rgba(0,0,0,.6);
-  backdrop-filter:blur(10px);
-  border-radius:15px;
-  padding:15px;
-  width:145px;
+  backdrop-filter:blur(8px);
+  border-radius:20px;
+  padding:18px;
+  width:160px;
   text-align:center;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255,255,255,0.1);
 }
-.player h3{font-size:0.8rem;margin-bottom:10px; white-space: nowrap;}
+
+.player h3{font-size:0.9rem;margin-bottom:12px;}
 
 .play-btn{
-  width:50px;height:50px;border-radius:50%;border:none;cursor:pointer;
-  font-size:20px;color:#fff;box-shadow:0 0 10px rgba(255,255,255,0.1);
-  transition: 0.2s;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  font-size:24px;
+  color:#fff;
+  box-shadow:0 0 15px rgba(255,255,255,0.2);
+  transition: transform 0.2s;
 }
 
-/* Cores Ativas */
-.hardcore-bg { background: linear-gradient(135deg,#ff00ff,#ff6600) !important; border-color: #ff00ff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);}
-.handsup-bg { background: linear-gradient(135deg,#00ffff,#0066ff) !important; border-color: #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);}
-.handsup2-bg { background: linear-gradient(135deg,#00ff99,#00cc66) !important; border-color: #00ff99; box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);}
-.rock-bg { background: linear-gradient(135deg,#ff4444,#990000) !important; border-color: #ff4444; box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);}
-.metal-bg { background: linear-gradient(135deg,#999,#333) !important; border-color: #999; box-shadow: 0 0 15px rgba(153, 153, 153, 0.3);}
+/* Station Colors (Active States) */
+.hardcore-bg { background: linear-gradient(135deg,#ff00ff,#ff6600) !important; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); border-color: #ff00ff; }
+.handsup-bg { background: linear-gradient(135deg,#00ffff,#0066ff) !important; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); border-color: #00ffff; }
+.handsup2-bg { background: linear-gradient(135deg,#00ff99,#00cc66) !important; box-shadow: 0 0 20px rgba(0, 255, 153, 0.4); border-color: #00ff99; }
+.rock-bg { background: linear-gradient(135deg,#ff4444,#990000) !important; box-shadow: 0 0 20px rgba(255, 68, 68, 0.4); border-color: #ff4444; }
+.metal-bg { background: linear-gradient(135deg,#999,#333) !important; box-shadow: 0 0 20px rgba(153, 153, 153, 0.4); border-color: #999; }
 
-.play-btn.hardcore{background:#ff00ff;}
-.play-btn.handsup{background:#00ffff;}
-.play-btn.handsup2{background:#00ff99;}
-.play-btn.rock{background:#ff4444;}
-.play-btn.metal{background:#666;}
+.play-btn.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
+.play-btn.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
+.play-btn.handsup2{background:linear-gradient(135deg,#00ff99,#00cc66);}
+.play-btn.rock{background:linear-gradient(135deg,#ff4444,#990000);}
+.play-btn.metal{background:linear-gradient(135deg,#999,#333);}
 
-#lyrics{margin:25px 0;font-size:15px;font-style:italic;color:#00ffff;height:40px;text-align:center;z-index:3;text-shadow:0 0 8px rgba(0,255,255,0.4);}
+/* ===== LYRICS ===== */
+#lyrics{
+  margin-top:25px;
+  font-size:16px;
+  font-style: italic;
+  color: #00ffff;
+  height: 50px;
+  max-width:600px;
+  text-align:center;
+  z-index:3;
+  transition: all 0.5s;
+  text-shadow: 0 0 10px rgba(0,255,255,0.5);
+}
 
-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;}
+/* ===== CANVAS ===== */
+canvas{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
 
-/* EXTRA CONTAINER */
-.container-extra {display:flex;flex-wrap:wrap;justify-content:center;gap:20px;z-index:5;margin-top:20px;width:95%;max-width:850px;}
+/* ===== MAP CONTAINER ===== */
+#map-container {
+  z-index: 5;
+  margin-top: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  width: 320px;
+}
+#map-container h2 { font-size: 1rem; margin-bottom: 15px; color: #00ffff; }
 
-#mural {background:rgba(0,0,0,0.8); border-radius:15px;padding:15px;width:300px;border:1px solid rgba(255, 0, 255, 0.2);}
-#mural h2 {font-size:0.9rem;margin-bottom:5px;color:#ff00ff;text-align:center;text-transform: uppercase;}
-.mural-note {font-size: 9px; opacity: 0.5; text-align: center; margin-bottom: 10px; display: block;}
-
-#mural-messages {height:100px;overflow-y:auto;margin-bottom:10px;font-size:11px; padding-right: 5px;}
-.msg-item {background:rgba(255,255,255,0.03);padding:5px;border-radius:4px;margin-bottom:4px; border-left: 2px solid #ff00ff;}
-
-#mural input, #mural textarea {width:100%;margin-bottom:5px;border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:6px;background:#111;color:#fff;font-size:11px;outline:none;}
-#mural button {width:100%;padding:8px;border:none;border-radius:4px;background:linear-gradient(90deg,#ff00ff,#00ffff);color:#fff;font-weight:bold;cursor:pointer;font-size:11px;}
-
-#map-container {background:rgba(0,0,0,0.8);padding:15px;border-radius:15px;text-align:center;border:1px solid rgba(0, 255, 255, 0.2);width:300px;}
-#map-container h2 {font-size:0.9rem;margin-bottom:10px;color:#00ffff; text-transform: uppercase;}
-
-footer {margin:20px 0;font-size:10px;opacity:0.4;z-index:3;}
+footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 </style>
 </head>
 
 <body>
+
 <canvas id="visualizer"></canvas>
+
 <h1>Emotion&Dopamine</h1>
-<div class="subtitle">Visual Audio Experience & Dopamine Radio</div>
+<div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
 
 <div class="players">
-  <div class="player" id="player-0"><h3>Hardcore</h3><button class="play-btn hardcore" onclick="playRadio(0)">▶</button></div>
-  <div class="player" id="player-1"><h3>Hands Up</h3><button class="play-btn handsup" onclick="playRadio(1)">▶</button></div>
-  <div class="player" id="player-2"><h3>Club Mix</h3><button class="play-btn handsup2" onclick="playRadio(2)">▶</button></div>
-  <div class="player" id="player-3"><h3>Rock</h3><button class="play-btn rock" onclick="playRadio(3)">▶</button></div>
-  <div class="player" id="player-4"><h3>Metal</h3><button class="play-btn metal" onclick="playRadio(4)">▶</button></div>
-</div>
-
-<div id="lyrics">Ready to play...</div>
-
-<div class="container-extra">
-  <div id="mural">
-    <h2>Personal Wall</h2>
-    <span class="mural-note">(Saved only in this browser)</span>
-    <div id="mural-messages"></div>
-    <input id="wall-name" maxlength="15" placeholder="Name">
-    <textarea id="wall-msg" maxlength="80" rows="1" placeholder="Note..."></textarea>
-    <button onclick="postToWall()">Save Note</button>
+  <div class="player" id="player-0">
+    <h3>Happy Hardcore</h3>
+    <button class="play-btn hardcore" onclick="playRadio(0)">▶</button>
   </div>
 
-  <div id="map-container">
-    <h2>Global Hits</h2>
-    <div style="width:200px; margin: 0 auto;">
-      <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
-    </div>
+  <div class="player" id="player-1">
+    <h3>Hands Up</h3>
+    <button class="play-btn handsup" onclick="playRadio(1)">▶</button>
+  </div>
+
+  <div class="player" id="player-2">
+    <h3>Hands Up 2</h3>
+    <button class="play-btn handsup2" onclick="playRadio(2)">▶</button>
+  </div>
+
+  <div class="player" id="player-3">
+    <h3>Rock</h3>
+    <button class="play-btn rock" onclick="playRadio(3)">▶</button>
+  </div>
+
+  <div class="player" id="player-4">
+    <h3>Metal</h3>
+    <button class="play-btn metal" onclick="playRadio(4)">▶</button>
   </div>
 </div>
 
-<footer>© 2026 | Emotion&Dopamine</footer>
+<div id="lyrics">Select a station to feel the dopamine...</div>
+
+<div id="map-container">
+  <h2>Global Visitors</h2>
+  <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
+</div>
+
+<footer>© 2026 Emotion & Dopamine</footer>
 
 <script>
-const streams=["https://stream.zeno.fm/r8s232x3xg0uv","https://rautemusik.stream25.radiohost.de/club","https://listen.technobase.fm/tunein-mp3","https://rautemusik.stream37.radiohost.de/rock","https://rautemusik.stream43.radiohost.de/metal_mp3-192"];
-const stationLyrics=["♪ Happiness is just a state of mind... ♪","♪ Put your hands up in the air! ♪","♪ Hands up for the weekend! ♪","♪ Long live Rock 'n' Roll... ♪","♪ Heavy metal thunder! ♪"];
-const stationClasses=['hardcore-bg','handsup-bg','handsup2-bg','rock-bg','metal-bg'];
-let audio=new Audio(); audio.crossOrigin="anonymous";
-let ctx,analyser,source,started=false,currentIdx=-1;
+const streams=[
+ "https://stream.zeno.fm/r8s232x3xg0uv",
+ "https://rautemusik.stream25.radiohost.de/club",
+ "https://listen.technobase.fm/tunein-mp3",
+ "https://rautemusik.stream37.radiohost.de/rock",
+ "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
+];
+
+const stationLyrics = [
+  "♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪",
+  "♪ Put your hands up in the air! The rhythm is taking control! ♪",
+  "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
+  "♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪",
+  "♪ Heavy metal thunder! Breaking the chains of reality. ♪"
+];
+
+const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup2-bg', 'rock-bg', 'metal-bg'];
+let audio=new Audio();
+audio.crossOrigin="anonymous";
+let ctx,analyser,source,started=false;
+let currentIdx = -1;
 
 function playRadio(i){
-  const btns=document.querySelectorAll('.play-btn'), boxes=document.querySelectorAll('.player'), lyr=document.getElementById('lyrics');
-  if(currentIdx===i){
-    if(audio.paused){audio.play(); btns[i].innerText="⏸"; boxes[i].classList.add(stationClasses[i]); lyr.innerText=stationLyrics[i];}
-    else{audio.pause(); btns[i].innerText="▶"; boxes[i].classList.remove(stationClasses[i]); lyr.innerText="Paused...";}
+  const btns = document.querySelectorAll('.play-btn');
+  const boxes = document.querySelectorAll('.player');
+  const lyricsDiv = document.getElementById('lyrics');
+
+  if (currentIdx === i) {
+    if (audio.paused) {
+      audio.play();
+      btns[i].innerText = "⏸";
+      boxes[i].classList.add(stationClasses[i]);
+      lyricsDiv.innerText = stationLyrics[i];
+    } else {
+      audio.pause();
+      btns[i].innerText = "▶";
+      boxes[i].classList.remove(stationClasses[i]);
+      lyricsDiv.innerText = "Paused... Waiting for the beat.";
+    }
     return;
   }
-  if(currentIdx!==-1){btns[currentIdx].innerText="▶"; boxes[currentIdx].classList.remove(stationClasses[currentIdx]);}
-  currentIdx=i; audio.src=streams[i]; audio.load(); audio.play();
-  btns[i].innerText="⏸"; boxes[i].classList.add(stationClasses[i]); lyr.innerText=stationLyrics[i];
+
+  if(currentIdx !== -1) {
+    btns[currentIdx].innerText = "▶";
+    boxes[currentIdx].classList.remove(stationClasses[currentIdx]);
+  }
+
+  currentIdx = i;
+  audio.src = streams[i];
+  audio.load();
+  audio.play();
+  btns[i].innerText = "⏸";
+  boxes[i].classList.add(stationClasses[i]);
+  lyricsDiv.innerText = stationLyrics[i];
+
   if(!started){init();started=true;}
 }
 
-const canvas=document.getElementById("visualizer"), c=canvas.getContext("2d");
+const canvas=document.getElementById("visualizer");
+const c=canvas.getContext("2d");
 function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
-window.onresize=resize; resize();
+addEventListener("resize",resize);resize();
 
 function init(){
-  ctx=new(window.AudioContext||window.webkitAudioContext)();
-  analyser=ctx.createAnalyser(); analyser.fftSize=512;
-  source=ctx.createMediaElementSource(audio);
-  source.connect(analyser); analyser.connect(ctx.destination);
-  animate();
+ ctx=new (window.AudioContext||window.webkitAudioContext)();
+ analyser=ctx.createAnalyser();
+ analyser.fftSize=512;
+ source=ctx.createMediaElementSource(audio);
+ source.connect(analyser);
+ analyser.connect(ctx.destination);
+ animate();
 }
 
 function animate(){
-  requestAnimationFrame(animate); if(!analyser||audio.paused)return;
-  const data=new Uint8Array(analyser.frequencyBinCount); analyser.getByteFrequencyData(data);
-  c.clearRect(0,0,canvas.width,canvas.height);
-  const cx=canvas.width/2, cy=canvas.height/2, rad=140;
-  for(let i=0;i<180;i++){
-    const v=data[i], ang=(i/180)*Math.PI*2, x1=cx+Math.cos(ang)*rad, y1=cy+Math.sin(ang)*rad, x2=cx+Math.cos(ang)*(rad+v*0.8), y2=cy+Math.sin(ang)*(rad+v*0.8);
-    c.strokeStyle=`hsl(${i*2},100%,60%)`; c.lineWidth=3; c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke();
-  }
-}
+ requestAnimationFrame(animate);
+ if(!analyser || audio.paused) return;
 
-function postToWall(){
-  const n=document.getElementById("wall-name"), m=document.getElementById("wall-msg"), w=document.getElementById("mural-messages");
-  if(!n.value.trim()||!m.value.trim())return;
-  const div=document.createElement("div"); div.className="msg-item"; div.innerHTML=`<b>${n.value}:</b> ${m.value}`;
-  w.prepend(div); localStorage.setItem("emotionMural",w.innerHTML); m.value="";
-}
+ const data=new Uint8Array(analyser.frequencyBinCount);
+ analyser.getByteFrequencyData(data);
+ c.clearRect(0,0,canvas.width,canvas.height);
 
-window.onload=()=>{
-  const s=localStorage.getItem("emotionMural"), w=document.getElementById("mural-messages");
-  if(s) w.innerHTML=s; else w.innerHTML='<div class="msg-item">Welcome!</div>';
-};
+ const cx=canvas.width/2;
+ const cy=canvas.height/2;
+ const baseRadius=140;
+ const bars=180;
+
+ for(let i=0;i<bars;i++){
+   const v=data[i];
+   const angle=(i/bars)*Math.PI*2;
+   const barLen=v*0.8;
+   const x1=cx+Math.cos(angle)*baseRadius;
+   const y1=cy+Math.sin(angle)*baseRadius;
+   const x2=cx+Math.cos(angle)*(baseRadius+barLen);
+   const y2=cy+Math.sin(angle)*(barRadius+barLen);
+   c.strokeStyle=`hsl(${i*2},100%,60%)`;
+   c.lineWidth=3;
+   c.beginPath();
+   c.moveTo(x1,y1);
+   c.lineTo(x2,y2);
+   c.stroke();
+ }
+}
 </script>
+
 </body>
 </html>
