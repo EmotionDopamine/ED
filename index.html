@@ -116,43 +116,42 @@ h1{
 .play-btn.metal{background: linear-gradient(135deg, #666, #333);}
 
 #lyrics{
-  margin: 30px 0; font-size: 1.1rem; font-style: italic; color: #00ffff; 
+  margin: 25px 0; font-size: 1.1rem; font-style: italic; color: #00ffff; 
   height: 40px; z-index: 3; text-align: center;
 }
 
-/* CANVAS DE FUNDO (VISUALIZER) */
+/* CANVAS DE FUNDO */
 #visualizer{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
 
-/* ===== MAPA HOLOGRAFICO ===== */
+/* ===== CONTAINER DO MAPA REAL ===== */
+#map-wrapper {
+  z-index: 5; margin-top: 20px;
+  display: flex; flex-direction: column; align-items: center;
+}
+
 #map-container {
-  z-index: 5; margin-top: 20px; 
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.4);
   border: 1px solid rgba(0, 255, 255, 0.2); 
-  border-radius: 50%; /* Agora é redondo para acomodar o globo */
-  width: 200px; height: 200px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 50%; 
+  width: 220px; height: 220px;
+  overflow: hidden; /* Garante que o widget fique redondo */
+  display: flex; align-items: center; justify-content: center;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  position: relative;
 }
 
-/* Título flutuante do mapa */
-.map-title {
-  position: absolute;
-  top: -25px;
-  width: 100%;
-  text-align: center;
+/* Texto de Localização do Usuário */
+#user-location {
+  margin-top: 15px;
+  color: #00ff99;
   font-size: 0.8rem;
-  color: #00ffff;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-#globe-canvas {
-  border-radius: 50%;
-  width: 180px;
-  height: 180px;
+  background: rgba(0,0,0,0.8);
+  padding: 5px 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 255, 153, 0.3);
+  z-index: 5;
+  text-align: center;
+  min-height: 25px;
 }
 
 footer { margin: 30px 0 10px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
@@ -161,8 +160,7 @@ footer { margin: 30px 0 10px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
   body { justify-content: flex-start; padding-top: 30px; }
   .player { width: 46%; min-width: 140px; padding: 15px; }
   .play-btn { width: 55px; height: 55px; font-size: 20px; }
-  #map-container { width: 160px; height: 160px; margin-top: 10px; }
-  #globe-canvas { width: 140px; height: 140px; }
+  #map-container { width: 180px; height: 180px; }
 }
 </style>
 </head>
@@ -185,9 +183,12 @@ footer { margin: 30px 0 10px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 
 <div id="lyrics">Select a station to feel the dopamine...</div>
 
-<div id="map-container">
-  <div class="map-title">Live Signal</div>
-  <canvas id="globe-canvas"></canvas>
+<div id="map-wrapper">
+  <div id="map-container">
+    <script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=53331899133&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33&amp;bv=35&amp;rs=100&amp;as=100" async="async"></script>
+  </div>
+  
+  <div id="user-location">Detecting your location...</div>
 </div>
 
 <footer>© 2026 Emotion & Dopamine</footer>
@@ -299,92 +300,18 @@ function animate(){
     c.stroke();
   }
 }
-</script>
 
-<script>
-(function(){
-  const globeCanvas = document.getElementById('globe-canvas');
-  const gCtx = globeCanvas.getContext('2d');
-  
-  // Ajusta o tamanho interno do canvas
-  globeCanvas.width = 400; 
-  globeCanvas.height = 400;
-
-  let angle = 0;
-  const dots = [];
-  const numDots = 400; // Quantidade de pontos no globo
-
-  // Criação dos pontos (coordenadas esféricas)
-  for(let i=0; i<numDots; i++){
-    const theta = Math.random() * 2 * Math.PI; // Longitude
-    const phi = Math.acos((Math.random() * 2) - 1); // Latitude
-    dots.push({theta, phi, color: Math.random() > 0.95 ? '#ff0000' : '#00ffff'}); // 5% de chance de ser vermelho (visitante)
-  }
-
-  function drawGlobe() {
-    gCtx.clearRect(0, 0, globeCanvas.width, globeCanvas.height);
-    
-    const cx = globeCanvas.width / 2;
-    const cy = globeCanvas.height / 2;
-    const r = 160; // Raio do globo
-
-    angle += 0.005; // VELOCIDADE: Aumente ou diminua aqui (0.005 é bem lento)
-
-    dots.forEach(dot => {
-      // Rotação
-      let theta = dot.theta + angle;
-      let phi = dot.phi;
-
-      // Conversão Esférica -> Cartesiana 3D
-      let x = r * Math.sin(phi) * Math.cos(theta);
-      let y = r * Math.sin(phi) * Math.sin(theta);
-      let z = r * Math.cos(phi);
-
-      // Projeção 3D -> 2D (Considerando rotação do eixo Y para visualização)
-      // Simples projeção ortográfica, mas vamos rotacionar o eixo 'x' visualmente
-      // Na verdade, apenas o x se move com o angulo acima.
-      
-      // Efeito de Profundidade (z-scale)
-      // Os pontos com z > 0 estão na frente, z < 0 atrás
-      // Usamos o 'x' gerado acima como profundidade Z na tela (rotação lateral)
-      
-      // Recalculando coordenadas para rotação em torno do eixo Y
-      let x3d = r * Math.sin(phi) * Math.cos(theta);
-      let z3d = r * Math.sin(phi) * Math.sin(theta);
-      let y3d = r * Math.cos(phi);
-
-      // Fator de escala baseada na profundidade (perspective)
-      let scale = (z3d + 250) / 250; 
-      
-      // Desenhamos apenas se estiver na "frente" (ou desenhamos tudo com alpha)
-      let alpha = (z3d + r) / (2 * r); // 0 a 1 baseado na profundidade
-      
-      if(z3d > -50) { // Corta o que está muito atrás para não ficar confuso
-        gCtx.beginPath();
-        let size = 2 * scale;
-        
-        // Visitantes ativos (pontos vermelhos) são maiores
-        if(dot.color === '#ff0000') {
-           size = 4 * scale;
-           gCtx.shadowBlur = 10;
-           gCtx.shadowColor = '#ff0000';
-        } else {
-           gCtx.shadowBlur = 0;
-        }
-
-        gCtx.fillStyle = dot.color;
-        gCtx.globalAlpha = Math.max(0.1, alpha); // Transparência baseada na profundidade
-        gCtx.arc(cx + x3d, cy + y3d, size, 0, Math.PI * 2);
-        gCtx.fill();
-        gCtx.globalAlpha = 1;
-      }
-    });
-
-    requestAnimationFrame(drawGlobe);
-  }
-  
-  drawGlobe();
-})();
+// SCRIPT PARA DETECTAR O IP DO USUÁRIO (API EXTERNA)
+fetch('https://ipapi.co/json/')
+  .then(response => response.json())
+  .then(data => {
+    const locDiv = document.getElementById('user-location');
+    locDiv.innerText = `Connected from: ${data.city}, ${data.country_name}`;
+  })
+  .catch(error => {
+    console.log('Erro ao obter IP:', error);
+    document.getElementById('user-location').innerText = "Location hidden (Privacy or AdBlock)";
+  });
 </script>
 
 </body>
