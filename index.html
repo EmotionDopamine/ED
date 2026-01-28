@@ -21,7 +21,7 @@ body{
   justify-content:center;
   overflow-x:hidden; 
   position: relative;
-  padding: 10px;
+  padding: 20px;
 }
 
 /* ===== FUNDO: 3D NEON GRID ===== */
@@ -68,38 +68,16 @@ h1{
 
 .subtitle{
   opacity:.8;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   z-index: 3;
   font-size: clamp(0.9rem, 2.5vw, 1.2rem);
   text-align: center;
 }
 
-/* ===== O PALCO (ÁREA DOS BONECOS/GIFS) ===== */
-#stage-container {
-  height: 200px; /* Altura fixa para não empurrar o layout */
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2; /* Fica atrás dos botões mas na frente do fundo */
-  margin-bottom: 15px;
-  pointer-events: none; /* Clica através da imagem se precisar */
-}
-
-.stage-dancer {
-  display: none; /* Escondido por padrão */
-  max-height: 100%;
-  max-width: 300px;
-  filter: drop-shadow(0 0 10px rgba(0,255,255,0.5)); /* Brilho em volta da imagem */
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-
 /* ===== PLAYERS ===== */
 .players{
   display: flex;
-  gap: 15px;
+  gap: 20px;
   z-index: 3;
   flex-wrap: wrap;
   justify-content: center;
@@ -109,19 +87,19 @@ h1{
 .player{
   background: rgba(0,0,0,0.8);
   backdrop-filter: blur(8px);
-  border-radius: 15px;
-  padding: 15px;
-  width: 160px;
+  border-radius: 20px;
+  padding: 20px;
+  width: 180px;
   text-align: center;
   border: 1px solid rgba(255,255,255,0.1);
   transition: transform 0.3s ease;
 }
 
-.player h3{font-size: 0.9rem; margin-bottom: 10px; white-space: nowrap;}
+.player h3{font-size: 1rem; margin-bottom: 12px; white-space: nowrap;}
 
 .play-btn{
-  width: 55px; height: 55px; border-radius: 50%; border: none; cursor: pointer;
-  font-size: 22px; color: #fff; transition: 0.2s;
+  width: 65px; height: 65px; border-radius: 50%; border: none; cursor: pointer;
+  font-size: 24px; color: #fff; transition: 0.2s;
 }
 
 /* Cores Ativas */
@@ -138,52 +116,28 @@ h1{
 .play-btn.metal{background: linear-gradient(135deg, #666, #333);}
 
 #lyrics{
-  margin: 20px 0; font-size: 1rem; font-style: italic; color: #00ffff; 
-  height: 30px; z-index: 3; text-align: center;
+  margin: 30px 0; font-size: 1.1rem; font-style: italic; color: #00ffff; 
+  height: 40px; z-index: 3; text-align: center;
 }
 
-/* CANVAS DE FUNDO */
-#visualizer{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
 
-/* ===== CONTAINER DO MAPA REAL ===== */
-#map-wrapper {
-  z-index: 5; margin-top: 10px;
-  display: flex; flex-direction: column; align-items: center;
-}
-
+/* ===== MAPA REDUZIDO ===== */
 #map-container {
-  background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(0, 255, 255, 0.2); 
-  border-radius: 50%; 
-  width: 180px; height: 180px;
-  overflow: hidden; 
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-  position: relative;
-}
-
-#user-location {
-  margin-top: 10px;
-  color: #00ff99;
-  font-size: 0.75rem;
-  background: rgba(0,0,0,0.8);
-  padding: 5px 15px;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 255, 153, 0.3);
-  z-index: 5;
+  z-index: 5; margin-top: 15px; background: rgba(0,0,0,0.8);
+  padding: 10px; border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.2); 
+  width: 220px; /* Reduzi de 320px para 220px */
   text-align: center;
-  min-height: 25px;
 }
+#map-container h2 { font-size: 0.7rem; color: #00ffff; margin-bottom: 8px; opacity: 0.7; }
 
-footer { margin: 20px 0 10px 0; font-size: 10px; opacity: 0.5; z-index: 3; }
+footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 
 @media (max-width: 650px) {
-  body { justify-content: flex-start; padding-top: 20px; }
-  .player { width: 45%; min-width: 130px; padding: 12px; }
-  .play-btn { width: 50px; height: 50px; font-size: 18px; }
-  #map-container { width: 150px; height: 150px; }
-  /* No celular, o palco fica um pouco menor */
-  #stage-container { height: 160px; }
+  body { justify-content: flex-start; padding-top: 30px; }
+  .player { width: 46%; min-width: 140px; padding: 15px; }
+  .play-btn { width: 55px; height: 55px; font-size: 20px; }
+  #map-container { width: 180px; } /* Ainda menor no telemóvel */
 }
 </style>
 </head>
@@ -196,18 +150,6 @@ footer { margin: 20px 0 10px 0; font-size: 10px; opacity: 0.5; z-index: 3; }
 <h1>Emotion&Dopamine</h1>
 <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
 
-<div id="stage-container">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzR6aWwxZWF4ZGZ0aWx4ZWF4ZGZ0aWx4ZWF4ZGZ0aWx4ZWF4ZGZ0aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/l41lMgMCcCr7b9Q3K/giphy.gif" class="stage-dancer" id="anim-0" alt="Hardcore DJ">
-  
-  <img src="https://media.tenor.com/2X8sW2W6bXEAAAAi/music-dj.gif" class="stage-dancer" id="anim-1" alt="Hands Up DJ">
-  
-  <img src="https://media.giphy.com/media/QvSPJ5z7u0iFq/giphy.gif" class="stage-dancer" id="anim-2" alt="Hands Up 2">
-  
-  <img src="https://media.giphy.com/media/3o7TKRn6V9N2OmBmSI/giphy.gif" class="stage-dancer" id="anim-3" alt="Rock Guitar">
-  
-  <img src="https://media.giphy.com/media/gui67fZ3xRqCRjJyZp/giphy.gif" class="stage-dancer" id="anim-4" alt="Metal Headbang">
-</div>
-
 <div class="players">
   <div class="player" id="player-0"><h3>Happy Hardcore</h3><button class="play-btn hardcore" onclick="playRadio(0)">▶</button></div>
   <div class="player" id="player-1"><h3>Hands Up</h3><button class="play-btn handsup" onclick="playRadio(1)">▶</button></div>
@@ -218,14 +160,13 @@ footer { margin: 20px 0 10px 0; font-size: 10px; opacity: 0.5; z-index: 3; }
 
 <div id="lyrics">Select a station to feel the dopamine...</div>
 
-<div id="map-wrapper">
-  <div id="map-container">
-    <script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=53331899133&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33&amp;bv=35&amp;rs=100&amp;as=100" async="async"></script>
+<div id="map-container">
+  <h2>Global Visitors</h2>
+  <div style="transform: scale(0.8); transform-origin: top center;"> <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
   </div>
-  <div id="user-location">Detecting your location...</div>
 </div>
 
-<footer>© 2026 Emotion & Dopamine</footer>
+<footer>© 2026 Emotion&Dopamine</footer>
 
 <script>
 const streams=[
@@ -237,52 +178,39 @@ const streams=[
 ];
 
 const stationLyrics = [
-  "♪ Happiness is just a state of mind... ♪",
-  "♪ Put your hands up in the air! ♪",
-  "♪ Hands up for the weekend! ♪",
-  "♪ Long live Rock 'n' Roll... ♪",
-  "♪ Heavy metal thunder! ♪"
+  "♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪",
+  "♪ Put your hands up in the air! The rhythm is taking control! ♪",
+  "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
+  "♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪",
+  "♪ Heavy metal thunder! Breaking the chains of reality. ♪"
 ];
 
 const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup2-bg', 'rock-bg', 'metal-bg'];
 let audio=new Audio(); audio.crossOrigin="anonymous";
 let ctx, analyser, source, started=false, currentIdx = -1;
 
-// Função para controlar os bonecos
-function updateStage(index, isPlaying) {
-  // Esconde todos primeiro
-  const allDancers = document.querySelectorAll('.stage-dancer');
-  allDancers.forEach(img => img.style.display = 'none');
-
-  // Se estiver tocando, mostra o boneco correspondente
-  if (isPlaying && index !== -1) {
-    const dancer = document.getElementById(`anim-${index}`);
-    if(dancer) dancer.style.display = 'block';
-  }
-}
-
 function playRadio(i){
   const btns = document.querySelectorAll('.play-btn');
   const boxes = document.querySelectorAll('.player');
   const lyricsDiv = document.getElementById('lyrics');
 
+  // Lógica de Pausa/Play na mesma rádio
   if (currentIdx === i) {
     if (audio.paused) {
       audio.play(); 
       btns[i].innerText = "⏸";
       boxes[i].classList.add(stationClasses[i]);
-      lyricsDiv.innerText = stationLyrics[i];
-      updateStage(i, true); // MOSTRA O BONECO
+      lyricsDiv.innerText = stationLyrics[i]; // CORREÇÃO: Volta a mostrar o texto ao dar play
     } else {
       audio.pause(); 
       btns[i].innerText = "▶";
       boxes[i].classList.remove(stationClasses[i]);
       lyricsDiv.innerText = "Paused...";
-      updateStage(i, false); // ESCONDE O BONECO
     }
     return;
   }
 
+  // Troca de Rádio
   if(currentIdx !== -1) {
     btns[currentIdx].innerText = "▶";
     boxes[currentIdx].classList.remove(stationClasses[currentIdx]);
@@ -294,8 +222,6 @@ function playRadio(i){
   btns[i].innerText = "⏸";
   boxes[i].classList.add(stationClasses[i]);
   lyricsDiv.innerText = stationLyrics[i];
-  
-  updateStage(i, true); // MOSTRA O BONECO NOVO
 
   if(!started){ init(); started=true; }
 }
@@ -329,8 +255,7 @@ function animate(){
   const cy = canvas.height / 2;
   
   const isMobile = window.innerWidth < 650;
-  // Reduzi levemente o circulo para não brigar com o boneco
-  const baseRadius = isMobile ? Math.min(cx, cy) * 0.45 : 170; 
+  const baseRadius = isMobile ? Math.min(cx, cy) * 0.5 : 180; 
   const bars = isMobile ? 120 : 180;
 
   for(let i=0; i<bars; i++){
@@ -352,17 +277,6 @@ function animate(){
     c.stroke();
   }
 }
-
-fetch('https://ipapi.co/json/')
-  .then(response => response.json())
-  .then(data => {
-    const locDiv = document.getElementById('user-location');
-    locDiv.innerText = `Connected from: ${data.city}, ${data.country_name}`;
-  })
-  .catch(error => {
-    document.getElementById('user-location').innerText = "Location hidden";
-  });
 </script>
-
 </body>
 </html>
