@@ -2,198 +2,94 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Emotion & Dopamine | Neural Station</title>
+    <title>Emotion & Dopamine | Neural Experience</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Monoton&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --pink: #ff00ff; --cyan: #00ffff; --orange: #ff8c00; --red: #ff3e3e; --gray: #888;
+            --pink: #ff00ff;
+            --cyan: #00ffff;
+            --orange: #ff9900;
+            --red: #ff3333;
+            --metal: #a0a0a0;
+            --glass-bg: rgba(20, 20, 20, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+
         body { 
-            background: #000; color: #fff; min-height: 100vh; 
-            display: flex; flex-direction: column; align-items: center; 
-            overflow-x: hidden; padding-bottom: 50px;
+            background-color: #050505; 
+            color: #fff; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            overflow: hidden; 
+            position: relative;
         }
 
-        /* Background Dinâmico */
-        .bg { position: fixed; top: 0; z-index: -1; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1a0033 0%, #000 80%); }
+        /* === FUNDO 3D GRID IGUAL A IMAGEM === */
+        .perspective-grid {
+            position: absolute; width: 200vw; height: 100vh;
+            background: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg) translateY(0);
+            bottom: -50%; left: -50%;
+            animation: moveGrid 10s linear infinite;
+            z-index: -2;
+            mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+        }
+        @keyframes moveGrid { from { transform: perspective(500px) rotateX(60deg) translateY(0); } to { transform: perspective(500px) rotateX(60deg) translateY(50px); } }
+
+        .vignette { position: absolute; width: 100%; height: 100%; box-shadow: inset 0 0 150px #000; z-index: -1; pointer-events: none; }
+
+        /* === LOGO CENTRAL "VIDRO E NEON" === */
+        .logo-container { position: relative; width: 220px; height: 220px; margin-bottom: 10px; z-index: 10; }
+        .logo-svg { width: 100%; height: 100%; filter: drop-shadow(0 0 20px rgba(255,0,255,0.4)); animation: hoverLogo 4s ease-in-out infinite; }
+        @keyframes hoverLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        h1 {
+            font-family: 'Monoton', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem);
+            background: linear-gradient(to right, #fff, var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0,255,255,0.5); letter-spacing: 2px; margin-bottom: 5px; text-align: center; z-index: 5;
+        }
+        .subtitle { font-size: 0.8rem; letter-spacing: 4px; color: rgba(255,255,255,0.6); margin-bottom: 20px; z-index: 5; text-transform: uppercase; }
+
+        /* === PALCO DOS BONECOS (SILHUETAS NEON) === */
+        #stage-area {
+            height: 140px; width: 100%; display: flex; justify-content: center; align-items: flex-end;
+            margin-bottom: 20px; z-index: 5; pointer-events: none;
+        }
+        .dancer-svg { height: 100%; width: auto; max-width: 300px; display: none; filter: drop-shadow(0 0 10px currentColor); }
+        .dancer-svg.visible { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from{opacity:0; transform: scale(0.9);} to{opacity:1; transform: scale(1);} }
+
+        /* === BOTÕES ESTILO APP === */
+        .controls { display: flex; gap: 15px; z-index: 10; flex-wrap: wrap; justify-content: center; max-width: 800px; }
         
-        /* Logo em SVG (Não precisa de arquivo) */
-        .logo-svg { width: 150px; height: 150px; margin-top: 30px; filter: drop-shadow(0 0 15px var(--pink)); animation: float 3s infinite alternate; }
-        @keyframes float { from { transform: translateY(0); } to { transform: translateY(-10px); } }
-
-        h1 { font-family: 'Monoton', cursive; font-size: clamp(1.5rem, 5vw, 3rem); color: #fff; text-shadow: 0 0 10px var(--pink); margin: 10px 0 30px; text-align: center; }
-
-        /* Área dos Bonecos */
-        #stage { height: 150px; display: flex; align-items: flex-end; margin-bottom: 20px; }
-        .dancer { display: none; width: 120px; height: 120px; }
-        .active-dancer { display: block !important; }
-
-        /* Grid de Estações */
-        .grid { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; max-width: 900px; padding: 0 20px; }
-        .card { 
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 15px; padding: 20px; width: 160px; text-align: center;
-            transition: 0.3s; cursor: pointer; backdrop-filter: blur(10px);
+        .station-btn {
+            position: relative; width: 110px; height: 110px;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 20px; cursor: pointer; transition: 0.3s;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            backdrop-filter: blur(10px); box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            overflow: hidden;
         }
-        .card:hover { transform: scale(1.05); border-color: var(--cyan); }
-        .card h3 { font-size: 0.8rem; margin-bottom: 15px; letter-spacing: 1px; }
-
-        .play-btn { 
-            width: 50px; height: 50px; border-radius: 50%; border: none; 
-            background: #222; color: #fff; font-size: 20px; cursor: pointer; transition: 0.3s;
-        }
-
-        /* Estados Ativos */
-        .card.playing { border-width: 2px; box-shadow: 0 0 20px var(--this-color); border-color: var(--this-color); }
-        .card.playing .play-btn { background: var(--this-color); box-shadow: 0 0 10px var(--this-color); }
-
-        /* Visualizer */
-        #canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.4; }
-
-        /* Rodapé de Informações */
-        .info-bar { 
-            margin-top: 40px; background: rgba(0,0,0,0.8); border: 1px solid var(--cyan);
-            padding: 10px 25px; border-radius: 30px; display: flex; align-items: center; gap: 15px;
-            font-size: 0.7rem; color: var(--cyan); text-shadow: 0 0 5px var(--cyan);
-        }
-        #revolver-map { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 1px solid var(--cyan); }
-    </style>
-</head>
-<body>
-
-<div class="bg"></div>
-<canvas id="canvas"></canvas>
-
-<svg class="logo-svg" viewBox="0 0 100 100">
-    <defs>
-        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:var(--pink);stop-opacity:1" />
-            <stop offset="100%" style="stop-color:var(--cyan);stop-opacity:1" />
-        </linearGradient>
-    </defs>
-    <path d="M50 85 C10 65 10 35 50 20 C90 35 90 65 50 85" fill="none" stroke="url(#grad)" stroke-width="4"/>
-    <text x="50" y="58" font-family="Orbitron" font-size="22" font-weight="bold" fill="#fff" text-anchor="middle">ED</text>
-    <circle cx="50" cy="52" r="35" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-</svg>
-
-<h1>Emotion&Dopamine</h1>
-
-<div id="stage">
-    <svg id="d-0" class="dancer" viewBox="0 0 100 100">
-        <circle cx="50" cy="40" r="10" stroke="var(--pink)" fill="none" stroke-width="3">
-            <animate attributeName="r" values="10;13;10" dur="0.4s" repeatCount="indefinite" />
-        </circle>
-        <path d="M50 50 L50 80 M50 60 L30 45 M50 60 L70 45 M50 80 L35 95 M50 80 L65 95" stroke="var(--pink)" stroke-width="3" fill="none" />
-    </svg>
-    <svg id="d-1" class="dancer" viewBox="0 0 100 100">
-        <path d="M20 80 L80 80 M30 80 L30 60 M70 80 L70 60" stroke="var(--cyan)" stroke-width="3" />
-        <path d="M50 60 L30 30 M50 60 L70 30" stroke="var(--cyan)" stroke-width="3" fill="none">
-            <animate attributeName="d" values="M50 60 L30 30 M50 60 L70 30;M50 60 L20 40 M50 60 L80 40;M50 60 L30 30 M50 60 L70 30" dur="0.5s" repeatCount="indefinite" />
-        </path>
-    </svg>
-    <svg id="d-3" class="dancer" viewBox="0 0 100 100">
-        <path d="M40 90 L60 20 M30 30 L50 30" stroke="var(--red)" stroke-width="4" fill="none">
-            <animateTransform attributeName="transform" type="rotate" from="-10 50 50" to="10 50 50" dur="0.2s" repeatCount="indefinite" />
-        </path>
-    </svg>
-</div>
-
-<div class="grid">
-    <div class="card" style="--this-color: var(--pink)" onclick="toggle(0)">
-        <h3>HARDCORE</h3><button class="play-btn">▶</button>
-    </div>
-    <div class="card" style="--this-color: var(--cyan)" onclick="toggle(1)">
-        <h3>HANDS UP</h3><button class="play-btn">▶</button>
-    </div>
-    <div class="card" style="--this-color: var(--orange)" onclick="toggle(2)">
-        <h3>HANDS UP 2</h3><button class="play-btn">▶</button>
-    </div>
-    <div class="card" style="--this-color: var(--red)" onclick="toggle(3)">
-        <h3>ROCK</h3><button class="play-btn">▶</button>
-    </div>
-    <div class="card" style="--this-color: var(--gray)" onclick="toggle(4)">
-        <h3>METAL</h3><button class="play-btn">▶</button>
-    </div>
-</div>
-
-<div class="info-bar">
-    <div id="revolver-map">
-        <script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=53331899133&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33&amp;bv=35&amp;rs=100&amp;as=100" async="async"></script>
-    </div>
-    <div id="status">SISTEMA ONLINE // ESCANEANDO IP...</div>
-</div>
-
-<script>
-    const streams = [
-        "https://stream.zeno.fm/r8s232x3xg0uv",
-        "https://rautemusik.stream25.radiohost.de/club",
-        "https://listen.technobase.fm/tunein-mp3",
-        "https://rautemusik.stream37.radiohost.de/rock",
-        "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
-    ];
-
-    let audio = new Audio(); audio.crossOrigin = "anonymous";
-    let current = -1, ctx, analyser, started = false;
-
-    function toggle(i) {
-        const cards = document.querySelectorAll('.card');
-        const dancers = document.querySelectorAll('.dancer');
         
-        if (current === i) {
-            if (audio.paused) { audio.play(); } 
-            else { audio.pause(); cards[i].classList.remove('playing'); dancers.forEach(d=>d.classList.remove('active-dancer')); return; }
-        }
-
-        if (current !== -1) cards[current].classList.remove('playing');
-        dancers.forEach(d=>d.classList.remove('active-dancer'));
-
-        current = i;
-        audio.src = streams[i];
-        audio.play();
-        cards[i].classList.add('playing');
-        if(document.getElementById(`d-${i}`)) document.getElementById(`d-${i}`).classList.add('active-dancer');
-
-        if (!started) { init(); started = true; }
-    }
-
-    function init() {
-        ctx = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = ctx.createAnalyser();
-        const source = ctx.createMediaElementSource(audio);
-        source.connect(analyser); analyser.connect(ctx.destination);
+        .station-btn:hover { transform: translateY(-5px); border-color: #fff; }
+        .station-btn h3 { font-size: 0.65rem; margin-top: 10px; color: #ccc; z-index: 2; pointer-events: none; }
         
-        const canvas = document.getElementById('canvas');
-        const c = canvas.getContext('2d');
+        /* Ícone Play dentro do botão */
+        .icon-play { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.3s; z-index: 2; }
+
+        /* Cores e Brilhos Ativos */
+        .station-btn::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: 0.3s; z-index: 1; }
         
-        function draw() {
-            requestAnimationFrame(draw);
-            if(audio.paused) return;
-            const data = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(data);
-            
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            const cx = canvas.width/2, cy = canvas.height/2;
-            
-            for(let i=0; i<100; i++) {
-                const bar = data[i] * 0.8;
-                const a = (i/100) * Math.PI * 2;
-                c.strokeStyle = cards[current].style.getPropertyValue('--this-color');
-                c.lineWidth = 2;
-                c.beginPath();
-                c.moveTo(cx + Math.cos(a)*150, cy + Math.sin(a)*150);
-                c.lineTo(cx + Math.cos(a)*(150+bar), cy + Math.sin(a)*(150+bar));
-                c.stroke();
-            }
-        }
-        draw();
-    }
-
-    fetch('https://ipapi.co/json/').then(r=>r.json()).then(data => {
-        document.getElementById('status').innerText = `LIVE SIGNAL: ${data.ip} // ${data.city.toUpperCase()}, ${data.country_code}`;
-    });
-</script>
-
-</body>
-</html>
+        .btn-hc.active { border-color: var(--pink); box-shadow: 0 0 30px rgba(255,0,255,0.4); }
+        .btn-hc.active::before { background: radial-gradient(circle at center, rgba(255,0,255,0.3), transparent); opacity: 1; }
+        .btn-hc .
