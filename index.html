@@ -2,334 +2,247 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Emotion & Dopamine | Official Station</title>
+<title>Emotion & Dopamine | Neural Experience</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link rel="icon" type="image/png" href="logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Monoton&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --neon-pink: #ff00ff;
-  --neon-cyan: #00ffff;
-  --neon-orange: #ff8c00;
-  --bg-dark: #050505;
+    --neon-pink: #ff00ff;
+    --neon-cyan: #00ffff;
+    --neon-orange: #ff8c00;
+    --neon-red: #ff3e3e;
+    --glass: rgba(255, 255, 255, 0.05);
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family: 'Orbitron', sans-serif;-webkit-tap-highlight-color:transparent;}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
 
-body{
-  background-color: var(--bg-dark);
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  overflow-x:hidden; 
-  position: relative;
-  padding: 15px;
+body {
+    background-color: #000;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 20px;
 }
 
-/* ===== FUNDO 3D GRID ===== */
-.grid-container {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  perspective: 600px;
-  z-index: 0;
-  background: radial-gradient(circle at 50% 50%, #1a0033 0%, #000 90%);
+/* Background Effect */
+.bg-glow {
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 100vw; height: 100vh;
+    background: radial-gradient(circle at center, #1a0033 0%, #000 70%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
 }
 
-.grid {
-  position: absolute;
-  bottom: -30%; left: -50%; width: 200%; height: 100%;
-  background-image: 
-    linear-gradient(to right, rgba(255, 0, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 60px 60px;
-  transform: rotateX(65deg);
-  animation: moveGrid 8s linear infinite;
+/* Logo */
+.logo-container {
+    margin-top: 20px;
+    text-align: center;
+    z-index: 10;
 }
 
-@keyframes moveGrid {
-  0% { transform: rotateX(65deg) translateY(0); }
-  100% { transform: rotateX(65deg) translateY(60px); }
+.logo-placeholder {
+    width: 150px; height: 150px;
+    background: url('image_e25643.jpg') center/cover; /* Usa sua logo enviada */
+    border-radius: 50%;
+    box-shadow: 0 0 30px var(--neon-pink);
+    border: 2px solid var(--neon-cyan);
+    margin-bottom: 15px;
+    animation: pulse 3s infinite alternate;
 }
 
-/* ===== NOVA LOGO MELHORADA ===== */
-.main-logo {
-  width: 180px;
-  height: auto;
-  z-index: 10;
-  filter: drop-shadow(0 0 15px var(--neon-pink));
-  margin-bottom: 10px;
-  animation: logoFloat 4s ease-in-out infinite;
-  transition: filter 0.5s ease;
+@keyframes pulse {
+    from { transform: scale(1); box-shadow: 0 0 20px var(--neon-pink); }
+    to { transform: scale(1.05); box-shadow: 0 0 40px var(--neon-cyan); }
 }
 
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 15px var(--neon-pink)); }
-  50% { transform: translateY(-10px) scale(1.05); filter: drop-shadow(0 0 25px var(--neon-cyan)); }
+h1 { font-family: 'Monoton', cursive; font-size: clamp(1.5rem, 5vw, 3rem); text-shadow: 0 0 10px var(--neon-pink); margin-bottom: 30px; }
+
+/* Stage & Dancers (CSS Art) */
+#stage {
+    height: 180px; width: 100%;
+    display: flex; justify-content: center; align-items: flex-end;
+    margin-bottom: 20px; position: relative;
 }
 
-h1{
-  font-family: 'Monoton', cursive;
-  font-size: clamp(1.8rem, 6vw, 3.2rem);
-  font-weight: 400;
-  color: #fff;
-  z-index: 3;
-  text-align: center;
-  text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-cyan);
-  letter-spacing: 2px;
+.performer { display: none; width: 200px; height: 150px; fill: none; stroke-width: 2; }
+
+/* Animações dos Bonecos */
+.active .beat-line { animation: beat 0.5s infinite alternate; }
+@keyframes beat { from { height: 10px; } to { height: 40px; } }
+
+/* Player Cards */
+.station-grid {
+    display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;
+    max-width: 1000px; z-index: 5;
 }
 
-.subtitle{
-  opacity:.7;
-  margin-bottom: 20px;
-  z-index: 3;
-  font-size: clamp(0.7rem, 2vw, 1rem);
-  text-transform: uppercase;
-  letter-spacing: 4px;
+.card {
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 15px; width: 160px;
+    text-align: center; backdrop-filter: blur(10px);
+    transition: 0.3s;
 }
 
-/* ===== STAGE / DANCERS ===== */
-#stage-container {
-  height: 180px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-  margin-bottom: 15px;
-}
-
-.stage-dancer {
-  display: none;
-  max-height: 100%;
-  filter: drop-shadow(0 0 10px var(--neon-cyan));
-}
-
-/* ===== BOTÕES COM TRANSIÇÃO DE CORES ===== */
-.players{
-  display: flex;
-  gap: 15px;
-  z-index: 3;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 1000px;
-}
-
-.player{
-  background: rgba(10,10,10,0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 15px;
-  width: 160px;
-  text-align: center;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.player:hover {
-  transform: translateY(-5px);
-  background: rgba(20,20,20,0.9);
-}
-
-.player h3{ font-size: 0.8rem; margin-bottom: 12px; color: #ccc; }
+.card:hover { border-color: var(--neon-cyan); transform: translateY(-5px); }
 
 .play-btn {
-  width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer;
-  font-size: 22px; color: #fff; position: relative;
-  transition: all 0.3s ease;
-  background: #222;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    width: 55px; height: 55px; border-radius: 50%; border: none;
+    background: #222; color: #fff; font-size: 20px; cursor: pointer;
+    transition: 0.3s; margin-top: 10px;
 }
 
-/* Efeitos de Cor nos Botões */
-.btn-hardcore { border: 2px solid var(--neon-pink); }
-.btn-hardcore:hover, .active-hardcore .play-btn { background: var(--neon-pink); box-shadow: 0 0 20px var(--neon-pink); }
+/* Cores por Estação */
+.active-0 { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+.active-1 { border-color: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); }
+.active-2 { border-color: var(--neon-orange); box-shadow: 0 0 15px var(--neon-orange); }
+.active-3 { border-color: var(--neon-red); box-shadow: 0 0 15px var(--neon-red); }
+.active-4 { border-color: #888; box-shadow: 0 0 15px #888; }
 
-.btn-handsup { border: 2px solid var(--neon-cyan); }
-.btn-handsup:hover, .active-handsup .play-btn { background: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); }
+#visualizer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.5; }
 
-.btn-handsup2 { border: 2px solid var(--neon-orange); }
-.btn-handsup2:hover, .active-handsup2 .play-btn { background: var(--neon-orange); box-shadow: 0 0 20px var(--neon-orange); }
-
-.btn-rock { border: 2px solid #ff4444; }
-.btn-rock:hover, .active-rock .play-btn { background: #ff4444; box-shadow: 0 0 20px #ff4444; }
-
-.btn-metal { border: 2px solid #888; }
-.btn-metal:hover, .active-metal .play-btn { background: #888; box-shadow: 0 0 20px #888; }
-
-#lyrics{
-  margin: 20px 0; font-size: 0.9rem; color: var(--neon-cyan); 
-  height: 25px; z-index: 3; text-shadow: 0 0 5px var(--neon-cyan);
+/* IP Tracker Box */
+.live-data {
+    margin-top: 30px; background: rgba(0,0,0,0.8);
+    border: 1px solid var(--neon-cyan); border-radius: 10px;
+    padding: 10px 20px; font-size: 0.7rem; color: var(--neon-cyan);
+    z-index: 10; display: flex; align-items: center; gap: 15px;
 }
 
-/* ===== MAPA / IP ===== */
-#map-wrapper { z-index: 5; margin-top: 20px; text-align: center; }
-#map-container {
-  background: #000; border-radius: 50%; width: 160px; height: 160px;
-  overflow: hidden; border: 1px solid rgba(0,255,255,0.2);
-  box-shadow: 0 0 30px rgba(0,255,255,0.1);
-}
+#map-container { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 1px solid var(--neon-cyan); }
 
-#user-location {
-  margin-top: 10px; color: var(--neon-cyan); font-size: 0.7rem;
-  padding: 5px 15px; border-radius: 20px; background: rgba(0,0,0,0.6);
-  border: 1px solid rgba(0,255,255,0.2);
-}
-
-#visualizer { position:fixed; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none; opacity: 0.6; }
-footer { margin: 20px 0; font-size: 10px; opacity: 0.4; z-index: 3; letter-spacing: 2px; }
-
-@media (max-width: 650px) {
-  .main-logo { width: 130px; }
-  .player { width: 44%; }
-}
+@media (max-width: 600px) { .card { width: 45%; } }
 </style>
 </head>
-
 <body>
 
-<div class="grid-container"><div class="grid"></div></div>
+<div class="bg-glow"></div>
 <canvas id="visualizer"></canvas>
 
-<img src="logo.png" alt="Emotion&Dopamine" class="main-logo">
-<h1>Emotion&Dopamine</h1>
-<div class="subtitle">Neural Audio Experience</div>
-
-<div id="stage-container">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzR6aWwxZWF4ZGZ0aWx4ZWF4ZGZ0aWx4ZWF4ZGZ0aWx4ZWF4ZGZ0aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/l41lMgMCcCr7b9Q3K/giphy.gif" class="stage-dancer" id="anim-0">
-  <img src="https://media.tenor.com/2X8sW2W6bXEAAAAi/music-dj.gif" class="stage-dancer" id="anim-1">
-  <img src="https://media.giphy.com/media/QvSPJ5z7u0iFq/giphy.gif" class="stage-dancer" id="anim-2">
-  <img src="https://media.giphy.com/media/3o7TKRn6V9N2OmBmSI/giphy.gif" class="stage-dancer" id="anim-3">
-  <img src="https://media.giphy.com/media/gui67fZ3xRqCRjJyZp/giphy.gif" class="stage-dancer" id="anim-4">
+<div class="logo-container">
+    <div class="logo-placeholder"></div>
+    <h1>Emotion&Dopamine</h1>
 </div>
 
-<div class="players">
-  <div class="player" id="player-0"><h3>HAPPY HARDCORE</h3><button class="play-btn btn-hardcore" onclick="playRadio(0)">▶</button></div>
-  <div class="player" id="player-1"><h3>HANDS UP</h3><button class="play-btn btn-handsup" onclick="playRadio(1)">▶</button></div>
-  <div class="player" id="player-2"><h3>HANDS UP 2</h3><button class="play-btn btn-handsup2" onclick="playRadio(2)">▶</button></div>
-  <div class="player" id="player-3"><h3>ROCK</h3><button class="play-btn btn-rock" onclick="playRadio(3)">▶</button></div>
-  <div class="player" id="player-4"><h3>METAL</h3><button class="play-btn btn-metal" onclick="playRadio(4)">▶</button></div>
+<div id="stage">
+    <svg id="dance-0" class="performer" viewBox="0 0 100 100">
+        <path d="M50 20 C30 20 20 40 20 55 C20 75 40 85 50 85 C60 85 80 75 80 55 C80 40 70 20 50 20" stroke="#ff00ff" />
+        <circle cx="50" cy="55" r="10" fill="#ff00ff">
+            <animate attributeName="r" values="8;12;8" dur="0.5s" repeatCount="indefinite" />
+        </circle>
+    </svg>
+    <svg id="dance-1" class="performer" viewBox="0 0 100 100">
+        <rect x="20" y="70" width="60" height="10" stroke="#00ffff" />
+        <circle cx="35" cy="70" r="8" stroke="#00ffff" />
+        <circle cx="65" cy="70" r="8" stroke="#00ffff" />
+        <path d="M50 70 L50 40 L40 30 M50 40 L60 30" stroke="#00ffff" />
+    </svg>
+    <svg id="dance-2" class="performer" viewBox="0 0 100 100">
+        <rect x="10" y="40" width="5" height="20" fill="#ff8c00"><animate attributeName="height" values="20;50;20" dur="0.4s" repeatCount="indefinite" /></rect>
+        <rect x="30" y="30" width="5" height="40" fill="#ff8c00"><animate attributeName="height" values="40;70;40" dur="0.6s" repeatCount="indefinite" /></rect>
+        <rect x="50" y="20" width="5" height="60" fill="#ff8c00"><animate attributeName="height" values="60;30;60" dur="0.3s" repeatCount="indefinite" /></rect>
+        <rect x="70" y="40" width="5" height="20" fill="#ff8c00"><animate attributeName="height" values="20;50;20" dur="0.5s" repeatCount="indefinite" /></rect>
+    </svg>
+    <svg id="dance-3" class="performer" viewBox="0 0 100 100">
+        <path d="M30 80 L70 20 M35 85 L25 75 C20 70 20 60 30 55 L40 65 C45 75 40 85 35 85" stroke="#ff3e3e" />
+    </svg>
+    <svg id="dance-4" class="performer" viewBox="0 0 100 100">
+        <path d="M40 80 L40 40 M60 80 L60 40 M40 40 L35 20 M60 40 L65 20 M45 40 L45 50 L55 50 L55 40" stroke="#888" />
+    </svg>
 </div>
 
-<div id="lyrics">INITIATING SYSTEM...</div>
-
-<div id="map-wrapper">
-  <div id="map-container">
-    <script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=53331899133&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33&amp;bv=35&amp;rs=100&amp;as=100" async="async"></script>
-  </div>
-  <div id="user-location">SCANNING UPLINK...</div>
+<div class="station-grid">
+    <div class="card" id="card-0"><h3>Hardcore</h3><button class="play-btn" onclick="play(0)">▶</button></div>
+    <div class="card" id="card-1"><h3>Hands Up</h3><button class="play-btn" onclick="play(1)">▶</button></div>
+    <div class="card" id="card-2"><h3>Hands Up 2</h3><button class="play-btn" onclick="play(2)">▶</button></div>
+    <div class="card" id="card-3"><h3>Rock</h3><button class="play-btn" onclick="play(3)">▶</button></div>
+    <div class="card" id="card-4"><h3>Metal</h3><button class="play-btn" onclick="play(4)">▶</button></div>
 </div>
 
-<footer>© 2026 EMOTION & DOPAMINE • V1.5</footer>
+<div class="live-data">
+    <div id="map-container">
+        <script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=53331899133&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33&amp;bv=35&amp;rs=100&amp;as=100" async="async"></script>
+    </div>
+    <div id="ip-info">LOCALIZING SIGNAL...</div>
+</div>
+
+<footer>© 2026 EMOTION & DOPAMINE • NEURAL V1.8</footer>
 
 <script>
-const streams=[
- "https://stream.zeno.fm/r8s232x3xg0uv",
- "https://rautemusik.stream25.radiohost.de/club",
- "https://listen.technobase.fm/tunein-mp3",
- "https://rautemusik.stream37.radiohost.de/rock",
- "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
+const streams = [
+    "https://stream.zeno.fm/r8s232x3xg0uv",
+    "https://rautemusik.stream25.radiohost.de/club",
+    "https://listen.technobase.fm/tunein-mp3",
+    "https://rautemusik.stream37.radiohost.de/rock",
+    "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
 ];
 
-const stationLyrics = ["HAPPY HARDCORE VIBES", "PUT YOUR HANDS UP!", "NON-STOP DANCE", "ROCK LEGACY", "METAL THUNDER"];
-const activeClasses = ['active-hardcore', 'active-handsup', 'active-handsup2', 'active-rock', 'active-metal'];
+let audio = new Audio(); audio.crossOrigin = "anonymous";
+let ctx, analyser, source, started = false, current = -1;
 
-let audio=new Audio(); audio.crossOrigin="anonymous";
-let ctx, analyser, source, started=false, currentIdx = -1;
-
-function updateStage(index, isPlaying) {
-  const allDancers = document.querySelectorAll('.stage-dancer');
-  allDancers.forEach(img => img.style.display = 'none');
-  if (isPlaying && index !== -1) {
-    const dancer = document.getElementById(`anim-${index}`);
-    if(dancer) dancer.style.display = 'block';
-  }
-}
-
-function playRadio(i){
-  const btns = document.querySelectorAll('.play-btn');
-  const boxes = document.querySelectorAll('.player');
-  const lyricsDiv = document.getElementById('lyrics');
-
-  if (currentIdx === i) {
-    if (audio.paused) {
-      audio.play(); btns[i].innerText = "⏸";
-      boxes[i].classList.add(activeClasses[i]);
-      updateStage(i, true);
-    } else {
-      audio.pause(); btns[i].innerText = "▶";
-      boxes[i].classList.remove(activeClasses[i]);
-      lyricsDiv.innerText = "SYSTEM PAUSED";
-      updateStage(i, false);
-    }
-    return;
-  }
-
-  if(currentIdx !== -1) {
-    btns[currentIdx].innerText = "▶";
-    boxes[currentIdx].classList.remove(activeClasses[currentIdx]);
-  }
-
-  currentIdx = i;
-  audio.src = streams[i];
-  audio.load(); audio.play();
-  btns[i].innerText = "⏸";
-  boxes[i].classList.add(activeClasses[i]);
-  lyricsDiv.innerText = stationLyrics[i];
-  updateStage(i, true);
-
-  if(!started){ init(); started=true; }
-}
-
-const canvas=document.getElementById("visualizer");
-const c=canvas.getContext("2d");
-function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
-window.onresize=resize; resize();
-
-function init(){
-  ctx=new (window.AudioContext||window.webkitAudioContext)();
-  analyser=ctx.createAnalyser(); analyser.fftSize=512;
-  source=ctx.createMediaElementSource(audio);
-  source.connect(analyser); analyser.connect(ctx.destination);
-  animate();
-}
-
-function animate(){
-  requestAnimationFrame(animate);
-  if(!analyser || audio.paused) return;
-  const data=new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(data);
-  c.clearRect(0, 0, canvas.width, canvas.height);
-  const cx = canvas.width / 2;
-  const cy = canvas.height / 2;
-  const baseRadius = window.innerWidth < 650 ? 120 : 180;
-
-  for(let i=0; i<180; i++){
-    const v = data[i];
-    const angle = (i / 180) * Math.PI * 2;
-    const barLen = v * 0.8;
-    const x1 = cx + Math.cos(angle) * baseRadius;
-    const y1 = cy + Math.sin(angle) * baseRadius;
-    const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
-    const y2 = cy + Math.sin(angle) * (baseRadius + barLen);
+function play(i) {
+    const cards = document.querySelectorAll('.card');
+    const dancers = document.querySelectorAll('.performer');
     
-    // Gradiente dinâmico baseado na logo
-    c.strokeStyle = i < 90 ? `hsl(${300 + i}, 100%, 50%)` : `hsl(${180 + (i-90)}, 100%, 50%)`;
-    c.lineWidth = 3;
-    c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke();
-  }
+    if (current === i) {
+        if (audio.paused) { audio.play(); } 
+        else { audio.pause(); cards[i].classList.remove(`active-${i}`); dancers[i].style.display='none'; return; }
+    }
+
+    if (current !== -1) { 
+        cards[current].classList.remove(`active-${current}`); 
+        dancers[current].style.display = 'none';
+    }
+
+    current = i;
+    audio.src = streams[i];
+    audio.play();
+    cards[i].classList.add(`active-${i}`);
+    dancers[i].style.display = 'block';
+
+    if (!started) { initAudio(); started = true; }
 }
 
-fetch('https://ipapi.co/json/')
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('user-location').innerText = `UPLINK: ${data.city.toUpperCase()} // ${data.country_code}`;
-  }).catch(() => { document.getElementById('user-location').innerText = "VIBE CENTRAL"; });
-</script>
+function initAudio() {
+    ctx = new AudioContext();
+    analyser = ctx.createAnalyser();
+    source = ctx.createMediaElementSource(audio);
+    source.connect(analyser); analyser.connect(ctx.destination);
+    loop();
+}
 
+function loop() {
+    requestAnimationFrame(loop);
+    if (!analyser || audio.paused) return;
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    
+    const canvas = document.getElementById('visualizer');
+    const c = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    
+    const cx = canvas.width / 2, cy = canvas.height / 2;
+    for (let i = 0; i < 150; i++) {
+        const barHeight = data[i] * 0.7;
+        const angle = (i / 150) * Math.PI * 2;
+        c.strokeStyle = `hsl(${current * 60 + i}, 100%, 50%)`;
+        c.beginPath();
+        c.moveTo(cx + Math.cos(angle) * 180, cy + Math.sin(angle) * 180);
+        c.lineTo(cx + Math.cos(angle) * (180 + barHeight), cy + Math.sin(angle) * (180 + barHeight));
+        c.stroke();
+    }
+}
+
+fetch('https://ipapi.co/json/').then(r => r.json()).then(d => {
+    document.getElementById('ip-info').innerText = `LIVE SIGNAL: ${d.ip} // ${d.city.toUpperCase()}, ${d.country_code}`;
+});
+</script>
 </body>
 </html>
