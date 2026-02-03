@@ -5,7 +5,7 @@
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
+<link rel="icon" type="image/jpg" href="image_e25643.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
 
 <style>
@@ -21,7 +21,7 @@ body{
   justify-content:center;
   overflow-x:hidden; 
   position: relative;
-  padding: 20px;
+  padding: 10px;
 }
 
 /* ===== FUNDO: 3D NEON GRID ===== */
@@ -49,95 +49,145 @@ body{
   100% { transform: rotateX(60deg) translateY(50px); }
 }
 
+/* ===== LOGO PRINCIPAL ===== */
+.main-logo {
+  width: 140px;
+  height: auto;
+  z-index: 10;
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(255, 0, 255, 0.6);
+  margin-bottom: 15px;
+  animation: logoGlow 3s infinite alternate;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes logoGlow {
+  from { box-shadow: 0 0 15px rgba(255, 0, 255, 0.4); transform: scale(1); }
+  to { box-shadow: 0 0 30px rgba(0, 255, 255, 0.6); transform: scale(1.03); }
+}
+
 h1{
   font-family: 'Monoton', cursive;
-  font-size: clamp(2.2rem, 8vw, 4.5rem);
+  font-size: clamp(1.8rem, 6vw, 3.5rem); /* Ajustado para caber com a logo */
   font-weight: 400;
   color: #fff;
   margin-bottom: 5px;
   z-index: 3;
   text-align: center;
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
-  animation: neonPulse 3s infinite alternate;
-}
-
-@keyframes neonPulse {
-  from { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
-  to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff; }
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
 }
 
 .subtitle{
   opacity:.8;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   z-index: 3;
-  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
   text-align: center;
 }
+
+/* ===== PALCO DOS BONECOS ===== */
+#stage-container {
+  height: 180px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  margin-bottom: 15px;
+  pointer-events: none;
+}
+
+.stage-dancer {
+  display: none;
+  max-height: 100%;
+  max-width: 280px;
+  filter: drop-shadow(0 0 15px rgba(255, 0, 255, 0.7));
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ===== PLAYERS ===== */
 .players{
   display: flex;
-  gap: 20px;
+  gap: 12px;
   z-index: 3;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 1200px;
+  max-width: 1000px;
 }
 
 .player{
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.85);
   backdrop-filter: blur(8px);
-  border-radius: 20px;
-  padding: 20px;
-  width: 180px;
+  border-radius: 15px;
+  padding: 12px;
+  width: 150px;
   text-align: center;
   border: 1px solid rgba(255,255,255,0.1);
-  transition: transform 0.3s ease;
+  transition: 0.3s;
 }
 
-.player h3{font-size: 1rem; margin-bottom: 12px; white-space: nowrap;}
+.player h3{font-size: 0.85rem; margin-bottom: 8px; white-space: nowrap;}
 
 .play-btn{
-  width: 65px; height: 65px; border-radius: 50%; border: none; cursor: pointer;
-  font-size: 24px; color: #fff; transition: 0.2s;
+  width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer;
+  font-size: 20px; color: #fff; transition: 0.2s;
 }
 
-/* Cores Ativas */
+/* Cores Ativas (Sincronizadas com a Logo) */
 .hardcore-bg { border-color: #ff00ff !important; box-shadow: 0 0 15px #ff00ff; }
 .handsup-bg { border-color: #00ffff !important; box-shadow: 0 0 15px #00ffff; }
-.handsup2-bg { border-color: #00ff99 !important; box-shadow: 0 0 15px #00ff99; }
+.handsup2-bg { border-color: #ff8c00 !important; box-shadow: 0 0 15px #ff8c00; }
 .rock-bg { border-color: #ff4444 !important; box-shadow: 0 0 15px #ff4444; }
 .metal-bg { border-color: #999 !important; box-shadow: 0 0 15px #999; }
 
 .play-btn.hardcore{background: linear-gradient(135deg, #ff00ff, #800080);}
 .play-btn.handsup{background: linear-gradient(135deg, #00ffff, #008080);}
-.play-btn.handsup2{background: linear-gradient(135deg, #00ff99, #008044);}
+.play-btn.handsup2{background: linear-gradient(135deg, #ff8c00, #b22222);}
 .play-btn.rock{background: linear-gradient(135deg, #ff4444, #800000);}
 .play-btn.metal{background: linear-gradient(135deg, #666, #333);}
 
 #lyrics{
-  margin: 30px 0; font-size: 1.1rem; font-style: italic; color: #00ffff; 
-  height: 40px; z-index: 3; text-align: center;
+  margin: 15px 0; font-size: 0.95rem; font-style: italic; color: #00ffff; 
+  height: 25px; z-index: 3; text-align: center;
 }
 
-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+#visualizer{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
 
-/* ===== MAPA REDUZIDO ===== */
+#map-wrapper {
+  z-index: 5; margin-top: 10px;
+  display: flex; flex-direction: column; align-items: center;
+}
+
 #map-container {
-  z-index: 5; margin-top: 15px; background: rgba(0,0,0,0.8);
-  padding: 10px; border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.2); 
-  width: 220px; /* Reduzi de 320px para 220px */
-  text-align: center;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(0, 255, 255, 0.2); 
+  border-radius: 50%; 
+  width: 160px; height: 160px;
+  overflow: hidden; 
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
 }
-#map-container h2 { font-size: 0.7rem; color: #00ffff; margin-bottom: 8px; opacity: 0.7; }
 
-footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
+#user-location {
+  margin-top: 8px;
+  color: #00ff99;
+  font-size: 0.7rem;
+  background: rgba(0,0,0,0.8);
+  padding: 4px 12px;
+  border-radius: 15px;
+  border: 1px solid rgba(0, 255, 153, 0.2);
+  z-index: 5;
+}
+
+footer { margin: 15px 0 5px 0; font-size: 10px; opacity: 0.5; z-index: 3; }
 
 @media (max-width: 650px) {
-  body { justify-content: flex-start; padding-top: 30px; }
-  .player { width: 46%; min-width: 140px; padding: 15px; }
-  .play-btn { width: 55px; height: 55px; font-size: 20px; }
-  #map-container { width: 180px; } /* Ainda menor no telemóvel */
+  body { justify-content: flex-start; padding-top: 15px; }
+  .main-logo { width: 100px; }
+  .player { width: 44%; min-width: 130px; }
+  #stage-container { height: 140px; }
 }
 </style>
 </head>
@@ -147,8 +197,18 @@ footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 <div class="grid-container"><div class="grid"></div></div>
 <canvas id="visualizer"></canvas>
 
+<img src="image_e25643.jpg" alt="Emotion&Dopamine Logo" class="main-logo">
+
 <h1>Emotion&Dopamine</h1>
 <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
+
+<div id="stage-container">
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzR6aWwxZWF4ZGZ0aWx4ZWF4ZGZ0aWx4ZWF4ZGZ0aWx4ZWF4ZGZ0aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/l41lMgMCcCr7b9Q3K/giphy.gif" class="stage-dancer" id="anim-0">
+  <img src="https://media.tenor.com/2X8sW2W6bXEAAAAi/music-dj.gif" class="stage-dancer" id="anim-1">
+  <img src="https://media.giphy.com/media/QvSPJ5z7u0iFq/giphy.gif" class="stage-dancer" id="anim-2">
+  <img src="https://media.giphy.com/media/3o7TKRn6V9N2OmBmSI/giphy.gif" class="stage-dancer" id="anim-3">
+  <img src="https://media.giphy.com/media/gui67fZ3xRqCRjJyZp/giphy.gif" class="stage-dancer" id="anim-4">
+</div>
 
 <div class="players">
   <div class="player" id="player-0"><h3>Happy Hardcore</h3><button class="play-btn hardcore" onclick="playRadio(0)">▶</button></div>
@@ -158,15 +218,16 @@ footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
   <div class="player" id="player-4"><h3>Metal</h3><button class="play-btn metal" onclick="playRadio(4)">▶</button></div>
 </div>
 
-<div id="lyrics">Select a station to feel the dopamine...</div>
+<div id="lyrics">Select a station...</div>
 
-<div id="map-container">
-  <h2>Global Visitors</h2>
-  <div style="transform: scale(0.8); transform-origin: top center;"> <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=p_m90O-Vz4O8L0S_99e_V5M7Xn5z"></script>
+<div id="map-wrapper">
+  <div id="map-container">
+    <script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=53331899133&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33&amp;bv=35&amp;rs=100&amp;as=100" async="async"></script>
   </div>
+  <div id="user-location">Locating...</div>
 </div>
 
-<footer>© 2026 Emotion&Dopamine</footer>
+<footer>© 2026 Emotion & Dopamine</footer>
 
 <script>
 const streams=[
@@ -178,39 +239,45 @@ const streams=[
 ];
 
 const stationLyrics = [
-  "♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪",
-  "♪ Put your hands up in the air! The rhythm is taking control! ♪",
-  "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
-  "♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪",
-  "♪ Heavy metal thunder! Breaking the chains of reality. ♪"
+  "♪ Happiness is just a state of mind... ♪",
+  "♪ Put your hands up in the air! ♪",
+  "♪ Hands up for the weekend! ♪",
+  "♪ Long live Rock 'n' Roll... ♪",
+  "♪ Heavy metal thunder! ♪"
 ];
 
 const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup2-bg', 'rock-bg', 'metal-bg'];
 let audio=new Audio(); audio.crossOrigin="anonymous";
 let ctx, analyser, source, started=false, currentIdx = -1;
 
+function updateStage(index, isPlaying) {
+  const allDancers = document.querySelectorAll('.stage-dancer');
+  allDancers.forEach(img => img.style.display = 'none');
+  if (isPlaying && index !== -1) {
+    const dancer = document.getElementById(`anim-${index}`);
+    if(dancer) dancer.style.display = 'block';
+  }
+}
+
 function playRadio(i){
   const btns = document.querySelectorAll('.play-btn');
   const boxes = document.querySelectorAll('.player');
   const lyricsDiv = document.getElementById('lyrics');
 
-  // Lógica de Pausa/Play na mesma rádio
   if (currentIdx === i) {
     if (audio.paused) {
-      audio.play(); 
-      btns[i].innerText = "⏸";
+      audio.play(); btns[i].innerText = "⏸";
       boxes[i].classList.add(stationClasses[i]);
-      lyricsDiv.innerText = stationLyrics[i]; // CORREÇÃO: Volta a mostrar o texto ao dar play
+      updateStage(i, true);
     } else {
-      audio.pause(); 
-      btns[i].innerText = "▶";
+      audio.pause(); btns[i].innerText = "▶";
       boxes[i].classList.remove(stationClasses[i]);
       lyricsDiv.innerText = "Paused...";
+      updateStage(i, false);
     }
     return;
   }
 
-  // Troca de Rádio
   if(currentIdx !== -1) {
     btns[currentIdx].innerText = "▶";
     boxes[currentIdx].classList.remove(stationClasses[currentIdx]);
@@ -222,17 +289,14 @@ function playRadio(i){
   btns[i].innerText = "⏸";
   boxes[i].classList.add(stationClasses[i]);
   lyricsDiv.innerText = stationLyrics[i];
+  updateStage(i, true);
 
   if(!started){ init(); started=true; }
 }
 
 const canvas=document.getElementById("visualizer");
 const c=canvas.getContext("2d");
-
-function resize(){
-  canvas.width=window.innerWidth;
-  canvas.height=window.innerHeight;
-}
+function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
 window.onresize=resize; resize();
 
 function init(){
@@ -246,37 +310,33 @@ function init(){
 function animate(){
   requestAnimationFrame(animate);
   if(!analyser || audio.paused) return;
-
   const data=new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(data);
   c.clearRect(0, 0, canvas.width, canvas.height);
-
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
-  
   const isMobile = window.innerWidth < 650;
-  const baseRadius = isMobile ? Math.min(cx, cy) * 0.5 : 180; 
-  const bars = isMobile ? 120 : 180;
-
-  for(let i=0; i<bars; i++){
+  const baseRadius = isMobile ? Math.min(cx, cy) * 0.4 : 160; 
+  for(let i=0; i<180; i++){
     const v = data[i];
-    const angle = (i / bars) * Math.PI * 2;
-    const barLen = v * (isMobile ? 0.5 : 0.8);
-
+    const angle = (i / 180) * Math.PI * 2;
+    const barLen = v * (isMobile ? 0.4 : 0.7);
     const x1 = cx + Math.cos(angle) * baseRadius;
     const y1 = cy + Math.sin(angle) * baseRadius;
     const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
     const y2 = cy + Math.sin(angle) * (baseRadius + barLen);
-
-    c.strokeStyle = `hsl(${i * (360/bars)}, 100%, 60%)`;
-    c.lineWidth = isMobile ? 2 : 4;
-    c.lineCap = "round";
-    c.beginPath();
-    c.moveTo(x1, y1);
-    c.lineTo(x2, y2);
-    c.stroke();
+    c.strokeStyle = `hsl(${i * 2}, 100%, 60%)`;
+    c.lineWidth = isMobile ? 2 : 3;
+    c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke();
   }
 }
+
+fetch('https://ipapi.co/json/')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('user-location').innerText = `${data.city}, ${data.country_code}`;
+  }).catch(() => { document.getElementById('user-location').innerText = "Vibe Central"; });
 </script>
+
 </body>
 </html>
