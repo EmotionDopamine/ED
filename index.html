@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Emotion & Dopamine | Oficial</title>
+    <title>Emotion & Dopamine | Neural Experience</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Monoton&display=swap" rel="stylesheet">
     
@@ -10,150 +10,235 @@
         :root {
             --neon-pink: #ff00ff;
             --neon-cyan: #00ffff;
-            --bg-color: #050505;
+            --neon-orange: #ff9900;
+            --neon-red: #ff3333;
+            --neon-metal: #a0a0a0;
+            --glass: rgba(20, 20, 20, 0.6);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
 
         body { 
-            background-color: var(--bg-color); 
+            background-color: #000; 
             color: #fff; 
             min-height: 100vh; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center;
             overflow-x: hidden;
-            padding: 20px;
+            padding-bottom: 50px;
         }
 
-        /* Fundo de Grade Simples e Leve */
-        .grid-bg {
+        /* === FUNDO 3D (Animado) === */
+        .bg-grid {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: center top;
+            animation: moveGrid 15s linear infinite;
+            z-index: -2;
+            opacity: 0.6;
+        }
+        
+        .bg-vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, #000 90%);
             z-index: -1;
-            opacity: 0.5;
+            pointer-events: none;
         }
 
-        /* === A LOGO (FEITA EM CSS PURO PARA NÃO SUMIR) === */
-        .logo-badge {
-            width: 160px; height: 160px;
-            border: 3px solid var(--neon-pink);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5), inset 0 0 20px rgba(255, 0, 255, 0.2);
-            margin-bottom: 20px;
-            position: relative;
-            background: rgba(0,0,0,0.8);
-            animation: pulseLogo 3s infinite alternate;
-        }
+        @keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 100px; } }
 
-        .logo-text {
-            font-family: 'Monoton', cursive;
-            font-size: 60px;
-            color: #fff;
-            text-shadow: 0 0 10px var(--neon-cyan);
-            line-height: 1;
+        /* === LOGO HEART NEON (SVG) === */
+        .logo-container {
+            margin-top: 30px;
+            width: 180px; height: 180px;
+            filter: drop-shadow(0 0 15px var(--neon-pink));
+            animation: float 4s ease-in-out infinite;
+            z-index: 10;
         }
-
-        @keyframes pulseLogo {
-            from { box-shadow: 0 0 20px var(--neon-pink); transform: scale(1); }
-            to { box-shadow: 0 0 50px var(--neon-cyan); transform: scale(1.02); }
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         h1 {
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-family: 'Monoton', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 10px;
             text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            z-index: 10;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
         }
 
-        .subtitle {
-            font-size: 0.8rem; color: var(--neon-cyan); margin-bottom: 30px; letter-spacing: 2px;
+        .subtitle { font-size: 0.8rem; letter-spacing: 4px; color: var(--neon-cyan); margin-bottom: 20px; text-transform: uppercase; z-index: 10; }
+
+        /* === PALCO DOS BONECOS === */
+        #stage {
+            height: 160px; width: 100%;
+            display: flex; justify-content: center; align-items: flex-end;
+            margin-bottom: 30px;
+            z-index: 5;
         }
 
-        /* === ÁREA VISUAL === */
-        .visualizer-container {
-            height: 100px; width: 100%; display: flex; justify-content: center; align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        /* Barras de áudio simuladas */
-        .bar {
-            width: 8px; margin: 0 3px; background: var(--neon-pink);
-            height: 10px; border-radius: 5px;
-            transition: height 0.1s;
-            box-shadow: 0 0 10px var(--neon-pink);
-        }
+        .dancer { display: none; width: 150px; height: 150px; filter: drop-shadow(0 0 10px currentColor); }
+        .dancer.active { display: block; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* === BOTÕES === */
+        /* === BOTÕES (Glassmorphism) === */
         .controls {
-            display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; max-width: 800px;
+            display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;
+            max-width: 900px; z-index: 10;
         }
 
-        .btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 15px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            color: #fff;
-            font-size: 0.9rem;
+        .card {
+            width: 110px; height: 110px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card:hover { transform: translateY(-5px); border-color: #fff; }
+
+        .card h3 { font-size: 0.65rem; margin-top: 12px; color: #ccc; pointer-events: none; }
+
+        .play-icon {
+            width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+            display: flex; align-items: center; justify-content: center; font-size: 14px;
             transition: 0.3s;
-            display: flex; align-items: center; gap: 10px;
         }
 
-        .btn:hover { background: rgba(255,255,255,0.1); border-color: #fff; transform: translateY(-3px); }
-        
-        .btn.playing {
-            background: var(--neon-cyan);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-cyan);
-            border-color: var(--neon-cyan);
-            font-weight: bold;
-        }
+        /* Cores dos Cards Ativos */
+        .card.active-0 { border-color: var(--neon-pink); box-shadow: 0 0 25px var(--neon-pink); }
+        .card.active-0 .play-icon { background: var(--neon-pink); color: #000; border-color: var(--neon-pink); }
 
-        /* Status */
-        .status-bar {
-            margin-top: 30px;
-            font-size: 0.7rem; color: #888;
-            border-top: 1px solid #333;
-            padding-top: 10px;
+        .card.active-1 { border-color: var(--neon-cyan); box-shadow: 0 0 25px var(--neon-cyan); }
+        .card.active-1 .play-icon { background: var(--neon-cyan); color: #000; border-color: var(--neon-cyan); }
+
+        .card.active-2 { border-color: var(--neon-orange); box-shadow: 0 0 25px var(--neon-orange); }
+        .card.active-2 .play-icon { background: var(--neon-orange); color: #000; border-color: var(--neon-orange); }
+
+        .card.active-3 { border-color: var(--neon-red); box-shadow: 0 0 25px var(--neon-red); }
+        .card.active-3 .play-icon { background: var(--neon-red); color: #000; border-color: var(--neon-red); }
+
+        .card.active-4 { border-color: var(--neon-metal); box-shadow: 0 0 25px var(--neon-metal); }
+        .card.active-4 .play-icon { background: var(--neon-metal); color: #000; border-color: var(--neon-metal); }
+
+        /* === VISUALIZER CANVAS (FUNDO) === */
+        #visualizer { position: fixed; bottom: 0; left: 0; width: 100%; height: 50%; z-index: 0; opacity: 0.5; pointer-events: none; }
+
+        /* === INFO BAR === */
+        .info-bar {
+            position: fixed; bottom: 20px; right: 20px;
+            background: rgba(0,0,0,0.8); border: 1px solid var(--neon-cyan);
+            padding: 8px 15px; border-radius: 8px; font-size: 0.7rem; color: var(--neon-cyan);
+            z-index: 20; display: flex; align-items: center; gap: 10px;
         }
+        .pulse { width: 8px; height: 8px; background: #0f0; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.2; } }
 
     </style>
 </head>
 <body>
 
-    <div class="grid-bg"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-vignette"></div>
+    <canvas id="visualizer"></canvas>
 
-    <div class="logo-badge">
-        <span class="logo-text">ED</span>
+    <div class="logo-container">
+        <svg viewBox="0 0 200 200" width="100%" height="100%">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:rgb(255,0,255);stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:rgb(0,255,255);stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path d="M100 180 C20 100 20 40 100 30 C180 40 180 100 100 180" fill="none" stroke="url(#grad1)" stroke-width="6" stroke-linecap="round" />
+            <text x="100" y="120" font-family="Orbitron" font-size="60" fill="#fff" text-anchor="middle" font-weight="bold">ED</text>
+            <ellipse cx="100" cy="50" rx="30" ry="10" fill="rgba(255,255,255,0.3)" />
+        </svg>
     </div>
 
-    <h1>Emotion & Dopamine</h1>
-    <div class="subtitle">Neural Audio Interface</div>
+    <h1>Emotion&Dopamine</h1>
+    <div class="subtitle">Select your Frequency</div>
 
-    <div class="visualizer-container" id="bars-area">
-        </div>
+    <div id="stage">
+        <svg id="dancer-0" class="dancer" viewBox="0 0 100 100" style="color: var(--neon-pink)">
+            <path d="M50 80 Q20 80 20 50 Q20 20 50 20 Q80 20 80 50 Q80 80 50 80" fill="none" stroke="currentColor" stroke-width="3">
+                <animate attributeName="stroke-width" values="3;6;3" dur="0.5s" repeatCount="indefinite"/>
+            </path>
+            <path d="M50 20 L50 80 M20 50 L80 50" stroke="currentColor" stroke-width="1"/>
+        </svg>
+
+        <svg id="dancer-1" class="dancer" viewBox="0 0 100 100" style="color: var(--neon-cyan)">
+            <rect x="20" y="70" width="60" height="5" fill="currentColor"/>
+            <circle cx="30" cy="72" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="70" cy="72" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M50 70 L50 40 L30 20 M50 40 L70 20" stroke="currentColor" stroke-width="3" fill="none">
+                 <animate attributeName="d" values="M50 70 L50 40 L30 20 M50 40 L70 20; M50 70 L50 40 L20 30 M50 40 L80 30; M50 70 L50 40 L30 20 M50 40 L70 20" dur="0.6s" repeatCount="indefinite"/>
+            </path>
+            <circle cx="50" cy="30" r="8" fill="currentColor"/>
+        </svg>
+
+        <svg id="dancer-2" class="dancer" viewBox="0 0 100 100" style="color: var(--neon-orange)">
+            <rect x="30" y="40" width="10" height="40" fill="currentColor"><animate attributeName="height" values="40;10;40" dur="0.4s" repeatCount="indefinite"/></rect>
+            <rect x="45" y="20" width="10" height="60" fill="currentColor"><animate attributeName="height" values="60;20;60" dur="0.3s" repeatCount="indefinite"/></rect>
+            <rect x="60" y="50" width="10" height="30" fill="currentColor"><animate attributeName="height" values="30;60;30" dur="0.5s" repeatCount="indefinite"/></rect>
+        </svg>
+
+        <svg id="dancer-3" class="dancer" viewBox="0 0 100 100" style="color: var(--neon-red)">
+            <path d="M40 80 L70 20 L80 25 L50 85 Z" fill="currentColor">
+                <animateTransform attributeName="transform" type="rotate" from="-10 50 50" to="10 50 50" dur="0.2s" repeatCount="indefinite"/>
+            </path>
+            <circle cx="45" cy="80" r="10" fill="none" stroke="currentColor" stroke-width="3"/>
+        </svg>
+
+        <svg id="dancer-4" class="dancer" viewBox="0 0 100 100" style="color: var(--neon-metal)">
+            <path d="M30 30 Q50 10 70 30 L70 60 Q70 80 50 80 Q30 80 30 60 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+            <circle cx="40" cy="45" r="5" fill="currentColor"/>
+            <circle cx="60" cy="45" r="5" fill="currentColor"/>
+            <path d="M45 70 L45 60 M55 70 L55 60" stroke="currentColor" stroke-width="2">
+                <animateTransform attributeName="transform" type="translate" values="0,0; 0,2; 0,0" dur="0.1s" repeatCount="indefinite"/>
+            </path>
+        </svg>
+    </div>
 
     <div class="controls">
-        <button class="btn" onclick="playStation(0, this)">Happy Hardcore</button>
-        <button class="btn" onclick="playStation(1, this)">Hands Up</button>
-        <button class="btn" onclick="playStation(2, this)">Hands Up 2</button>
-        <button class="btn" onclick="playStation(3, this)">Rock</button>
-        <button class="btn" onclick="playStation(4, this)">Metal</button>
+        <div class="card" onclick="play(0, this)">
+            <div class="play-icon">▶</div>
+            <h3>Hardcore</h3>
+        </div>
+        <div class="card" onclick="play(1, this)">
+            <div class="play-icon">▶</div>
+            <h3>Hands Up</h3>
+        </div>
+        <div class="card" onclick="play(2, this)">
+            <div class="play-icon">▶</div>
+            <h3>Hands Up 2</h3>
+        </div>
+        <div class="card" onclick="play(3, this)">
+            <div class="play-icon">▶</div>
+            <h3>Rock</h3>
+        </div>
+        <div class="card" onclick="play(4, this)">
+            <div class="play-icon">▶</div>
+            <h3>Metal</h3>
+        </div>
     </div>
 
-    <div class="status-bar" id="status-text">SYSTEM READY. SELECT A FREQUENCY.</div>
+    <div class="info-bar">
+        <div class="pulse"></div>
+        <div id="status-text">SYSTEM ONLINE</div>
+    </div>
 
     <script>
-        // Configuração das rádios
         const streams = [
             "https://stream.zeno.fm/r8s232x3xg0uv",
             "https://rautemusik.stream25.radiohost.de/club",
@@ -161,3 +246,115 @@
             "https://rautemusik.stream37.radiohost.de/rock",
             "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
         ];
+
+        let audio = new Audio();
+        let currentIdx = -1;
+        let isPlaying = false;
+        let canvas, ctx, animationId;
+
+        // Visualizer Simulado (Seguro contra erros)
+        function initCanvas() {
+            canvas = document.getElementById('visualizer');
+            ctx = canvas.getContext('2d');
+            resize();
+            window.addEventListener('resize', resize);
+            loop();
+        }
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (isPlaying) {
+                const cx = canvas.width / 2;
+                const barCount = 100;
+                const step = canvas.width / barCount;
+                
+                // Escolhe a cor baseada na estação
+                let color = '#fff';
+                if(currentIdx == 0) color = '#ff00ff';
+                if(currentIdx == 1) color = '#00ffff';
+                if(currentIdx == 2) color = '#ff9900';
+                if(currentIdx == 3) color = '#ff3333';
+                if(currentIdx == 4) color = '#a0a0a0';
+
+                ctx.fillStyle = color;
+
+                for (let i = 0; i < barCount; i++) {
+                    // Altura randômica para simular som (evita erro de CORS)
+                    const h = Math.random() * 100 + 10;
+                    const x = i * step;
+                    const y = canvas.height - h;
+                    
+                    // Desenha barra apenas se estiver tocando
+                    ctx.globalAlpha = 0.5;
+                    ctx.fillRect(x, y, step - 2, h);
+                }
+            }
+            requestAnimationFrame(loop);
+        }
+
+        function play(idx, btn) {
+            const allCards = document.querySelectorAll('.card');
+            const allDancers = document.querySelectorAll('.dancer');
+            const allIcons = document.querySelectorAll('.play-icon');
+
+            // Se clicou no mesmo botão que está tocando
+            if (currentIdx === idx) {
+                if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                    btn.classList.remove(`active-${idx}`);
+                    allDancers[idx].classList.remove('active');
+                    btn.querySelector('.play-icon').innerText = "▶";
+                    document.getElementById('status-text').innerText = "PAUSED";
+                } else {
+                    audio.play();
+                    isPlaying = true;
+                    btn.classList.add(`active-${idx}`);
+                    allDancers[idx].classList.add('active');
+                    btn.querySelector('.play-icon').innerText = "II";
+                    document.getElementById('status-text').innerText = "LIVE SIGNAL";
+                }
+                return;
+            }
+
+            // Resetar tudo
+            if (currentIdx !== -1) {
+                allCards[currentIdx].classList.remove(`active-${currentIdx}`);
+                allDancers[currentIdx].classList.remove('active');
+                allIcons[currentIdx].innerText = "▶";
+            }
+
+            // Tocar novo
+            currentIdx = idx;
+            audio.src = streams[idx];
+            audio.play().then(() => {
+                isPlaying = true;
+                btn.classList.add(`active-${idx}`);
+                allDancers[idx].classList.add('active');
+                btn.querySelector('.play-icon').innerText = "II";
+                document.getElementById('status-text').innerText = "STREAMING DATA...";
+            }).catch(e => {
+                console.error(e);
+                alert("Erro ao tocar rádio. Tente outra estação.");
+            });
+        }
+
+        // Inicia o canvas ao carregar
+        initCanvas();
+        
+        // Pega localização real (IP)
+        fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+             document.getElementById('status-text').innerText = `CONNECTED: ${data.city.toUpperCase()}`;
+        });
+
+    </script>
+</body>
+</html>
