@@ -5,7 +5,7 @@
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
+<link rel="icon" type="image/png" href="image_0.png">
 <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
 
 <style>
@@ -47,6 +47,19 @@ body{
 @keyframes moveGrid {
   0% { transform: rotateX(60deg) translateY(0); }
   100% { transform: rotateX(60deg) translateY(50px); }
+}
+
+/* ===== ESTILO DO LOGOTIPO (REDUZIDO) ===== */
+.site-logo {
+  width: 100%;
+  max-width: 100px; /* Reduzido conforme solicitado */
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+  position: relative;
+  z-index: 3;
 }
 
 h1{
@@ -126,6 +139,7 @@ footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 
 @media (max-width: 650px) {
   body { justify-content: flex-start; padding-top: 30px; }
+  .site-logo { max-width: 80px; }
   .player { width: 46%; min-width: 140px; padding: 15px; }
   .play-btn { width: 55px; height: 55px; font-size: 20px; }
 }
@@ -136,6 +150,8 @@ footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
 
 <div class="grid-container"><div class="grid"></div></div>
 <canvas id="visualizer"></canvas>
+
+<img src="image_0.png" alt="Emotion&Dopamine Logo" class="site-logo">
 
 <h1>Emotion&Dopamine</h1>
 <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
