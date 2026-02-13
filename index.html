@@ -3,154 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <title>Emotion&Dopamine</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+<link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;-webkit-tap-highlight-color:transparent;}
 
 body{
-  background:#000;
+  background-color: #000;
   color:#fff;
-  height:100vh;
-  overflow:hidden;
+  min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
+  overflow-x:hidden; 
+  position: relative;
+  padding: 20px;
 }
 
-/* GRID 3D */
-.grid{
-  position:fixed;
-  width:200%;
-  height:200%;
-  background:
-    linear-gradient(#ff00ff33 1px,transparent 1px),
-    linear-gradient(90deg,#00ffff33 1px,transparent 1px);
-  background-size:60px 60px;
-  transform:rotateX(65deg);
-  animation:gridMove 8s linear infinite;
-  z-index:0;
-}
-@keyframes gridMove{
-  from{transform:rotateX(65deg) translateY(0);}
-  to{transform:rotateX(65deg) translateY(60px);}
+/* ===== FUNDO: 3D NEON GRID ===== */
+.grid-container {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  perspective: 450px;
+  z-index: 0;
+  background: radial-gradient(circle at 50% 50%, #1a0033 0%, #000 80%);
 }
 
-/* TITLE */
+.grid {
+  position: absolute;
+  bottom: -30%; left: -50%; width: 200%; height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(255, 0, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 0, 255, 0.15) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: rotateX(60deg);
+  animation: moveGrid 5s linear infinite;
+}
+
+@keyframes moveGrid {
+  0% { transform: rotateX(60deg) translateY(0); }
+  100% { transform: rotateX(60deg) translateY(50px); }
+}
+
 h1{
-  font-size:3.5rem;
-  z-index:3;
-  text-shadow:
-    0 0 10px #ff00ff,
-    0 0 25px #00ffff,
-    0 0 45px #ff00ff;
-  animation:glow 3s infinite alternate;
+  font-family: 'Monoton', cursive;
+  font-size: clamp(2.2rem, 8vw, 4.5rem);
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 5px;
+  z-index: 3;
+  text-align: center;
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+  animation: neonPulse 3s infinite alternate;
 }
-@keyframes glow{
-  from{filter:hue-rotate(0deg);}
-  to{filter:hue-rotate(90deg);}
+
+@keyframes neonPulse {
+  from { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
+  to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff; }
 }
 
 .subtitle{
-  opacity:.7;
-  margin-bottom:25px;
-  z-index:3;
+  opacity:.8;
+  margin-bottom: 30px;
+  z-index: 3;
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  text-align: center;
 }
 
-/* PLAYERS */
+/* ===== PLAYERS ===== */
 .players{
-  display:flex;
-  gap:18px;
-  z-index:3;
-  flex-wrap:wrap;
-  justify-content:center;
+  display: flex;
+  gap: 20px;
+  z-index: 3;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1200px;
 }
 
 .player{
-  background:#000a;
-  backdrop-filter:blur(8px);
-  border-radius:20px;
-  padding:18px;
-  width:170px;
-  text-align:center;
-  border:1px solid #fff2;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 20px;
+  width: 180px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.3s ease;
 }
+
+.player h3{font-size: 1rem; margin-bottom: 12px; white-space: nowrap;}
 
 .play-btn{
-  width:65px;
-  height:65px;
-  border-radius:50%;
-  border:none;
-  color:#fff;
-  font-size:22px;
-  cursor:pointer;
-  box-shadow:0 0 18px #fff5;
+  width: 65px; height: 65px; border-radius: 50%; border: none; cursor: pointer;
+  font-size: 24px; color: #fff; transition: 0.2s;
 }
 
-/* COLORS */
-.hardcore{background:linear-gradient(135deg,#ff00ff,#ff6600);}
-.handsup{background:linear-gradient(135deg,#00ffff,#0066ff);}
-.handsup2{background:linear-gradient(135deg,#00ff99,#00cc66);}
-.rock{background:linear-gradient(135deg,#ff4444,#990000);}
-.metal{background:linear-gradient(135deg,#999,#333);}
+/* Cores Ativas */
+.hardcore-bg { border-color: #ff00ff !important; box-shadow: 0 0 15px #ff00ff; }
+.handsup-bg { border-color: #00ffff !important; box-shadow: 0 0 15px #00ffff; }
+.handsup2-bg { border-color: #00ff99 !important; box-shadow: 0 0 15px #00ff99; }
+.rock-bg { border-color: #ff4444 !important; box-shadow: 0 0 15px #ff4444; }
+.metal-bg { border-color: #999 !important; box-shadow: 0 0 15px #999; }
 
-/* HUD */
-.hud{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#000c;
-  padding:12px;
-  border-radius:12px;
-  font-size:12px;
-  z-index:3;
-  box-shadow:0 0 12px #00ffff55;
+.play-btn.hardcore{background: linear-gradient(135deg, #ff00ff, #800080);}
+.play-btn.handsup{background: linear-gradient(135deg, #00ffff, #008080);}
+.play-btn.handsup2{background: linear-gradient(135deg, #00ff99, #008044);}
+.play-btn.rock{background: linear-gradient(135deg, #ff4444, #800000);}
+.play-btn.metal{background: linear-gradient(135deg, #666, #333);}
+
+#lyrics{
+  margin: 30px 0; font-size: 1.1rem; font-style: italic; color: #00ffff; 
+  height: 40px; z-index: 3; text-align: center;
 }
 
-/* CANVAS */
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:1;
-}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
 
-footer{
-  position:fixed;
-  bottom:10px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:11px;
-  opacity:.6;
-  z-index:3;
+footer { margin: 20px 0; font-size: 11px; opacity: 0.5; z-index: 3; }
+
+@media (max-width: 650px) {
+  body { justify-content: flex-start; padding-top: 30px; }
+  .player { width: 46%; min-width: 140px; padding: 15px; }
+  .play-btn { width: 55px; height: 55px; font-size: 20px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="grid"></div>
-<canvas id="viz"></canvas>
+<div class="grid-container"><div class="grid"></div></div>
+<canvas id="visualizer"></canvas>
 
 <h1>Emotion&Dopamine</h1>
 <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
 
 <div class="players">
-  <div class="player"><h3>Happy Hardcore</h3><button class="play-btn hardcore" onclick="playRadio(0)">▶</button></div>
-  <div class="player"><h3>Hands Up</h3><button class="play-btn handsup" onclick="playRadio(1)">▶</button></div>
-  <div class="player"><h3>Hands Up 2</h3><button class="play-btn handsup2" onclick="playRadio(2)">▶</button></div>
-  <div class="player"><h3>Rock</h3><button class="play-btn rock" onclick="playRadio(3)">▶</button></div>
-  <div class="player"><h3>Metal</h3><button class="play-btn metal" onclick="playRadio(4)">▶</button></div>
+  <div class="player" id="player-0"><h3>Happy Hardcore</h3><button class="play-btn hardcore" onclick="playRadio(0)">▶</button></div>
+  <div class="player" id="player-1"><h3>Hands Up</h3><button class="play-btn handsup" onclick="playRadio(1)">▶</button></div>
+  <div class="player" id="player-2"><h3>Hands Up 2</h3><button class="play-btn handsup2" onclick="playRadio(2)">▶</button></div>
+  <div class="player" id="player-3"><h3>Rock</h3><button class="play-btn rock" onclick="playRadio(3)">▶</button></div>
+  <div class="player" id="player-4"><h3>Metal</h3><button class="play-btn metal" onclick="playRadio(4)">▶</button></div>
 </div>
 
-<div class="hud">● Live Signal<br>Global listeners connected</div>
+<div id="lyrics">Select a station to feel the dopamine...</div>
+
 <footer>© 2026 Emotion&Dopamine</footer>
 
 <script>
-/* STREAMS */
 const streams=[
  "https://stream.zeno.fm/r8s232x3xg0uv",
  "https://rautemusik.stream25.radiohost.de/club",
@@ -159,81 +161,104 @@ const streams=[
  "https://rautemusik.stream43.radiohost.de/metal_mp3-192"
 ];
 
-let audio=new Audio();
-audio.crossOrigin="anonymous";
+const stationLyrics = [
+  "♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪",
+  "♪ Put your hands up in the air! The rhythm is taking control! ♪",
+  "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
+  "♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪",
+  "♪ Heavy metal thunder! Breaking the chains of reality. ♪"
+];
 
-let ctx, analyser, source, started=false;
-
-function init(){
- ctx=new (window.AudioContext||window.webkitAudioContext)();
- analyser=ctx.createAnalyser();
- analyser.fftSize=256;
- source=ctx.createMediaElementSource(audio);
- source.connect(analyser);
- analyser.connect(ctx.destination);
- animate();
-}
+const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup2-bg', 'rock-bg', 'metal-bg'];
+let audio=new Audio(); audio.crossOrigin="anonymous";
+let ctx, analyser, source, started=false, currentIdx = -1;
 
 function playRadio(i){
- audio.src=streams[i];
- audio.play();
- if(!started){init();started=true;}
+  const btns = document.querySelectorAll('.play-btn');
+  const boxes = document.querySelectorAll('.player');
+  const lyricsDiv = document.getElementById('lyrics');
+
+  if (currentIdx === i) {
+    if (audio.paused) {
+      audio.play(); 
+      btns[i].innerText = "⏸";
+      boxes[i].classList.add(stationClasses[i]);
+      lyricsDiv.innerText = stationLyrics[i];
+    } else {
+      audio.pause(); 
+      btns[i].innerText = "▶";
+      boxes[i].classList.remove(stationClasses[i]);
+      lyricsDiv.innerText = "Paused...";
+    }
+    return;
+  }
+
+  if(currentIdx !== -1) {
+    btns[currentIdx].innerText = "▶";
+    boxes[currentIdx].classList.remove(stationClasses[currentIdx]);
+  }
+
+  currentIdx = i;
+  audio.src = streams[i];
+  audio.load(); audio.play();
+  btns[i].innerText = "⏸";
+  boxes[i].classList.add(stationClasses[i]);
+  lyricsDiv.innerText = stationLyrics[i];
+
+  if(!started){ init(); started=true; }
 }
 
-/* VISUALIZER */
-const canvas=document.getElementById("viz");
+const canvas=document.getElementById("visualizer");
 const c=canvas.getContext("2d");
 
 function resize(){
- canvas.width=innerWidth;
- canvas.height=innerHeight;
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
 }
-addEventListener("resize",resize);
-resize();
+window.onresize=resize; resize();
+
+function init(){
+  ctx=new (window.AudioContext||window.webkitAudioContext)();
+  analyser=ctx.createAnalyser(); analyser.fftSize=512;
+  source=ctx.createMediaElementSource(audio);
+  source.connect(analyser); analyser.connect(ctx.destination);
+  animate();
+}
 
 function animate(){
- requestAnimationFrame(animate);
- if(!analyser)return;
+  requestAnimationFrame(animate);
+  if(!analyser || audio.paused) return;
 
- const data=new Uint8Array(analyser.frequencyBinCount);
- analyser.getByteFrequencyData(data);
+  const data=new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(data);
+  c.clearRect(0, 0, canvas.width, canvas.height);
 
- c.clearRect(0,0,canvas.width,canvas.height);
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  
+  const isMobile = window.innerWidth < 650;
+  const baseRadius = isMobile ? Math.min(cx, cy) * 0.5 : 180; 
+  const bars = isMobile ? 120 : 180;
 
- const cx=canvas.width/2;
- const cy=canvas.height/2;
- const radius=140;
+  for(let i=0; i<bars; i++){
+    const v = data[i];
+    const angle = (i / bars) * Math.PI * 2;
+    const barLen = v * (isMobile ? 0.5 : 0.8);
 
- /* CIRCLE BARS */
- data.forEach((v,i)=>{
-   const angle=i/data.length*Math.PI*2;
-   const len=v*0.8;
+    const x1 = cx + Math.cos(angle) * baseRadius;
+    const y1 = cy + Math.sin(angle) * baseRadius;
+    const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
+    const y2 = cy + Math.sin(angle) * (baseRadius + barLen);
 
-   const x1=cx+Math.cos(angle)*radius;
-   const y1=cy+Math.sin(angle)*radius;
-
-   const x2=cx+Math.cos(angle)*(radius+len);
-   const y2=cy+Math.sin(angle)*(radius+len);
-
-   c.strokeStyle=`hsl(${i*3},100%,60%)`;
-   c.lineWidth=3;
-   c.beginPath();
-   c.moveTo(x1,y1);
-   c.lineTo(x2,y2);
-   c.stroke();
- });
-
- /* FLOOR WAVE */
- c.beginPath();
- for(let i=0;i<data.length;i++){
-   const x=i*(canvas.width/data.length);
-   const y=canvas.height-120-data[i];
-   c.lineTo(x,y);
- }
- c.strokeStyle="#00ffff";
- c.stroke();
+    c.strokeStyle = `hsl(${i * (360/bars)}, 100%, 60%)`;
+    c.lineWidth = isMobile ? 2 : 4;
+    c.lineCap = "round";
+    c.beginPath();
+    c.moveTo(x1, y1);
+    c.lineTo(x2, y2);
+    c.stroke();
+  }
 }
 </script>
-
 </body>
 </html>
