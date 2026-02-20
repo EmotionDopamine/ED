@@ -49,21 +49,29 @@ body{
   100% { transform: rotateX(60deg) translateY(50px); }
 }
 
+/* ===== LOGO RESTILIZADA ===== */
 h1{
   font-family: 'Monoton', cursive;
-  font-size: clamp(2.2rem, 8vw, 4.5rem);
+  font-size: clamp(1.6rem, 5vw, 3.2rem); /* Tamanho ligeiramente reduzido */
   font-weight: 400;
   color: #fff;
   margin-bottom: 5px;
   z-index: 3;
   text-align: center;
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
-  animation: neonPulse 3s infinite alternate;
+  letter-spacing: 3px; /* Espaçamento para visual mais moderno */
+  will-change: transform, text-shadow; /* Otimização de performance */
+  animation: neonPulse 3.5s ease-in-out infinite alternate;
 }
 
 @keyframes neonPulse {
-  from { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
-  to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff; }
+  0% { 
+    text-shadow: 0 0 5px #ff00ff, 0 0 15px #ff00ff, 0 0 30px #ff00ff; 
+    transform: scale(1);
+  }
+  100% { 
+    text-shadow: 0 0 8px #00ffff, 0 0 20px #00ffff, 0 0 45px #00ffff; 
+    transform: scale(1.03); /* Pulsação sutil crescendo 3% */
+  }
 }
 
 .subtitle{
