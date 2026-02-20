@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?sz=64&domain=icons8.com">
-<link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;-webkit-tap-highlight-color:transparent;}
@@ -51,15 +51,15 @@ body{
 
 /* ===== LOGO RESTILIZADA ===== */
 h1{
-  font-family: 'Monoton', cursive;
-  font-size: clamp(1.6rem, 5vw, 3.2rem); /* Tamanho ligeiramente reduzido */
+  font-family: 'Audiowide', cursive; /* Nova fonte aplicada */
+  font-size: clamp(1.6rem, 5vw, 3.2rem);
   font-weight: 400;
   color: #fff;
   margin-bottom: 5px;
   z-index: 3;
   text-align: center;
-  letter-spacing: 3px; /* Espaçamento para visual mais moderno */
-  will-change: transform, text-shadow; /* Otimização de performance */
+  letter-spacing: 4px;
+  will-change: transform, text-shadow;
   animation: neonPulse 3.5s ease-in-out infinite alternate;
 }
 
@@ -70,7 +70,7 @@ h1{
   }
   100% { 
     text-shadow: 0 0 8px #00ffff, 0 0 20px #00ffff, 0 0 45px #00ffff; 
-    transform: scale(1.03); /* Pulsação sutil crescendo 3% */
+    transform: scale(1.03);
   }
 }
 
@@ -258,15 +258,4 @@ function animate(){
     const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
     const y2 = cy + Math.sin(angle) * (baseRadius + barLen);
 
-    c.strokeStyle = `hsl(${i * (360/bars)}, 100%, 60%)`;
-    c.lineWidth = isMobile ? 2 : 4;
-    c.lineCap = "round";
-    c.beginPath();
-    c.moveTo(x1, y1);
-    c.lineTo(x2, y2);
-    c.stroke();
-  }
-}
-</script>
-</body>
-</html>
+    c.strokeStyle =
