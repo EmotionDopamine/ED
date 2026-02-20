@@ -7,6 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 130 130'%3E%3Cdefs%3E%3Cfilter id='g' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='4'/%3E%3C/filter%3E%3C/defs%3E%3Cpolygon points='38,55 55,32 82,32 99,55 82,78 55,78' fill='none' stroke='%2300ffff' stroke-width='11' filter='url(%23g)'/%3E%3Ccircle cx='108' cy='52' r='19' fill='none' stroke='%23ff00ff' stroke-width='8' filter='url(%23g)'/%3E%3Ccircle cx='50' cy='45' r='8' fill='%23ff00ff' filter='url(%23g)'/%3E%3Ccircle cx='78' cy='36' r='7' fill='%2300ffff' filter='url(%23g)'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
+/* (mesmo CSS da versão anterior - mantido exatamente igual) */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;-webkit-tap-highlight-color:transparent;}
 body{background-color:#000;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow-x:hidden;position:relative;padding:20px;}
 .grid-container{position:fixed;top:0;left:0;width:100%;height:100%;perspective:450px;z-index:0;background:radial-gradient(circle at 50% 50%, #1a0033 0%, #000 80%);}
@@ -120,22 +121,8 @@ footer{margin:25px 0;font-size:12px;opacity:0.5;z-index:3;}
 <footer>© 2026 Emotion&Dopamine • Feel Everything</footer>
 
 <script>
-const streams = [
-  "https://stream.zeno.fm/r8s232x3xg0uv",
-  "https://rautemusik.stream25.radiohost.de/club",
-  "https://listen.technobase.fm/tunein-mp3",
-  "https://rautemusik.stream37.radiohost.de/rock",
-  "https://rautemusik.stream43.radiohost.de/metal_mp3-192",
-  "https://rautemusik.stream43.radiohost.de/trance"
-];
-const stationLyrics = [
-  "♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪",
-  "♪ Put your hands up in the air! The rhythm is taking control! ♪",
-  "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
-  "♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪",
-  "♪ Heavy metal thunder! Breaking the chains of reality. ♪",
-  "♪ Trance into the infinite... Ride the waves of pure emotion! ♪"
-];
+const streams = ["https://stream.zeno.fm/r8s232x3xg0uv","https://rautemusik.stream25.radiohost.de/club","https://listen.technobase.fm/tunein-mp3","https://rautemusik.stream37.radiohost.de/rock","https://rautemusik.stream43.radiohost.de/metal_mp3-192","https://rautemusik.stream43.radiohost.de/trance"];
+const stationLyrics = ["♪ Happiness is just a state of mind... Feel the 170 BPM power! ♪","♪ Put your hands up in the air! The rhythm is taking control! ♪","♪ Hands up for the weekend! Let the melody guide your soul. ♪","♪ Long live Rock 'n' Roll... Can you hear the thunder in the drums? ♪","♪ Heavy metal thunder! Breaking the chains of reality. ♪","♪ Trance into the infinite... Ride the waves of pure emotion! ♪"];
 const stationClasses = ['hardcore-bg','handsup-bg','handsup2-bg','rock-bg','metal-bg','trance-bg'];
 const stationNames = ["Happy Hardcore","Hands Up","Hands Up 2","Rock","Metal","Trance"];
 
@@ -200,9 +187,7 @@ function updateVolumeIcon() { volumeIcon.textContent = currentVolume === 0 ? '�
 volumeSlider.addEventListener('input', () => { currentVolume = parseFloat(volumeSlider.value); audio.volume = currentVolume; updateVolumeIcon(); localStorage.setItem('ed_volume', currentVolume); });
 if (localStorage.getItem('ed_volume')) { currentVolume = parseFloat(localStorage.getItem('ed_volume')); volumeSlider.value = currentVolume; audio.volume = currentVolume; updateVolumeIcon(); }
 
-document.querySelectorAll('.play-btn').forEach(btn => {
-  btn.addEventListener('click', () => playRadio(parseInt(btn.dataset.index)));
-});
+document.querySelectorAll('.play-btn').forEach(btn => btn.addEventListener('click', () => playRadio(parseInt(btn.dataset.index))));
 
 function playRadio(i) {
   const btns = document.querySelectorAll('.play-btn');
@@ -234,11 +219,7 @@ audio.addEventListener('waiting', () => lyricsDiv.innerText = "Buffering...");
 audio.addEventListener('playing', () => { if (currentIdx !== -1) lyricsDiv.innerText = stationLyrics[currentIdx]; });
 audio.addEventListener('error', () => { lyricsDiv.innerHTML = `❌ Stream offline 😢<br>Try another station.`; liveIndicator.style.display = 'none'; });
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  initParticles();
-}
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); }
 window.onresize = resize; resize();
 
 function initVisualizer() {
@@ -283,7 +264,8 @@ function animate() {
     c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke();
   }
 
-  const centerR = baseRadius * 0.58 + (bass / 255) * 42;
+  // CÍRCULO CENTRAL MENOR (agora bem mais compacto)
+  const centerR = baseRadius * 0.48 + (bass / 255) * 32;
   c.shadowBlur = 60; c.shadowColor = '#ff00ff';
   c.fillStyle = 'rgba(255, 0, 255, 0.09)';
   c.beginPath(); c.arc(cx, cy, centerR, 0, Math.PI * 2); c.fill();
