@@ -36,13 +36,17 @@ body{background-color:#000;color:#fff;min-height:100vh;display:flex;flex-directi
 
 .players{display:flex;gap:20px;z-index:3;flex-wrap:wrap;justify-content:center;max-width:1200px;}
 .player{
-  background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);border-radius:22px;padding:18px;width:185px;
-  height:148px;
+  background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);border-radius:22px;padding:20px;width:185px;
+  height:160px; /* Aumentado levemente para respirar o design */
   display:flex;flex-direction:column;justify-content:center;align-items:center;
+  gap: 20px; /* GARANTE O ESPAÇAMENTO EXATO ENTRE NOME E BOTÃO */
   border:1px solid rgba(255,255,255,0.12);transition:all .4s ease;position:relative;
 }
-.player.playing{box-shadow:0 0 45px;animation:stationPulse 1.4s ease-in-out infinite alternate;}
-@keyframes stationPulse{from{box-shadow:0 0 25px}to{box-shadow:0 0 60px}}
+.player h3{font-size: 1.05rem; white-space: nowrap; margin: 0;}
+
+/* Brilho customizado via Variável CSS */
+.player.playing{animation:stationPulse 1.4s ease-in-out infinite alternate;}
+@keyframes stationPulse{from{box-shadow:0 0 15px var(--glow-color, #fff)}to{box-shadow:0 0 50px var(--glow-color, #fff)}}
 
 .play-btn{width:68px;height:68px;border-radius:50%;border:none;cursor:pointer;font-size:26px;color:#fff;transition:all .3s;}
 .play-btn.hardcore{background:linear-gradient(135deg,#ff00ff,#8a00ff);}
@@ -52,12 +56,13 @@ body{background-color:#000;color:#fff;min-height:100vh;display:flex;flex-directi
 .play-btn.metal{background:linear-gradient(135deg,#777,#333);}
 .play-btn.trance{background:linear-gradient(135deg,#aa00ff,#00ccff);}
 
-.hardcore-bg{border-color:#ff00ff !important;}
-.handsup-bg{border-color:#00ffff !important;}
-.handsup2-bg{border-color:#00ff99 !important;}
-.rock-bg{border-color:#ff4444 !important;}
-.metal-bg{border-color:#aaa !important;}
-.trance-bg{border-color:#aa00ff !important;}
+/* Configuração de cores individuais para a borda e o brilho (glow-color) */
+.hardcore-bg{border-color:#ff00ff !important; --glow-color: #ff00ff;}
+.handsup-bg{border-color:#00ffff !important; --glow-color: #00ffff;}
+.handsup2-bg{border-color:#00ff99 !important; --glow-color: #00ff99;}
+.rock-bg{border-color:#ff4444 !important; --glow-color: #ff4444;}
+.metal-bg{border-color:#aaa !important; --glow-color: #aaaaaa;}
+.trance-bg{border-color:#aa00ff !important; --glow-color: #aa00ff;}
 
 .now-playing{font-size:clamp(1.35rem,4.5vw,2.2rem);font-family:'Orbitron',sans-serif;color:#00ffff;text-shadow:0 0 25px #00ffff;margin:15px 0 8px;min-height:42px;z-index:3;}
 .live-indicator{color:#ff00ff;font-size:0.9rem;letter-spacing:3px;animation:liveBlink 1.3s infinite;margin-bottom:12px;z-index:3;display:none;}
@@ -245,7 +250,6 @@ function animate() {
   const cy = canvas.height / 2;
   const isMobile = window.innerWidth < 650;
   
-  // AQUI: Reduzi o tamanho do círculo externo (baseRadius)
   const baseRadius = isMobile ? Math.min(cx, cy) * 0.35 : 125; 
   const bars = isMobile ? 110 : 160;
   const bass = analyser ? (data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7]) / 8 : 40;
@@ -257,7 +261,8 @@ function animate() {
   for(let i = 0; i < bars; i++) {
     const v = data[i] || 0;
     const angle = (i / bars) * Math.PI * 2;
-    const barLen = v * (isMobile ? 0.82 : 1.22);
+    // BARRAS MENORES (reduzido o multiplicador de 0.82/1.22 para 0.55/0.85)
+    const barLen = v * (isMobile ? 0.55 : 0.85); 
     const x1 = cx + Math.cos(angle) * baseRadius;
     const y1 = cy + Math.sin(angle) * baseRadius;
     const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
@@ -271,28 +276,28 @@ function animate() {
   }
 
   // ==================== NOVO ENERGY CORE ====================
-  // AQUI: Aumentei bastante a proporção do círculo interno
-  const centerR = baseRadius * 0.75 + (bass / 255) * 35;
+  // CÍRCULO INTERNO E NÚCLEO AINDA MENORES
+  const centerR = baseRadius * 0.42 + (bass / 255) * 18;
 
   // Glow externo suave
   c.shadowBlur = 85; c.shadowColor = '#ff00ff';
   c.fillStyle = 'rgba(255,0,255,0.07)';
-  c.beginPath(); c.arc(cx, cy, centerR + 30, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(cx, cy, centerR + 20, 0, Math.PI * 2); c.fill();
 
   // Orb principal
   c.shadowBlur = 58; c.shadowColor = '#00ffff';
   c.fillStyle = 'rgba(0,255,255,0.14)';
   c.beginPath(); c.arc(cx, cy, centerR, 0, Math.PI * 2); c.fill();
 
-  // Núcleo interno (pulsando forte - agora muito maior)
+  // Núcleo interno (agora bem menor)
   c.shadowBlur = 32; c.shadowColor = '#ff00ff';
   c.fillStyle = '#ff00ff';
-  c.beginPath(); c.arc(cx, cy, centerR * 0.6, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(cx, cy, centerR * 0.4, 0, Math.PI * 2); c.fill();
 
-  // Anel externo fino
+  // Anel externo fino do core
   c.shadowBlur = 28; c.shadowColor = '#00ffff';
   c.strokeStyle = '#00ffff'; c.lineWidth = 3.5;
-  c.beginPath(); c.arc(cx, cy, centerR * 1.1, 0, Math.PI * 2); c.stroke();
+  c.beginPath(); c.arc(cx, cy, centerR * 0.95, 0, Math.PI * 2); c.stroke();
 }
 
 </script>
