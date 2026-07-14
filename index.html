@@ -4,102 +4,495 @@
 <meta charset="UTF-8">
 <title>Emotion&Dopamine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 130 130'%3E%3Cpolygon points='38,55 55,32 82,32 99,55 82,78 55,78' fill='none' stroke='%23ffffff' stroke-width='6'/%3E%3Ccircle cx='108' cy='52' r='14' fill='none' stroke='%23ffffff' stroke-width='4'/%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,5 90,28 90,72 50,95 10,72 10,28' fill='none' stroke='%23ffffff' stroke-width='6'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background-color:#050505;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow-x:hidden;position:relative;padding:20px;}
-.grid-container{position:fixed;top:0;left:0;width:100%;height:100%;perspective:450px;z-index:0;background:radial-gradient(circle at 50% 50%, #111115 0%, #050505 80%);}
-.grid{position:absolute;bottom:-30%;left:-50%;width:200%;height:100%;background-image:linear-gradient(to right,rgba(255,255,255,0.03)1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,0.03)1px,transparent 1px);background-size:50px 50px;transform:rotateX(60deg);animation:moveGrid 6s linear infinite;}
-@keyframes moveGrid{0%{transform:rotateX(60deg) translateY(0)}100%{transform:rotateX(60deg) translateY(60px)}}
-
-/* --- NOVO ESTILO LOGO & TITULO DISCRETO --- */
-.logo-wrapper{display:flex;align-items:center;gap:20px;z-index:3;margin-bottom:15px;}
-.molecule{width:80px;height:80px;opacity:0.85;animation:moleculeFloat 5s ease-in-out infinite;transition:transform 0.4s;}
-.molecule.playing{animation:moleculeFloat 3.5s ease-in-out infinite, moleculeRotate 25s linear infinite;}
-@keyframes moleculeFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(4deg)}}
-@keyframes moleculeRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-.main-logo{font-size:clamp(2.2rem,7vw,5.5rem);line-height:0.9;font-weight:700;text-transform:uppercase;letter-spacing:2px;position:relative;display:inline-block;font-family:'Montserrat',sans-serif;}
-.main-logo .emotion{color:#ffffff;font-weight:300;}
-.main-logo .amp{color:#888;font-size:0.85em;margin:0 3px;font-weight:300;}
-.main-logo .dopamine{color:#ffffff;font-weight:700;letter-spacing:3px;}
-/* ----------------------------------------- */
-
-.subtitle{opacity:.6;font-size:clamp(0.85rem,2.5vw,1.1rem);letter-spacing:5px;text-transform:uppercase;color:#fff;text-align:center;margin-top:5px;font-family:'Montserrat',sans-serif;}
-.players{display:flex;gap:20px;z-index:3;flex-wrap:wrap;justify-content:center;max-width:1200px;}
-.player{
-  background:rgba(255,255,255,0.03);backdrop-filter:blur(10px);border-radius:45px;padding:20px;width:195px;
-  height:195px;
-  display:flex;flex-direction:column;justify-content:center;align-items:center;
-  gap: 20px;
-  border:1px solid rgba(255,255,255,0.08);transition:all .4s ease;position:relative;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
-.player h3{font-size: 1.05rem; white-space: nowrap; margin: 0; font-family:'Montserrat',sans-serif; font-weight:400; color:#ddd;}
-.player.playing{animation:stationPulse 1.4s ease-in-out infinite alternate;}
-@keyframes stationPulse{from{box-shadow:0 0 15px var(--glow-color, #fff); border-color:var(--glow-color, #fff);}to{box-shadow:0 0 40px var(--glow-color, #fff); border-color:var(--glow-color, #fff);}}
-.play-btn{width:68px;height:68px;border-radius:50%;border:none;cursor:pointer;font-size:26px;color:#fff;transition:all .3s;}
-.play-btn.hardcore{background:linear-gradient(135deg,#ff0000,#990000);}
-.play-btn.handsup{background: linear-gradient(135deg,#00ffff,#0066ff);}
-.play-btn.handsup-mixed{background:linear-gradient(135deg,#00ff99,#00cc66);}
-.play-btn.trance{background:linear-gradient(135deg,#aa00ff,#00ccff);}
-.hardcore-bg{--glow-color: rgba(255,0,0,0.4);}
-.handsup-bg{--glow-color: rgba(0,255,255,0.4);}
-.handsup-mixed-bg{--glow-color: rgba(0,255,153,0.4);}
-.trance-bg{--glow-color: rgba(170,0,255,0.4);}
-.now-playing{font-size:clamp(1.35rem,4.5vw,2.2rem);font-family:'Montserrat',sans-serif;font-weight:300;color:#fff;margin:25px 0 8px;min-height:42px;z-index:3;letter-spacing:1px;}
-.live-indicator{color:#fff;font-size:0.8rem;letter-spacing:4px;animation:liveBlink 1.8s infinite;margin-bottom:12px;z-index:3;display:none;opacity:0.7;}
-@keyframes liveBlink{0%,100%{opacity:0.7;}50%{opacity:0.2}}
-.volume-wrapper{display:flex;align-items:center;gap:14px;margin:25px 0 30px;z-index:3;}
-.volume-icon{font-size:1.5rem;cursor:pointer;opacity:0.7;transition:.3s;}
-#volume-slider{width:240px;accent-color:#ffffff;cursor:pointer;opacity:0.5;}
-#volume-slider:hover{opacity:0.8;}
-#lyrics{margin:25px 0;font-size:1.05rem;font-style:italic;color:#aaa;min-height:48px;z-index:3;text-align:center;font-family:'Montserrat',sans-serif;}
-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
-footer{margin:25px 0;font-size:11px;opacity:0.3;z-index:3;letter-spacing:1px;}
-@media (max-width:650px){
-  .logo-wrapper{flex-direction:column;gap:15px;text-align:center;}
-  .molecule{width:70px;height:70px;}
-  .main-logo{font-size:clamp(1.8rem,8vw,3.5rem);letter-spacing:1px;}
-  .player{width:48%;min-width:145px;height:195px;}
+body {
+  background-color: #030303;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: hidden;
+  position: relative;
+  padding: 40px 20px 20px;
+}
+
+/* --- NOVO FUNDO ATMOSFÉRICO (DJ / FESTIVAL / DOPAMINE VIBE) --- */
+.grid-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  /* Imagem premium de festival com overlay escuro para não atrapalhar a leitura do texto */
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(13, 4, 20, 0.75) 0%, rgba(3, 3, 3, 0.98) 100%),
+    url('https://images.unsplash.com/photo-1516873240891-4bf014598ab4?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  filter: saturate(1.2);
+}
+
+/* --- LOGO ESTILIZADO EM METAL PRATA --- */
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 3;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 25px;
+}
+.logo-hexagon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.15));
+}
+.main-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #e2e2e2;
+  background: linear-gradient(180deg, #ffffff 30%, #a6a6a6 60%, #ffffff 85%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  margin-bottom: 8px;
+}
+.subtitle {
+  font-size: clamp(0.7rem, 2vw, 0.95rem);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: #88888b;
+  font-weight: 400;
+}
+
+/* Divisor Sutil "Select Station" */
+.section-divider {
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 450px;
+  margin: 15px 0 25px;
+}
+.section-divider::before, .section-divider::after {
+  content: '';
+  height: 1px;
+  flex-grow: 1;
+  background: linear-gradient(to var(--dir, right), transparent, rgba(162, 0, 255, 0.4));
+}
+.section-divider::after { --dir: left; }
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 5px;
+  color: #9d9da6;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* --- PLAYERS / CARDS DA INTERFACE --- */
+.players-grid {
+  display: flex;
+  gap: 16px;
+  z-index: 3;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 1050px;
+}
+.player-card {
+  background: rgba(4, 4, 6, 0.85);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 35px 15px;
+  width: 220px;
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+.player-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 16px;
+  border: 1.5px solid var(--accent-color);
+  opacity: 0.15;
+  transition: opacity 0.4s;
+}
+.player-card:hover::before {
+  opacity: 0.4;
+}
+.player-card h3 {
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #eaeaea;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- ESTILIZAÇÃO DOS BOTÕES COM CORES INDIVIDUAIS --- */
+.btn-wrapper {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.outer-ring, .inner-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-color);
+  transition: all 0.4s ease;
+}
+.outer-ring {
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+}
+.inner-ring {
+  width: 82%;
+  height: 82%;
+  opacity: 0.25;
+}
+
+.play-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-color); /* Borda com a cor da estação */
+  background: rgba(0, 0, 0, 0.6); /* Fundo escuro para dar contraste */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 2;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+.play-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--accent-color); /* Ícone com a cor da estação */
+  margin-left: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Hover nos Botões: Brilho intenso e preenchimento */
+.play-btn:hover {
+  transform: scale(1.08);
+  background: var(--accent-color);
+  box-shadow: 0 0 20px var(--accent-color);
+}
+.play-btn:hover svg {
+  fill: #030303; /* Contraste ao passar o mouse */
+}
+
+/* Status Ativo (Playing) */
+.player-card.playing::before {
+  opacity: 0.8;
+  box-shadow: 0 0 20px var(--accent-color);
+}
+.player-card.playing .outer-ring {
+  animation: pulseRing 1.8s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
+  opacity: 0.5;
+}
+.player-card.playing .inner-ring {
+  animation: pulseRingInner 1.8s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
+  opacity: 0.6;
+}
+@keyframes pulseRing {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 0.3; }
+  100% { transform: scale(0.95); opacity: 0.6; }
+}
+@keyframes pulseRingInner {
+  0% { transform: scale(1.03); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1.03); }
+}
+
+/* Cores específicas de cada canal */
+.card-hardcore { --accent-color: #ff3333; }
+.card-handsup { --accent-color: #00e5ff; }
+.card-mixed { --accent-color: #00ff66; }
+.card-trance { --accent-color: #aa00ff; }
+
+/* --- DISPLAY NOW PLAYING --- */
+.now-playing-container {
+  z-index: 3;
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.np-label {
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #8a8a93;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.np-display {
+  background: rgba(5, 5, 8, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px 40px;
+  width: 100%;
+  max-width: 550px;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  letter-spacing: 2px;
+  color: #00e5ff;
+  text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+  text-transform: uppercase;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* --- FRASES EM ITÁLICO E NEON AZUL --- */
+#lyrics {
+  margin-top: 22px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #00e5ff;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+  text-align: center;
+  z-index: 3;
+  min-height: 25px;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+}
+
+/* --- CONTROLES DO RODAPÉ --- */
+.footer-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  z-index: 3;
+  margin-top: 40px;
+}
+.control-box {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Slider de Volume */
+.volume-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.volume-label {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #aaa;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: block;
+}
+.vol-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.volume-icon {
+  font-size: 1.15rem;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.volume-icon:hover { color: #fff; }
+#volume-slider {
+  flex-grow: 1;
+  accent-color: #00e5ff;
+  height: 4px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* --- RODAPÉ IGUAL AO ORIGINAL (FONTE E TAMANHO) --- */
+footer {
+  margin-top: 35px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  opacity: 0.4;
+  z-index: 3;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (max-width: 650px) {
+  body { padding: 25px 15px; }
+  .players-grid { gap: 12px; }
+  .player-card {
+    width: 47%;
+    min-width: 145px;
+    height: 210px;
+    padding: 25px 10px;
+  }
+  .btn-wrapper { width: 85px; height: 85px; }
+  .play-btn { width: 48px; height: 48px; }
 }
 </style>
 </head>
 <body>
-<div class="grid-container"><div class="grid"></div></div>
+<div class="grid-container"></div>
 <canvas id="visualizer"></canvas>
-<div class="logo-wrapper">
-  <svg class="molecule" width="120" height="120" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="38,55 55,32 82,32 99,55 82,78 55,78" stroke="#ffffff" stroke-width="4.5" stroke-linejoin="round" fill="none" opacity="0.9"/>
-    <circle cx="108" cy="52" r="14" stroke="#ffffff" stroke-width="3.5" fill="none" opacity="0.6"/>
-    <line x1="90" y1="54" x2="105" y2="52" stroke="#ffffff" stroke-width="3.5" opacity="0.6"/>
-    <line x1="68" y1="45" x2="85" y2="40" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
-    <circle cx="48" cy="42" r="4" fill="#ffffff" opacity="0.8"/>
-    <circle cx="75" cy="35" r="4" fill="#ffffff" opacity="0.5"/>
+
+<!-- Topo / Logo com estilo Metálico -->
+<div class="header-container">
+  <!-- Monograma ED Estilizado Prata Metálico em SVG -->
+  <svg class="logo-hexagon" viewBox="0 0 120 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="metal" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="25%" stop-color="#8a8a8f"/>
+        <stop offset="50%" stop-color="#e1e1e6"/>
+        <stop offset="75%" stop-color="#545459"/>
+        <stop offset="100%" stop-color="#ffffff"/>
+      </linearGradient>
+    </defs>
+    <!-- Hexágono Externo -->
+    <polygon points="60,6 114,37 114,101 60,132 6,101 6,37" stroke="url(#metal)" stroke-width="6" fill="none"/>
+    <!-- Detalhe chanfrado interno do hexágono -->
+    <polygon points="60,14 106,41 106,97 60,124 14,97 14,41" stroke="url(#metal)" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <!-- Monograma E D integrado -->
+    <path d="M 38,48 L 78,48 M 38,69 L 68,69 M 38,90 L 78,90 M 38,48 L 38,90" stroke="url(#metal)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 66,48 L 78,48 C 94,48 94,90 78,90 L 66,90" stroke="url(#metal)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
-  <div class="logo-text">
-    <h1 class="main-logo">
-      <span class="emotion">EMOTION</span>
-      <span class="amp">&amp;</span>
-      <span class="dopamine">DOPAMINE</span>
-    </h1>
+  
+  <h1 class="main-title">Emotion&amp;Dopamine</h1>
+  <div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
+</div>
+
+<div class="section-divider">
+  <span class="section-title">Select Station</span>
+</div>
+
+<!-- Player Cards -->
+<div class="players-grid">
+  <!-- Card 1: Happy Hardcore -->
+  <div class="player-card card-hardcore" id="player-0">
+    <h3>Happy Hardcore</h3>
+    <div class="btn-wrapper">
+      <div class="outer-ring"></div>
+      <div class="inner-ring"></div>
+      <button class="play-btn" data-index="0">
+        <svg viewBox="0 0 24 24" id="icon-0"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card 2: Hands Up -->
+  <div class="player-card card-handsup" id="player-1">
+    <h3>Hands Up</h3>
+    <div class="btn-wrapper">
+      <div class="outer-ring"></div>
+      <div class="inner-ring"></div>
+      <button class="play-btn" data-index="1">
+        <svg viewBox="0 0 24 24" id="icon-1"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card 3: Hands Up Mixed -->
+  <div class="player-card card-mixed" id="player-2">
+    <h3>Hands Up Mixed</h3>
+    <div class="btn-wrapper">
+      <div class="outer-ring"></div>
+      <div class="inner-ring"></div>
+      <button class="play-btn" data-index="2">
+        <svg viewBox="0 0 24 24" id="icon-2"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card 4: Trance -->
+  <div class="player-card card-trance" id="player-3">
+    <h3>Trance</h3>
+    <div class="btn-wrapper">
+      <div class="outer-ring"></div>
+      <div class="inner-ring"></div>
+      <button class="play-btn" data-index="3">
+        <svg viewBox="0 0 24 24" id="icon-3"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
   </div>
 </div>
-<div class="subtitle">Feel the vibe. Let the dopamine flow.</div>
-<div id="now-playing" class="now-playing">Select a station...</div>
-<div id="live-indicator" class="live-indicator">● LIVE ON AIR</div>
-<div class="players">
-  <div class="player" id="player-0"><h3>Happy Hardcore</h3><button class="play-btn hardcore" data-index="0">▶</button></div>
-  <div class="player" id="player-1"><h3>Hands Up</h3><button class="play-btn handsup" data-index="1">▶</button></div>
-  <div class="player" id="player-2"><h3>Hands Up Mixed</h3><button class="play-btn handsup-mixed" data-index="2">▶</button></div>
-  <div class="player" id="player-3"><h3>Trance</h3><button class="play-btn trance" data-index="3">▶</button></div>
+
+<!-- Display central de status -->
+<div class="now-playing-container">
+  <div class="np-label">Now Playing</div>
+  <div id="now-playing" class="np-display">Select a Station</div>
+  <div id="lyrics">Select a station to feel the dopamine...</div>
 </div>
-<div class="volume-wrapper">
-  <span class="volume-icon" id="volume-icon">🔊</span>
-  <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8">
+
+<!-- Controles Inferiores da Interface (Volume) -->
+<div class="footer-controls">
+  <div class="control-box">
+    <div class="volume-wrapper">
+      <span class="volume-label">Volume</span>
+      <div class="vol-controls">
+        <span class="volume-icon" id="volume-icon">🔊</span>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8">
+      </div>
+    </div>
+  </div>
 </div>
-<div id="lyrics">Select a station to feel the dopamine...</div>
+
 <footer>© 2026 Emotion&Dopamine • Feel Everything</footer>
+
 <script>
 const streams = [
   "https://stream.zeno.fm/r8s232x3xg0uv",
@@ -113,103 +506,140 @@ const stationLyrics = [
   "♪ Hands up for the weekend! Let the melody guide your soul. ♪",
   "♪ Trance into the infinite... Ride the waves of pure emotion! ♪"
 ];
-const stationClasses = ['hardcore-bg', 'handsup-bg', 'handsup-mixed-bg', 'trance-bg'];
 const stationNames = ["Happy Hardcore", "Hands Up", "Hands Up Mixed", "Trance"];
 let audio = new Audio(); audio.crossOrigin = "anonymous";
 let analyser, source, currentIdx = -1, started = false;
 let currentVolume = 0.8;
+
 const volumeSlider = document.getElementById('volume-slider');
 const volumeIcon = document.getElementById('volume-icon');
 const nowPlaying = document.getElementById('now-playing');
-const liveIndicator = document.getElementById('live-indicator');
 const lyricsDiv = document.getElementById('lyrics');
-const molecule = document.querySelector('.molecule');
 const canvas = document.getElementById("visualizer");
 const c = canvas.getContext("2d");
 
+// Configuração do Volume
 volumeSlider.value = currentVolume; audio.volume = currentVolume;
-function updateVolumeIcon() { volumeIcon.textContent = currentVolume === 0 ? '🔇' : currentVolume < 0.35 ? '🔈' : '🔊'; }
-volumeSlider.addEventListener('input', () => { currentVolume = parseFloat(volumeSlider.value); audio.volume = currentVolume; updateVolumeIcon(); localStorage.setItem('ed_volume', currentVolume); });
-if (localStorage.getItem('ed_volume')) { currentVolume = parseFloat(localStorage.getItem('ed_volume')); volumeSlider.value = currentVolume; audio.volume = currentVolume; updateVolumeIcon(); }
+function updateVolumeIcon() { 
+  volumeIcon.textContent = currentVolume === 0 ? '🔇' : currentVolume < 0.35 ? '🔈' : '🔊'; 
+}
+volumeSlider.addEventListener('input', () => { 
+  currentVolume = parseFloat(volumeSlider.value); 
+  audio.volume = currentVolume; 
+  updateVolumeIcon(); 
+  localStorage.setItem('ed_volume', currentVolume); 
+});
+if (localStorage.getItem('ed_volume')) { 
+  currentVolume = parseFloat(localStorage.getItem('ed_volume')); 
+  volumeSlider.value = currentVolume; 
+  audio.volume = currentVolume; 
+  updateVolumeIcon(); 
+}
+
 document.querySelectorAll('.play-btn').forEach(btn => btn.addEventListener('click', () => playRadio(parseInt(btn.dataset.index))));
+
 function playRadio(i) {
-  const btns = document.querySelectorAll('.play-btn');
-  const activePlayer = document.getElementById(`player-${i}`);
+  const activeCard = document.getElementById(`player-${i}`);
+  const playIcon = document.getElementById(`icon-${i}`);
+  
   if (currentIdx === i) {
-    if (audio.paused) { audio.play(); btns[i].innerText = "⏸"; activePlayer.classList.add('playing', stationClasses[i]); liveIndicator.style.display = 'block'; molecule.classList.add('playing'); }
-    else { audio.pause(); btns[i].innerText = "▶"; activePlayer.classList.remove('playing', stationClasses[i]); liveIndicator.style.display = 'none'; molecule.classList.remove('playing'); lyricsDiv.innerText = "Paused..."; }
+    if (audio.paused) { 
+      audio.play(); 
+      playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; // Icon Pause
+      activeCard.classList.add('playing'); 
+    } else { 
+      audio.pause(); 
+      playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; // Icon Play
+      activeCard.classList.remove('playing'); 
+      lyricsDiv.innerText = "Paused..."; 
+    }
     return;
   }
+  
   if (currentIdx !== -1) {
-    btns[currentIdx].innerText = "▶";
-    document.getElementById(`player-${currentIdx}`).classList.remove('playing', stationClasses[currentIdx]);
+    document.getElementById(`icon-${currentIdx}`).innerHTML = '<path d="M8 5v14l11-7z"/>';
+    document.getElementById(`player-${currentIdx}`).classList.remove('playing');
   }
+  
   currentIdx = i;
   nowPlaying.innerText = stationNames[i];
   lyricsDiv.innerText = stationLyrics[i];
-  liveIndicator.style.display = 'block';
   audio.src = streams[i];
   audio.load();
-  audio.play().catch(() => { lyricsDiv.innerHTML = `❌ Stream unavailable.<br>Try another station.`; liveIndicator.style.display = 'none'; });
-  btns[i].innerText = "⏸";
-  activePlayer.classList.add('playing', stationClasses[i]);
-  molecule.classList.add('playing');
-  localStorage.setItem('ed_lastStation', i);
+  audio.play().catch(() => { 
+    lyricsDiv.innerHTML = `❌ Stream unavailable.<br>Try another station.`; 
+  });
+  
+  playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+  activeCard.classList.add('playing');
+  
   if (!started) { initVisualizer(); started = true; }
 }
+
 audio.addEventListener('waiting', () => lyricsDiv.innerText = "Buffering...");
 audio.addEventListener('playing', () => { if (currentIdx !== -1) lyricsDiv.innerText = stationLyrics[currentIdx]; });
-audio.addEventListener('error', () => { lyricsDiv.innerHTML = `❌ Stream offline 😢<br>Try another station.`; liveIndicator.style.display = 'none'; });
-function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-window.onresize = resize; resize();
+audio.addEventListener('error', () => { lyricsDiv.innerHTML = `❌ Stream offline 😢<br>Try another station.`; });
+
+// Canvas do Analisador Circular Centralizado no Rodapé
+function resize() { 
+  canvas.width = window.innerWidth; 
+  canvas.height = window.innerHeight; 
+}
+window.onresize = resize; 
+resize();
+
 function initVisualizer() {
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  analyser = audioCtx.createAnalyser(); analyser.fftSize = 512;
+  analyser = audioCtx.createAnalyser(); 
+  analyser.fftSize = 256;
   source = audioCtx.createMediaElementSource(audio);
-  source.connect(analyser); analyser.connect(audioCtx.destination);
+  source.connect(analyser); 
+  analyser.connect(audioCtx.destination);
   animate();
 }
+
 function animate() {
   requestAnimationFrame(animate);
   const data = new Uint8Array(analyser ? analyser.frequencyBinCount : 0);
   if (analyser) analyser.getByteFrequencyData(data);
   c.clearRect(0, 0, canvas.width, canvas.height);
-  const cx = canvas.width / 2;
-  const cy = canvas.height / 2;
-  const isMobile = window.innerWidth < 650;
   
-  const baseRadius = isMobile ? Math.min(cx, cy) * 0.35 : 125;
-  const bars = isMobile ? 110 : 160;
-  const bass = analyser ? (data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7]) / 8 : 40;
+  const cx = canvas.width / 2;
+  const cy = canvas.height - 110; 
+  
+  const isMobile = window.innerWidth < 650;
+  const baseRadius = isMobile ? 65 : 95;
+  const bars = isMobile ? 50 : 80;
+  
+  // Anel sutil permanente em volta do visualizador
+  c.strokeStyle = 'rgba(162, 0, 255, 0.15)';
+  c.lineWidth = 1;
+  c.beginPath(); 
+  c.arc(cx, cy, baseRadius - 10, 0, Math.PI * 2); 
+  c.stroke();
+
   if (!analyser || audio.paused) return;
+
+  // Renderização das ondas circulares em espectro de cores (Ciano para Roxo)
   for(let i = 0; i < bars; i++) {
     const v = data[i] || 0;
     const angle = (i / bars) * Math.PI * 2;
-    const barLen = v * (isMobile ? 0.45 : 0.65);
-    const x1 = cx + Math.cos(angle) * baseRadius;
-    const y1 = cy + Math.sin(angle) * baseRadius;
-    const x2 = cx + Math.cos(angle) * (baseRadius + barLen);
-    const y2 = cy + Math.sin(angle) * (baseRadius + barLen);
-    c.strokeStyle = `hsl(${i * (360/bars) + 280}, 100%, 65%)`;
-    c.lineWidth = isMobile ? 2.5 : 4.5;
+    const barLen = (v / 255) * (isMobile ? 25 : 45);
+    
+    const x1 = cx + Math.cos(angle) * (baseRadius + 5);
+    const y1 = cy + Math.sin(angle) * (baseRadius + 5);
+    const x2 = cx + Math.cos(angle) * (baseRadius + 5 + barLen);
+    const y2 = cy + Math.sin(angle) * (baseRadius + 5 + barLen);
+    
+    c.strokeStyle = `hsl(${(i / bars) * 120 + 190}, 100%, 55%)`;
+    c.lineWidth = isMobile ? 2.5 : 4;
     c.lineCap = "round";
-    c.shadowBlur = 15;
-    c.shadowColor = c.strokeStyle;
-    c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke();
+    
+    c.beginPath(); 
+    c.moveTo(x1, y1); 
+    c.lineTo(x2, y2); 
+    c.stroke();
   }
-  const centerR = baseRadius * 0.42 + (bass / 255) * 18;
-  c.shadowBlur = 85; c.shadowColor = '#ff00ff';
-  c.fillStyle = 'rgba(255,0,255,0.07)';
-  c.beginPath(); c.arc(cx, cy, centerR + 20, 0, Math.PI * 2); c.fill();
-  c.shadowBlur = 58; c.shadowColor = '#00ffff';
-  c.fillStyle = 'rgba(0,255,255,0.14)';
-  c.beginPath(); c.arc(cx, cy, centerR, 0, Math.PI * 2); c.fill();
-  c.shadowBlur = 32; c.shadowColor = '#ff00ff';
-  c.fillStyle = '#ff00ff';
-  c.beginPath(); c.arc(cx, cy, centerR * 0.4, 0, Math.PI * 2); c.fill();
-  c.shadowBlur = 28; c.shadowColor = '#00ffff';
-  c.strokeStyle = '#00ffff'; c.lineWidth = 3.5;
-  c.beginPath(); c.arc(cx, cy, centerR * 0.95, 0, Math.PI * 2); c.stroke();
 }
 </script>
 </body>
