@@ -361,15 +361,20 @@ canvas {
   pointer-events: none;
 }
 
-/* --- RODAPÉ IGUAL AO ORIGINAL (FONTE E TAMANHO) --- */
+/* --- RODAPÉ AJUSTADO: MAIS COMPACTO, SUTIL E DISCRETO --- */
 footer {
-  margin-top: 35px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  opacity: 0.4;
+  margin-top: 45px;
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
+  opacity: 0.3;
   z-index: 3;
-  text-transform: uppercase;
   text-align: center;
+  font-weight: 500;
+  color: #ffffff;
+  transition: opacity 0.3s;
+}
+footer:hover {
+  opacity: 0.6; /* Revela ligeiramente ao passar o mouse */
 }
 
 @media (max-width: 650px) {
